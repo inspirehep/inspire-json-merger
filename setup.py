@@ -42,7 +42,17 @@ tests_require = [
     'pytest>=2.8.0',
 ]
 
+contrib_require = [
+    'editdistance>=0.3.1',
+    'munkres>=1.0.7',
+    'Unidecode>=0.4.19',
+    'json-merger>=0.2.5'
+]
+
+tests_require += contrib_require
+
 extras_require = {
+    'contrib': contrib_require,
     'docs': [
         'Sphinx>=1.5.1',
     ],

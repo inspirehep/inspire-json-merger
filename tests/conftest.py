@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Invenio.
-# Copyright (C) 2017 CERN.
+# This file is part of Inspirehep.
+# Copyright (C) 2016 CERN.
 #
-# Invenio is free software; you can redistribute it
+# Inspirehep is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# Invenio is distributed in the hope that it will be
+# Inspirehep is distributed in the hope that it will be
 # useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Invenio; if not, write to the
+# along with Inspirehep; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 # MA 02111-1307, USA.
 #
@@ -22,40 +22,40 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+
 """Pytest configuration."""
 
 from __future__ import absolute_import, print_function
 
-import shutil
-import tempfile
+import json
+import os
 
 import pytest
-from flask import Flask
-from flask_babelex import Babel
 
 
-@pytest.yield_fixture()
-def instance_path():
-    """Temporary instance path."""
-    path = tempfile.mkdtemp()
-    yield path
-    shutil.rmtree(path)
+class AbstractFixtureLoader(object):
+    def __init__(self, basedir):
+        self.basedir = basedir
+
+    def _read_file(self, test_dir, file_name):
+        with open(os.path.join(self.basedir, test_dir, file_name)) as f:
+            return f.read()
+
+    def load_single(self, test_dir, file_name):
+        return json.loads(self._read_file(test_dir, file_name))
+
+    def load_test(self, test_dir):
+        raise NotImplementedError('You have to implement me!')
 
 
 @pytest.fixture()
-def base_app(instance_path):
-    """Flask application fixture."""
-    app_ = Flask('testapp', instance_path=instance_path)
-    app_.config.update(
-        SECRET_KEY='SECRET_KEY',
-        TESTING=True,
-    )
-    Babel(app_)
-    return app_
+def update_fixture_loader():
+    class _Loader(AbstractFixtureLoader):
 
+        def load_test(self, test_dir):
+            root = self.load_single(test_dir, 'root.json')
+            head = self.load_single(test_dir, 'head.json')
+            update = self.load_single(test_dir, 'update.json')
+            return root, head, update
 
-@pytest.yield_fixture()
-def app(base_app):
-    """Flask application fixture."""
-    with base_app.app_context():
-        yield base_app
+    return _Loader('./tests/fixtures/')
