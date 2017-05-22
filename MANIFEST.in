@@ -33,5 +33,9 @@
 include .dockerignore
 include .editorconfig
 include .tx/config
-prune docs/_build
-recursive-include inspire_json_merger *.po *.pot *.mo
+include *.rst
+include *.sh
+include LICENSE
+include pytest.ini
+recursive-include tests *.json
+recursive-include tests *.py
