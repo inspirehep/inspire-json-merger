@@ -20,49 +20,14 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-import json
-
 from json_merger.config import DictMergerOps, UnifierOps
-from json_merger.errors import MergeError
-from json_merger.merger import Merger
 
 from .comparators import COMPARATORS
 
 ARXIV_TO_ARXIV = 'ArxivToArxiv'
 PUBLISHER_TO_ARXIV = 'PublisherToArxiv'
-
-
-def json_merger(root, head, update, merger_operations):
-
-    merger = Merger(
-        root=root, head=head, update=update,
-        default_dict_merge_op=merger_operations.default_dict_merge_op,
-        default_list_merge_op=merger_operations.default_list_merge_op,
-        list_dict_ops=merger_operations.list_dict_ops,
-        list_merge_ops=merger_operations.list_merge_ops,
-        comparators=merger_operations.comparators,
-    )
-    conflicts = None
-    try:
-        merger.merge()
-    except MergeError as e:
-        conflicts = [json.loads(c.to_json()) for c in e.content].sort()
-    merged = merger.merged_root
-
-    return merged, conflicts
-
-
-def factory(config_type):
-    configuration_dict = {
-        ARXIV_TO_ARXIV: ArxivToArxivOperations(),
-        PUBLISHER_TO_ARXIV: PublisherToArxivOperations()
-    }
-
-    curr_merger_config = configuration_dict.get(config_type, None)
-    if not curr_merger_config:
-        raise ValueError('Type not defined: %t ' % config_type)
-
-    return curr_merger_config
+PUBLISHER_TO_PUBLISHER = None
+ARXIV_TO_PUBLISHER = None,
 
 
 class MergerConfigurationOperations(object):

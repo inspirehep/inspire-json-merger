@@ -32,9 +32,7 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'check-manifest>=0.25',
     'coverage>=4.0',
-    'isort>=4.2.2',
     'pydocstyle>=1.0.0',
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
@@ -70,6 +68,8 @@ setup_requires = [
 
 install_requires = [
     'Flask-BabelEx>=0.9.2',
+    'isort>=4.2.2',
+    'check-manifest>=0.25',
 ]
 
 packages = find_packages()
