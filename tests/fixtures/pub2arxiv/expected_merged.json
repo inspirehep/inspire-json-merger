@@ -460,7 +460,7 @@
    ],
    "acquisition_source":{
       "datetime":"2017-05-11T09:11:50.192275",
-      "source":"arXiv",
+      "source":"elsevier",
       "method":"hepcrawl",
       "submission_number":"dbca741a362911e78bfd0242ac12000b"
    },

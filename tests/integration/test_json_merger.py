@@ -24,19 +24,18 @@ from __future__ import absolute_import, division, print_function
 
 import pytest
 
+from inspire_json_merger.inspire_json_merger import inspire_json_merge
 from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
-    PUBLISHER_TO_ARXIV, factory, json_merger
+    PUBLISHER_TO_ARXIV
 
 
-@pytest.mark.parametrize('scenario, merger_configuration_type', [
-    ('arxiv2arxiv', ARXIV_TO_ARXIV),
-    ('pub2arxiv', PUBLISHER_TO_ARXIV)
+@pytest.mark.parametrize('scenario', [
+    'arxiv2arxiv', 'pub2arxiv'
 ])
-def test_complete_merge(update_fixture_loader, scenario, merger_configuration_type):
+def test_complete_merge(update_fixture_loader, scenario):
     root, head, update, expected_conflict, expected_merged = update_fixture_loader.load_test(scenario)
 
-    merger_configuration = factory(merger_configuration_type)
-    merged, conflict = json_merger(root, head, update, merger_configuration)
+    merged, conflict = inspire_json_merge(root, head, update)
 
     assert merged == expected_merged
     assert conflict == expected_conflict

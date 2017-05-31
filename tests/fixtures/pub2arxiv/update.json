@@ -161,7 +161,7 @@
     "acquisition_source": {
         "datetime": "2017-05-11T09:11:50.192275",
         "method": "hepcrawl",
-        "source": "arXiv",
+        "source": "elsevier",
         "submission_number": "dbca741a362911e78bfd0242ac12000b"
     },
     "arxiv_eprints": [
