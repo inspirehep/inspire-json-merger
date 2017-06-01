@@ -20,7 +20,8 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
 from inspire_json_merger.utils.utils import sort_conflicts
