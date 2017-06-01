@@ -31,14 +31,17 @@ from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
     ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER, \
-    ArxivToArxivOperations, PublisherToArxivOperations
+    ArxivToArxivOperations, PublisherToArxivOperations, \
+    PublisherToPublisherOperations
+
+from inspire_json_merger.utils.utils import sort_conflicts
 
 # mapping between configuration names and their relative classes.
 _MERGER_CONFIGS = {
     ARXIV_TO_ARXIV: ArxivToArxivOperations(),
     PUBLISHER_TO_ARXIV: PublisherToArxivOperations(),
     ARXIV_TO_PUBLISHER: None,
-    PUBLISHER_TO_PUBLISHER: None
+    PUBLISHER_TO_PUBLISHER: PublisherToPublisherOperations()
 }
 
 
@@ -75,7 +78,9 @@ def inspire_json_merge(root, head, update):
     try:
         merger.merge()
     except MergeError as e:
-        conflicts = [json.loads(confl.to_json()) for confl in e.content].sort()
+        conflicts = sort_conflicts(
+            [json.loads(confl.to_json()) for confl in e.content]
+        )
 
     merged = merger.merged_root
     return merged, conflicts
@@ -99,7 +104,6 @@ def _get_configuration(head_source, update_source):
         raise ValueError('Can\'t get any configuration:\n\tHEAD SOURCE: {0}'
                          '\n\tUPDATE SOURCE: {1}'
                          .format(head_source, update_source))
-
     if head_source.lower() == ARXIV_SOURCE:
         if update_source.lower() == ARXIV_SOURCE:
             return _MERGER_CONFIGS.get(ARXIV_TO_ARXIV)
@@ -110,8 +114,7 @@ def _get_configuration(head_source, update_source):
             raise Exception('Not yet implemented')
             # return _MERGER_CONFIGS.get(ARXIV_TO_PUBLISHER)
         else:
-            # return _MERGER_CONFIGS.get(PUBLISHER_TO_PUBLISHER)
-            raise Exception('Not yet implemented')
+            return _MERGER_CONFIGS.get(PUBLISHER_TO_PUBLISHER)
 
 
 def get_source(json_obj):
