@@ -369,7 +369,7 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         'thesis_info.institutions': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'title_translations': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'titles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'urls': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+        'urls': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     }
     list_dict_ops = {
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
@@ -421,4 +421,3 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD,
     }
-

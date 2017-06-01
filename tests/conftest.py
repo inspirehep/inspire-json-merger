@@ -33,6 +33,8 @@ import os
 
 import pytest
 
+from inspire_json_merger.utils.utils import sort_conflicts
+
 
 class AbstractFixtureLoader(object):
     def __init__(self, basedir):
@@ -54,10 +56,24 @@ def update_fixture_loader():
     class _Loader(AbstractFixtureLoader):
 
         def load_test(self, test_dir):
+
+            def _convert_falsy_value_to_none(value):
+                return value if value else None
+
             root = self.load_single(test_dir, 'root.json')
             head = self.load_single(test_dir, 'head.json')
             update = self.load_single(test_dir, 'update.json')
-            expected_conflict = list(self.load_single(test_dir, 'expected_conflict.json')).sort()
+            expected_conflict = _convert_falsy_value_to_none(
+                sort_conflicts(
+                    list(
+                        self.load_single(
+                            test_dir,
+                            'expected_conflict.json'
+                        )
+                    )
+                )
+            )
+
             expected_merged = self.load_single(test_dir, 'expected_merged.json')
             return root, head, update, expected_conflict, expected_merged
 

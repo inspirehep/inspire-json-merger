@@ -33,7 +33,6 @@ from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
     ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER, \
     ArxivToArxivOperations, PublisherToArxivOperations, \
     PublisherToPublisherOperations
-
 from inspire_json_merger.utils.utils import sort_conflicts
 
 # mapping between configuration names and their relative classes.

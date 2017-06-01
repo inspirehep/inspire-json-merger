@@ -25,8 +25,7 @@ from __future__ import absolute_import, print_function
 from json_merger.comparator import PrimaryKeyComparator
 from json_merger.contrib.inspirehep.author_util import AuthorNameDistanceCalculator, \
     AuthorNameNormalizer, NameInitial, NameToken
-from json_merger.contrib.inspirehep.comparators import \
-    DistanceFunctionComparator
+from json_merger.contrib.inspirehep.comparators import DistanceFunctionComparator
 
 from inspire_json_merger.utils.utils import scan_author_string_for_phrases
 
