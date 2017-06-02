@@ -28,6 +28,10 @@ from inspire_json_merger.utils.utils import sort_conflicts
 
 from .comparators import COMPARATORS
 
+"""
+This module provides different sets of rules that `inspire_json_merge`
+"""
+
 ARXIV_TO_ARXIV = 'ArxivToArxiv'
 PUBLISHER_TO_ARXIV = 'PublisherToArxiv'
 PUBLISHER_TO_PUBLISHER = 'PublisherToPublisher'
