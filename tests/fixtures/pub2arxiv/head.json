@@ -1,352 +1,1009 @@
 {
-    "$schema": "http://localhost:5000/schemas/records/hep.json",
-    "_collections": [
-        "Literature"
-    ],
-    "_fft": [
-        {
-            "filename": "arxiv:1705.02541",
-            "format": ".pdf",
-            "path": "/virtualenv/var/data/workflows/files/05/23/f07a-6b9b-4445-9063-41aa7d367413/data",
-            "type": "arXiv"
-        }
-    ],
-    "_files": [
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:52cb0a0ed6e662eb823327a42c5d6e9b",
-            "key": "1705.02541.pdf",
-            "size": 2806666,
-            "version_id": "1043bcee-dd8a-4047-b60b-7952de1c1cac"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:b225eb2916d88b261cb5f4538e5ced55",
-            "key": "1705.02541.tar.gz",
-            "size": 2213267,
-            "version_id": "42fd3671-c31f-4543-af99-17d794098526"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:16775d1d276f4afa1743bf39a91fc142",
-            "key": "LuWu_Density",
-            "size": 140,
-            "version_id": "51ad5938-f9f1-4f10-8816-1523c526afbc"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:41ddcc333d7ea991f18619183eb4944b",
-            "key": "sq_BK_density",
-            "size": 141,
-            "version_id": "5841885a-c9be-48fe-8ad3-1b7786ba0a55"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:cd0d7854d644663b84ca7faa46bb4e38",
-            "key": "sq_PB_w16_roots",
-            "size": 143,
-            "version_id": "b8f89ff8-9e69-4eb6-b80a-427f218c9719"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:2aec26e18fb162931f984fad57305cba",
-            "key": "8bis-no-titles",
-            "size": 142,
-            "version_id": "a3c68e57-91a3-4afb-9ada-15ae13352dbf"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:00cc4ef2b90133f075bb0efb4b8c365d",
-            "key": "equmod_L8",
-            "size": 137,
-            "version_id": "2481cdd6-c622-4927-8bc2-0a1e8b1cca76"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:02ac4e4d5ab376b141a6b327ea520730",
-            "key": "sq_BK_w22_inner_dens",
-            "size": 148,
-            "version_id": "9afda232-d1a9-4f85-bc22-6737a544ee34"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:b2dd5c2ed3ce0a02fde2bad06277d2a3",
-            "key": "equmod_P0_L12",
-            "size": 141,
-            "version_id": "6ce586a5-a89f-4360-ad39-417fa5ba19a0"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:5b5f0d8de1ec99a9e54c39fc0fb9ec1f",
-            "key": "sq_BK_w22_inner",
-            "size": 143,
-            "version_id": "e79efbf3-f350-445e-90aa-16485fbbb094"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:e9026732a8d25639f9eeda6854f2ce4c",
-            "key": "sq_BK_w20_roots",
-            "size": 143,
-            "version_id": "2d933753-ca11-4465-b32e-8909cc2f579e"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:f4821dce9b9db66d2c0e083049eeb5d6",
-            "key": "6bis-no-titles",
-            "size": 142,
-            "version_id": "fbe57fd9-ff85-458d-98d5-038d0c38e149"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:d30334cc2af846cc9209169b3829be06",
-            "key": "equmod_P0_L8",
-            "size": 140,
-            "version_id": "444bcc4d-d7c6-442f-a6fe-895f97110a84"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:89834c873f7307d2a66ef0d20bbb1342",
-            "key": "sq_BK_w22_roots_field",
-            "size": 149,
-            "version_id": "df127a9a-2cc4-47c6-a23e-f5b92a6ce81b"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:c4acf2e5f7ad3b05f4f18fca5234ac0d",
-            "key": "sq_CF_w20_roots",
-            "size": 143,
-            "version_id": "c6659840-a149-4403-ae8c-8050c5e0d3b1"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:616677d92283017707f401a76966490c",
-            "key": "equmod_P0_L10",
-            "size": 141,
-            "version_id": "fe2a3a6c-b53d-4e95-ad8e-48eab984926a"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:4f5b38f45a3b1eeec08983f47465b6dd",
-            "key": "HS_CF_w40_roots",
-            "size": 143,
-            "version_id": "05a0a5cf-ca59-480e-9101-26f69f5edeb8"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:fd0ffabb89ae61628f5839cb68ccd268",
-            "key": "6bis_zoom",
-            "size": 137,
-            "version_id": "967579b0-db22-404d-8c2b-dd5c039a9bb7"
-        },
-        {
-            "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",
-            "checksum": "md5:b947af7c21c65bf4153cd4f4be1eb571",
-            "key": "HH_CF_w39_roots",
-            "size": 143,
-            "version_id": "ac57f1d6-d962-42cc-bb0f-2c6fb9d2ad3a"
-        }
-    ],
-    "abstracts": [
-        {
-            "source": "arXiv",
-            "value": "We discuss the implications of studies of partition function zeros and equimodular curves for the analytic properties of the Ising model on a square lattice in a magnetic field. In particular we consider the dense set of singularities in the susceptibility of the Ising model at $H=0$ found by Nickel and its relation to the analyticity of the field theory computations of Fonseca and Zamolodchikov. Curator change.\n"
-        }
-    ],
-    "accelerator_experiments": [
-        {
-            "legacy_name": "CERN-LHC-ALICE"
-        }
-    ],
-    "acquisition_source": {
-        "datetime": "2017-05-11T08:50:25.184741",
-        "method": "hepcrawl",
-        "source": "arXiv",
-        "submission_number": "db9325b2362611e78bfd0242ac12000b"
-    },
-    "arxiv_eprints": [
-        {
-            "categories": [
-                "math-ph",
-                "cond-mat.stat-mech",
-                "math.MP"
+   "_collections":[
+      "Literature"
+   ],
+   "public_notes":[
+      {
+         "value":"*Brief entry*"
+      }
+   ],
+   "authors":[
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00114423",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00012026",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Papadimitriou, Vaia"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00060576",
+               "schema":"JACOW"
+            },
+            {
+               "value":"0000-0003-1315-6760",
+               "schema":"ORCID"
+            }
+         ],
+         "full_name":"Ammigan, Kavin"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00054188",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00044847",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Anderson, John"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00527123",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00043976",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Anderson, Kris"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00528066",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00023878",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Andrews, Richard"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00267402",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00028259",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Bocean, Virgil"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00525342",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00060548",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Crowley, Cory"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"STFC/RAL, Chilton, Didcot, Oxon, United Kingdom"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Rutherford"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00261180",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00019797",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Densham, Chris"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00274343",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00013122",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Eddy, Nathan"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00060577",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Hartsell, Brian"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00267665",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002212",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Hays, Steven"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00427732",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002186",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Hurh, Patrick"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00091808",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00028649",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Hylen, James"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00003015",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002226",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Johnstone, John"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00095092",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00048494",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Kasper, Peter"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00021679",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002193",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Kobilarcik, Thomas"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00011961",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Krafczyk, George"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00103095",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00050744",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Lundberg, Byron"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00104621",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002163",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Marchionni, Alberto"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00108416",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002183",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Mokhov, Nikolai"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00108681",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002205",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Moore, Craig"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00200374",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00086143",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Pushka, David"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00031441",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00019817",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Rakhno, Igor"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00428180",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00060562",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Reitzner, Sarah"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00124075",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00004854",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Schlabach, Phil"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00028518",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Sidorov, Vladimir"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00428308",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00060558",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Stefanik, Andrew"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00002553",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002192",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Tariq, Salman"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00528139",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00012505",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Valerio, Linda"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00428372",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00079573",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Vaziri, Kamran"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00133716",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00002169",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Velev, Gueorgui"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00044853",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Vogel, Gregory"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"JACoW-00028650",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Williams, Karlton"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab, Batavia, Illinois, USA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "ids":[
+            {
+               "value":"INSPIRE-00053514",
+               "schema":"INSPIRE ID"
+            },
+            {
+               "value":"JACoW-00006905",
+               "schema":"JACOW"
+            }
+         ],
+         "full_name":"Zwaska, Robert"
+      }
+   ],
+   "titles":[
+      {
+         "title":"Design of the LBNF Beamline"
+      }
+   ],
+   "references":[
+      {
+         "reference":{
+            "imprint":{
+               "publisher":"Fermilab"
+            },
+            "publication_info":{
+               "year":1995
+            },
+            "misc":[
+               "Main Injector Technical Design Handbook, November"
             ],
-            "value": "1705.02541"
-        }
-    ],
-    "authors": [
-        {
-            "affiliations": [
-                {
-                    "curated_relation": true,
-                    "record": {
-                        "$ref": "http://localhost:5000/api/institutions/902725"
-                    },
-                    "value": "CERN"
-                }
+            "urls":[
+               {
+                  "value":"http://www-fmi.fnal.gov/fmiinternal/MI_Technical_Design/index.html"
+               }
             ],
-            "full_name": "Assis, Mathieu",
-            "signature_block": "ASm",
-            "uuid": "e3b0a6e6-5950-41c4-ba8a-76cd597cb0d5"
-        },
-        {
-            "affiliations": [
-                {
-                    "curated_relation": true,
-                    "record": {
-                        "$ref": "http://localhost:5000/api/institutions/902725"
-                    },
-                    "value": "CERN"
-                }
+            "label":"1"
+         }
+      },
+      {
+         "reference":{
+            "publication_info":{
+               "year":2007
+            },
+            "authors":[
+               {
+                  "full_name":"Ayres, D.S."
+               }
             ],
-            "full_name": "Jacobsen, J.L.",
-            "signature_block": "JACABSANj",
-            "uuid": "3f4cc9b7-ade5-4b9c-885c-f20bba88f5e2"
-        },
-        {
-            "affiliations": [
-                {
-                    "curated_relation": true,
-                    "record": {
-                        "$ref": "http://localhost:5000/api/institutions/902725"
-                    },
-                    "value": "C"
-                }
+            "misc":[
+               "NOvA Technical Design Report, October"
             ],
-            "full_name": "Jensen, I.",
-            "signature_block": "JANSANi",
-            "uuid": "7b11df9d-6ac8-44f4-93bd-1003b3dff38e"
-        },
-        {
-            "affiliations": [
-                {
-                    "curated_relation": true,
-                    "record": {
-                        "$ref": "http://localhost:5000/api/institutions/902725"
-                    },
-                    "value": "CER"
-                }
+            "urls":[
+               {
+                  "value":"http://www-nova.fnal.gov/nova_cd2_review/tdr_oct_23/toc.pdf"
+               }
             ],
-            "full_name": "Maillard, J-M.",
-            "signature_block": "MALADj",
-            "uuid": "1d5ed399-9577-4d53-be4b-1e2279a3a493"
-        },
-        {
-            "affiliations": [
-                {
-                    "curated_relation": true,
-                    "record": {
-                        "$ref": "http://localhost:5000/api/institutions/902725"
-                    },
-                    "value": "CERN"
-                }
+            "label":"2"
+         }
+      },
+      {
+         "reference":{
+            "authors":[
+               {
+                  "full_name":"Derwent, P."
+               }
             ],
-            "full_name": "McCoy, B.M.",
-            "signature_block": "MCYb",
-            "uuid": "3a75404c-664c-4369-8ced-3fd9e9050c19"
-        }
-    ],
-    "citeable": true,
-    "collaborations": [
-        {
-            "value": "ALICE"
-        }
-    ],
-    "control_number": 1,
-    "core": true,
-    "document_type": [
-        "article"
-    ],
-    "dois": [
-        {
-            "value": "10.0001/test_doi"
-        }
-    ],
-    "inspire_categories": [
-        {
-            "source": "arxiv",
-            "term": "Math and Math Physics"
-        },
-        {
-            "source": "arxiv",
-            "term": "General Physics"
-        },
-        {
-            "term": "Instrumentation"
-        }
-    ],
-    "keywords": [
-        {
-            "source": "magpie",
-            "value": "Ising model"
-        },
-        {
-            "source": "magpie",
-            "value": "partition function"
-        },
-        {
-            "source": "magpie",
-            "value": "lattice field theory"
-        },
-        {
-            "source": "magpie",
-            "value": "analytic properties"
-        },
-        {
-            "source": "magpie",
-            "value": "numerical calculations"
-        },
-        {
-            "source": "magpie",
-            "value": "lattice"
-        },
-        {
-            "source": "magpie",
-            "value": "singularity"
-        },
-        {
-            "source": "magpie",
-            "value": "dimension: 2"
-        },
-        {
-            "schema": "INSPIRE",
-            "source": "",
-            "value": "whatever\n"
-        }
-    ],
-    "license": [
-        {
-            "license": "arXiv-1.0",
-            "url": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
-        }
-    ],
-    "number_of_pages": 21,
-    "preprint_date": "2017-05-06",
-    "public_notes": [
-        {
-            "source": "arXiv",
-            "value": "21 pages, 13 figures"
-        },
-        {
-            "value": "*Temporary entry*"
-        },
-        {
-            "value": "This is a test public note by the curator\n"
-        }
-    ],
-    "refereed": true,
-    "report_numbers": [
-        {
-            "source": "hepcrawl",
-            "value": "LPTENS/17/12"
-        },
-        {
-            "value": "CURATOR-001"
-        }
-    ],
-    "titles": [
-        {
-            "source": "arXiv",
-            "title": "Analyticity of the Ising curation: An interpretation"
-        }
-    ]
+            "misc":[
+               "Project X website: 1232"
+            ],
+            "urls":[
+               {
+                  "value":"http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid="
+               }
+            ],
+            "label":"3"
+         }
+      },
+      {
+         "reference":{
+            "authors":[
+               {
+                  "full_name":"Derwent, P."
+               }
+            ],
+            "misc":[
+               "Project X website: 1295"
+            ],
+            "urls":[
+               {
+                  "value":"http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid="
+               }
+            ],
+            "label":"4"
+         }
+      },
+      {
+         "curated_relation":false,
+         "reference":{
+            "title":{
+               "title":"Long-Baseline Neutrino Facility (LBNF) and Deep Underground Neutrino Experiment (DUNE) Conceptual Design Report, Volume 3"
+            },
+            "misc":[
+               "June 24"
+            ],
+            "arxiv_eprint":"1307.7335",
+            "authors":[
+               {
+                  "full_name":"Hamernik, T."
+               }
+            ],
+            "publication_info":{
+               "year":2016
+            },
+            "label":"5"
+         },
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/1245018"
+         }
+      },
+      {
+         "reference":{
+            "publication_info":{
+               "year":2015
+            },
+            "label":"6",
+            "misc":[
+               "LBNF/DUNE Conceptual Design Report, Volume 3, Annex 3A pp. 1-231"
+            ],
+            "title":{
+               "title":"Beamline at the Near Site"
+            }
+         }
+      },
+      {
+         "reference":{
+            "publication_info":{
+               "year":2016
+            },
+            "misc":[
+               "Document?docid=10686, June 25, 2015. Proceedings of IPAC, Busan, Korea TUPMR025 04 Hadron Accelerators A21 Secondary Beams 1293 Copyrighta9CC-BY-3.0andbytherespectiveauthors"
+            ],
+            "urls":[
+               {
+                  "value":"http://lbne2-docdb.fnal.gov/cgi-bin/Show"
+               }
+            ],
+            "label":"6"
+         }
+      }
+   ],
+   "external_system_identifiers":[
+      {
+         "value":"1329063",
+         "schema":"OSTI"
+      }
+   ],
+   "keywords":[
+      {
+         "value":"target",
+         "schema":"JACOW"
+      },
+      {
+         "value":"proton",
+         "schema":"JACOW"
+      },
+      {
+         "value":"shielding",
+         "schema":"JACOW"
+      },
+      {
+         "value":"operation",
+         "schema":"JACOW"
+      },
+      {
+         "value":"extraction",
+         "schema":"JACOW"
+      }
+   ],
+   "publication_info":[
+      {
+         "cnum":"C16-05-08",
+         "artid":"TUPMR025",
+         "year":2016
+      }
+   ],
+   "$schema":"http://localhost:5000/schemas/records/hep.json",
+   "control_number":1469884,
+   "self":{
+      "$ref":"http://localhost:5000/api/literature/1469884"
+   },
+   "_files":[
+
+   ],
+   "inspire_categories":[
+      {
+         "source":"undefined",
+         "term":"Accelerators"
+      }
+   ],
+   "texkeys":[
+      "Papadimitriou:2016apo"
+   ],
+   "dois":[
+      {
+         "source":"JACoW",
+         "value":"10.18429/JACoW-IPAC2016-TUPMR025"
+      }
+   ],
+   "document_type":[
+      "conference paper"
+   ],
+   "report_numbers":[
+      {
+         "value":"FERMILAB-CONF-16-163-AD"
+      }
+   ],
+   "acquisition_source":{
+      "source":"arxiv",
+      "method":"oai"
+   },
+   "license":[
+      {
+         "url":"http://creativecommons.org/licenses/by/3.0/",
+         "license":"CC-BY-3.0"
+      }
+   ],
+   "number_of_pages":3,
+   "urls":[
+      {
+         "description":"FERMILABCONF",
+         "value":"http://lss.fnal.gov/archive/2016/conf/fermilab-conf-16-163-ad.pdf"
+      },
+      {
+         "description":"Fulltext",
+         "value":"http://inspirehep.net/record/1469884/files/tupmr025.pdf"
+      }
+   ],
+   "abstracts":[
+      {
+         "source":"JACoW",
+         "value":"Head The Long Baseline Neutrino Facility (LBNF) will utilize a beamline located at Fermilab to provide and aim a neutrino beam of sufficient intensity and appropriate energy range toward DUNE detectors, placed deep underground at the SURF Facility in South Dakota. The primary proton beam (60 - 120 GeV) will be extracted from the MI-10 section of Fermilab's Main Injector. Neutrinos are produced after the protons hit a solid target and produce mesons which are subsequently focused by magnetic horns into a 194 m long decay pipe where they decay into muons and neutrinos. The parameters of the facility were determined taking into account the physics goals, spacial and radiological constraints and the experience gained by operating the NuMI facility at Fermilab. The Beamline facility is designed for initial operation at a proton-beam power of 1.2 MW, with the capability to support an upgrade to 2.4 MW. LBNF/DUNE obtained CD-1 approval in November 2015. We discuss here the design status and the associated challenges as well as the R&amp;D and plans for improvements before baselining the facility."
+      }
+   ],
+   "imprints":[
+      {
+         "date":"2016-06"
+      }
+   ]
 }
