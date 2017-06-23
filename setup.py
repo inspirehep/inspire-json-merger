@@ -40,17 +40,7 @@ tests_require = [
     'pytest>=2.8.0',
 ]
 
-contrib_require = [
-    'editdistance>=0.3.1',
-    'munkres>=1.0.7',
-    'Unidecode>=0.4.19',
-    'json-merger>=0.2.5'
-]
-
-tests_require += contrib_require
-
 extras_require = {
-    'contrib': contrib_require,
     'docs': [
         'Sphinx>=1.5.1',
     ],
@@ -67,9 +57,13 @@ setup_requires = [
 ]
 
 install_requires = [
+    'check-manifest>=0.25',
+    'editdistance>=0.3.1',
     'Flask-BabelEx>=0.9.2',
     'isort>=4.2.2',
-    'check-manifest>=0.25',
+    'json-merger>=0.2.5',
+    'munkres>=1.0.7',
+    'Unidecode>=0.4.19',
 ]
 
 packages = find_packages()
@@ -95,14 +89,6 @@ setup(
     zip_safe=False,
     include_package_data=True,
     platforms='any',
-    entry_points={
-        'invenio_base.apps': [
-            'inspire_json_merger = inspire_json_merger:inspirejsonmerger',
-        ],
-        'invenio_i18n.translations': [
-            'messages = inspire_json_merger',
-        ],
-    },
     extras_require=extras_require,
     install_requires=install_requires,
     setup_requires=setup_requires,
