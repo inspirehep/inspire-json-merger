@@ -30,10 +30,10 @@ from inspire_json_merger.inspire_json_merger import inspire_json_merge
 @pytest.mark.parametrize('scenario', [
     'arxiv2arxiv', 'pub2arxiv', 'pub2pub'
 ])
-def test_complete_merge(update_fixture_loader, scenario):
+def test_complete_merge_with_no_filter(update_fixture_loader, scenario):
     root, head, update, expected_conflict, expected_merged = update_fixture_loader.load_test(scenario)
 
-    merged, conflict = inspire_json_merge(root, head, update)
+    merged, conflict = inspire_json_merge(root, head, update, filter_conflicts=False)
 
     assert merged == expected_merged
     assert conflict == expected_conflict
