@@ -95,7 +95,7 @@ class MergerConfigurationOperations(object):
     list_dict_ops = None
     list_merge_ops = None
     comparators = None
-    conflicts = None
+    relevant_conflicts = None
 
 
 class ArxivToArxivOperations(MergerConfigurationOperations):
@@ -207,7 +207,7 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD,
     }
-    conflicts = [
+    relevant_conflicts = [
         '$schema',
         '_collections',
         '_desy_bookkeeping',
@@ -340,7 +340,7 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD
     }
-    conflicts = [
+    relevant_conflicts = [
         '_collections',
         '_desy_bookkeeping',
         '_files',
@@ -475,7 +475,7 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD,
     }
-    conflicts = [
+    relevant_conflicts = [
         '$schema',
         '_collections',
         '_desy_bookkeeping',
