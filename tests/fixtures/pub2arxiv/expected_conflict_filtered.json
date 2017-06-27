@@ -1,0 +1,968 @@
+[
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00114423",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00012026",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Papadimitriou, Vaia"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00060576",
+                    "schema": "JACOW"
+                },
+                {
+                    "value": "0000-0003-1315-6760",
+                    "schema": "ORCID"
+                }
+            ],
+            "full_name": "Ammigan, Kavin"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00054188",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00044847",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Anderson, John"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00527123",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00043976",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Anderson, Kris"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00528066",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00023878",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Andrews, Richard"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00267402",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00028259",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Bocean, Virgil"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00525342",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00060548",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Crowley, Cory"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "STFC/RAL, Chilton, Didcot, Oxon, United Kingdom"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Rutherford"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00261180",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00019797",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Densham, Chris"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00274343",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00013122",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Eddy, Nathan"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00060577",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Hartsell, Brian"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00267665",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002212",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Hays, Steven"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00427732",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002186",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Hurh, Patrick"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00091808",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00028649",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Hylen, James"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00003015",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002226",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Johnstone, John"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00095092",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00048494",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Kasper, Peter"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00021679",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002193",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Kobilarcik, Thomas"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00011961",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Krafczyk, George"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00103095",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00050744",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Lundberg, Byron"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00104621",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002163",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Marchionni, Alberto"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00108416",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002183",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Mokhov, Nikolai"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00108681",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002205",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Moore, Craig"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00200374",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00086143",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Pushka, David"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00031441",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00019817",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Rakhno, Igor"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00428180",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00060562",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Reitzner, Sarah"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00124075",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00004854",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Schlabach, Phil"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00028518",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Sidorov, Vladimir"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00428308",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00060558",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Stefanik, Andrew"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00002553",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002192",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Tariq, Salman"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00528139",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00012505",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Valerio, Linda"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00428372",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00079573",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Vaziri, Kamran"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00133716",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00002169",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Velev, Gueorgui"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00044853",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Vogel, Gregory"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "JACoW-00028650",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Williams, Karlton"
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "authors"
+        ],
+        {
+            "raw_affiliations": [
+                {
+                    "value": "Fermilab, Batavia, Illinois, USA"
+                }
+            ],
+            "affiliations": [
+                {
+                    "value": "Fermilab"
+                }
+            ],
+            "ids": [
+                {
+                    "value": "INSPIRE-00053514",
+                    "schema": "INSPIRE ID"
+                },
+                {
+                    "value": "JACoW-00006905",
+                    "schema": "JACOW"
+                }
+            ],
+            "full_name": "Zwaska, Robert"
+        }
+    ]
+]
