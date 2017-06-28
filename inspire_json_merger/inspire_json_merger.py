@@ -33,8 +33,7 @@ from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
     ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER, \
     ArxivToArxivOperations, PublisherToArxivOperations, \
     PublisherToPublisherOperations
-from inspire_json_merger.utils.utils import filter_conflicts_by_path, \
-    sort_conflicts
+from inspire_json_merger.utils.utils import sort_conflicts
 
 # mapping between configuration names and their relative classes.
 _MERGER_CONFIGS = {
@@ -45,7 +44,7 @@ _MERGER_CONFIGS = {
 }
 
 
-def inspire_json_merge(root, head, update, filter_conflicts=True):
+def inspire_json_merge(root, head, update):
     """
     This function instantiate a ``Merger`` object using a configuration in
     according to the ``source`` value of head and update params.
@@ -58,7 +57,7 @@ def inspire_json_merge(root, head, update, filter_conflicts=True):
 
     Return
         A tuple containing the resulted merged record in json format and a
-            an object containing all generated conflicts.
+        an object containing all generated conflicts.
     """
     configuration = _get_configuration(
         get_source(head),
@@ -82,22 +81,18 @@ def inspire_json_merge(root, head, update, filter_conflicts=True):
             [json.loads(confl.to_json()) for confl in e.content]
         )
 
-    if filter_conflicts:
-        conflicts = filter_conflicts_by_path(
-            conflicts,
-            configuration.relevant_conflicts
-        )
-
     merged = merger.merged_root
     return merged, conflicts
 
 
 def _get_configuration(head_source, update_source):
-    """ This function returns the right configuration for the inspire_merge.
+    """
+    This function return the right configuration for the inspire_merge
+    function in according to the given sources. Both parameters can not be None.
 
     Params
-        head_source(string): the source of the HEAD file, cannot be None
-        update_source(string): the source of the UPDATE file, cannot be None
+        head_source(string): the source of the HEAD file
+        update_source(string): the source of the UPDATE file
 
     Return
         configuration(MergerConfigurationOperations): an object containing

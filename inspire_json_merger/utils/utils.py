@@ -27,7 +27,6 @@ from __future__ import absolute_import, division, print_function
 import re
 
 import six
-from json_merger.utils import get_dotted_key_path
 
 split_on_re = re.compile(r'[\.\s-]')
 
@@ -109,14 +108,3 @@ def sort_conflicts(conflicts):
             key=lambda conflict: conflict[1]
         )
     return None
-
-
-def filter_conflicts_by_path(conflicts, paths_for_filtered_conflicts):
-    if not conflicts:
-        return None
-
-    return [
-        conflict for conflict in conflicts
-        for path in paths_for_filtered_conflicts
-        if path == get_dotted_key_path(conflict[1], True)
-    ]
