@@ -22,23 +22,32 @@
 
 from __future__ import absolute_import, division, print_function
 
-import pytest
+from inspire_json_merger.merger_config import PublisherToArxivOperations
+from inspire_json_merger.utils.utils import filter_conflicts_by_path
 
-from inspire_json_merger.inspire_json_merger import inspire_json_merge
 
-
-@pytest.mark.parametrize('scenario,filter_conflicts', [
-    ('arxiv2arxiv', False), ('arxiv2arxiv', True),
-    ('pub2arxiv', False), ('pub2arxiv', True),
-    ('pub2pub', False), ('pub2pub', True)
-])
-def test_complete_merge_with_no_filter(update_fixture_loader, scenario, filter_conflicts):
-    root, head, update, expected_conflict, expected_merged = update_fixture_loader.load_test(
-        scenario,
-        filter_conflicts=filter_conflicts
+def test_filter_conflicts_by_path_empty():
+    expected_conflicts = None
+    conflicts = filter_conflicts_by_path(
+        [],
+        PublisherToArxivOperations.relevant_conflicts
     )
 
-    merged, conflict = inspire_json_merge(root, head, update, filter_conflicts=filter_conflicts)
+    assert expected_conflicts == conflicts
 
-    assert merged == expected_merged
-    assert conflict == expected_conflict
+
+def test_filter_conflicts_by_path_empty(update_fixture_loader):
+    input_conflicts = update_fixture_loader.load_single(
+        'pub2arxiv',
+        'expected_conflict.json'
+    )
+    expected_conflicts = update_fixture_loader.load_single(
+        'pub2arxiv',
+        'expected_conflict_filtered.json'
+    )
+    conflicts = filter_conflicts_by_path(
+        input_conflicts,
+        PublisherToArxivOperations.relevant_conflicts
+    )
+
+    assert expected_conflicts == conflicts

@@ -47,7 +47,7 @@ class AbstractFixtureLoader(object):
     def load_single(self, test_dir, file_name):
         return json.loads(self._read_file(test_dir, file_name))
 
-    def load_test(self, test_dir):
+    def load_test(self, test_dir, filter_conflicts=False):
         raise NotImplementedError('You have to implement me!')
 
 
@@ -55,10 +55,10 @@ class AbstractFixtureLoader(object):
 def update_fixture_loader():
     class _Loader(AbstractFixtureLoader):
 
-        def load_test(self, test_dir):
+        def load_test(self, test_dir, filter_conflicts=False):
 
             def _convert_falsy_value_to_none(value):
-                return value if value else None
+                return value if value else []
 
             root = self.load_single(test_dir, 'root.json')
             head = self.load_single(test_dir, 'head.json')
@@ -68,7 +68,7 @@ def update_fixture_loader():
                     list(
                         self.load_single(
                             test_dir,
-                            'expected_conflict.json'
+                            'expected_conflict_filtered.json' if filter_conflicts else 'expected_conflict.json'
                         )
                     )
                 )
