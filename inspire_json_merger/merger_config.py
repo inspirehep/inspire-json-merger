@@ -80,22 +80,11 @@ def factory(config_type):
 
 
 class MergerConfigurationOperations(object):
-    """General Configuration for the Merger
-
-    Attributes:
-        default_dict_merge_op(string): default operation for the merge of dicts
-        default_list_merge_op(string): default operation for the merge of lists
-        list_dict_ops(Dictionary): it contains all the rules for the merge of dicts
-        list_merge_ops(Dictionary): it contains all the rules for the merge of dicts
-        comparators(Dictionary): it contains all the comparators
-        conflicts(List): it contains all theconflicts that have to be filtered
-    """
     default_dict_merge_op = DictMergerOps.FALLBACK_KEEP_UPDATE
     default_list_merge_op = UnifierOps.KEEP_ONLY_UPDATE_ENTITIES
     list_dict_ops = None
     list_merge_ops = None
     comparators = None
-    relevant_conflicts = None
 
 
 class ArxivToArxivOperations(MergerConfigurationOperations):
@@ -207,22 +196,6 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD,
     }
-    relevant_conflicts = [
-        '$schema',
-        '_collections',
-        '_desy_bookkeeping',
-        '_export_to',
-        '_fft',
-        '_files',
-        '_private_notes',
-        'Abstracts',
-        'accelerator_experiments',
-        'authors.curated_relation',
-        'authors.ids',
-        'authors.inspire_roles',
-        'collaborations',
-        'document_type',
-    ]
 
 
 class PublisherToArxivOperations(MergerConfigurationOperations):
@@ -279,6 +252,7 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
         'titles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'urls': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     }
+
     list_dict_ops = {
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_desy_bookkeeping': DictMergerOps.FALLBACK_KEEP_HEAD,
@@ -340,30 +314,6 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD
     }
-    relevant_conflicts = [
-        '_collections',
-        '_desy_bookkeeping',
-        '_files',
-        '_private_notes',
-        'Abstracts',
-        'acquisition_source',
-        'arxiv_eprints',
-        'authors',
-        'authors.affiliations',
-        'authors.alternative_names',
-        'authors.credit_roles',
-        'authors.emails',
-        'authors.full_name',
-        'authors.ids',
-        'authors.raw_affiliations',
-        'authors.uuid',
-        'citeable',
-        'core',
-        'deleted_records',
-        'external_system_identifiers',
-        'imprints',
-        'publication_info',
-    ]
 
 
 class PublisherToPublisherOperations(MergerConfigurationOperations):
@@ -475,17 +425,3 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         'title_translations': DictMergerOps.FALLBACK_KEEP_HEAD,
         'urls': DictMergerOps.FALLBACK_KEEP_HEAD,
     }
-    relevant_conflicts = [
-        '$schema',
-        '_collections',
-        '_desy_bookkeeping',
-        '_export_to',
-        '_fft',
-        '_private_notes',
-        'accelerator_experiments',
-        'authors.curated_relation',
-        'authors.ids',
-        'authors.inspire_roles',
-        'collaborations',
-        'document_type',
-     ]
