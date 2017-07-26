@@ -66,4 +66,3 @@ deploy:
     tags: true
     python: "2.7"
     repo: inspirehep/inspire-json-merger
-    condition: $DEPLOY = true
