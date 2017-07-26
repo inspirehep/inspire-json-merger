@@ -44,6 +44,9 @@ _MERGER_CONFIGS = {
 }
 
 
+ARXIV_SOURCE = 'arxiv'
+
+
 def inspire_json_merge(root, head, update):
     """
     This function instantiate a ``Merger`` object using a configuration in
@@ -98,7 +101,6 @@ def _get_configuration(head_source, update_source):
         configuration(MergerConfigurationOperations): an object containing
         the rules needed to merge HEAD and UPDATE
     """
-    ARXIV_SOURCE = 'arxiv'
     if head_source is None or update_source is None:
         raise ValueError('Can\'t get any configuration:\n\tHEAD SOURCE: {0}'
                          '\n\tUPDATE SOURCE: {1}'
@@ -117,9 +119,8 @@ def _get_configuration(head_source, update_source):
 
 
 def get_source(json_obj):
-    # FIXME: this is just a stub. It will be soon available in inspire_next.
+    # in case of missing acquisition source, it returns the ARXIV one
     try:
         return json_obj['acquisition_source']['source']
-    except KeyError as e:
-        e.message = 'ACQUISITION SOURCE field not found in the given object.'
-        raise
+    except KeyError:
+        return ARXIV_SOURCE
