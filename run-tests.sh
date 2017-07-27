@@ -24,5 +24,4 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 isort -rc -c -df && \
-check-manifest --ignore ".travis-*" && \
 python setup.py test

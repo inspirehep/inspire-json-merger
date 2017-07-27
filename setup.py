@@ -54,6 +54,7 @@ for reqs in extras_require.values():
 setup_requires = [
     'Babel>=1.3',
     'pytest-runner>=2.6.2',
+    'autosemver',
 ]
 
 install_requires = [
@@ -64,20 +65,14 @@ install_requires = [
     'json-merger>=0.2.5',
     'munkres>=1.0.7',
     'Unidecode>=0.4.19',
+    'autosemver',
 ]
 
 packages = find_packages()
 
 
-# Get the version string. Cannot be done with import!
-g = {}
-with open(os.path.join('inspire_json_merger', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
-    version = g['__version__']
-
 setup(
     name='inspire-json-merger',
-    version=version,
     description=__doc__,
     long_description=readme + '\n\n' + history,
     keywords='invenio TODO',
@@ -86,6 +81,7 @@ setup(
     author_email='admin@inspirehep.net',
     url='https://github.com/inspirehep/inspire-json-merger',
     packages=packages,
+    autosemver=True,
     zip_safe=False,
     include_package_data=True,
     platforms='any',
