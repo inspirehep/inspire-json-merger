@@ -58,12 +58,10 @@ after_success:
 
 deploy:
   provider: pypi
-  user: inveniosoftware
+  user: inspirehep
+  distribution: sdist
   password:
-    secure: TODO:PYPISECUREHASH
-  distributions: "compile_catalog sdist bdist_wheel"
+    secure: "Gy4uEAVscL2nUY+BV5LpLky8O1fBeD7GZ4WMA5witeGjh64llB/2z/APxIqpi9ygHLytnynZQ0TINq+QQwKTtCbN19p7MNER16VbSsv7CYrYgqFZ9PzZfkZ9ENf6gFX3gUhu+6FEsYjdb5hEVUWpMhxIC81Gt6pmN0+i2sUehBvG7qjGQvDTcX5iSWjHhBg0hqqx1kOpgjJH9bQD9ouDdzafZze4kjRsxabcb7pCKm3jgLsZK6+wvw3XnLxowMvehWL+BdFSu9RxgfJ1xTshL6rez1rRFGa2Mjxur9eEvXKNi1qnWGITqL/c9e8X2ZfN3n8R5r78IBCXC8M3hsJ7mWo9C12iC/9d05k6FPnzGWjqv3hqGHXmNx6FDq9x0xblX3+bvE/4aXUcV7lDQhqiPPbnfgvEhXcXhLav4u2EM3UTA7yYVCAUdAVVErNgMX+hGrBCxGu3NR79HqZk2FDOPmOs45rM9z1mE7ZTZsiEd2SoiTfJT/aqI+dsyqANpmQjdxucnM4v4TeNvMV2RChxfNLveHp1gCJ79ZpjyNVxV510Hsf3I7XHAXN7V2NNc5kVCCI5KJDdKQRBh+2Ya/ZkMHKygFCpFq5MbxHueLJzxrv2E2PAshm4EgHo0BH0q66PjeT7N1Xd94MXw1YCRnhHBxLvYudDrpwy85sCWIs9H7Q="
   on:
-    tags: true
-    python: "2.7"
-    repo: inspirehep/inspire-json-merger
-    condition: $DEPLOY = true
+    branch: master
+    python: '2.7'
