@@ -143,7 +143,7 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'texkeys': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'thesis_info.institutions': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'title_translations': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+        'titles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'urls': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     }
     list_dict_ops = {
