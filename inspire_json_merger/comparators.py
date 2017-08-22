@@ -65,7 +65,7 @@ class NewIDNormalizer(object):
 
 
 class AuthorComparator(DistanceFunctionComparator):
-    threhsold = 0.12
+    threshold = 0.12
     distance_function = AuthorNameDistanceCalculator(author_tokenize)
     norm_functions = [
             NewIDNormalizer('ORCID'),
