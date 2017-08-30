@@ -117,21 +117,21 @@ def delete_from_nested_dict(obj, keys_path):
     Example:
 
         >>> obj = {
-            'authors': [
-                {
-                    'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-                    'full_name': 'Sempronio',
-                },
-                {
-                    'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-                    'full_name': 'Tizio Caio',
-                },
-            ]
-        }
-
+        ...     'authors': [
+        ...         {
+        ...             'full_name': 'Sempronio',
+        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
+        ...         },
+        ...         {
+        ...             'full_name': 'Tizio Caio',
+        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
+        ...         },
+        ...     ]
+        ... }
         >>> delete_from_nested_dict(obj, ['authors', 'full_name'])
         >>> 'full_name' not in obj['authors'][0]
         True
+
     """
     if not obj or not keys_path or len(keys_path) is 0:
         return
