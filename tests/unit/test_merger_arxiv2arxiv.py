@@ -19,14 +19,35 @@
 # In applying this license, CERN does not waive the privileges and immunities
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
+"""
+This test check the correctness of the merger rules on all the schema's keys.
+Important: in order to check the schema's coverage, please add the `cover`
+decorator to each test, referring to the schema's key under test.
+"""
 
 from __future__ import absolute_import, division, print_function, \
     unicode_literals
+
+import decorator
+import pytest
 
 from inspire_schemas.api import load_schema, validate
 
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
 from inspire_json_merger.utils.utils import sort_conflicts
+
+# list of all the schema's keys tested
+COVERED_SCHEMA_KEYS = []
+
+
+def cover(key):
+    # collect the schema's key verified by a test
+    def tag(func):
+        def wrapper(func, *args, **kwargs):
+            COVERED_SCHEMA_KEYS.append(key)
+            return func(*args, **kwargs)
+        return decorator.decorator(wrapper, func)
+    return tag
 
 
 def add_arxiv_source(*json_obj):
@@ -50,6 +71,7 @@ def validate_subschema(obj):
     assert validate(obj.get(key), sub_schema) is None
 
 
+@cover('$schema')
 def test_merging_schema_field():
     root = {'$schema': 'http://inspire-nightly.cern.ch/schemas/records/hep.json'}  # record_id: 1308464
     head = {'$schema': 'http://qa.inspirehep.net/schemas/records/hep.json'}
@@ -71,6 +93,7 @@ def test_merging_schema_field():
     validate_subschema(merged)
 
 
+@cover('_collections')
 def test_merging_collections_field():
     root = {'_collections': ['Literature']}
     head = {'_collections': ['Literature', 'Conference']}
@@ -90,6 +113,7 @@ def test_merging_collections_field():
     validate_subschema(merged)
 
 
+@cover('_desy_bookkeeping')
 def test_merging_desy_bookkeeping_field():
     root = {
         '_desy_bookkeeping': [
@@ -171,6 +195,7 @@ def test_merging_desy_bookkeeping_field():
     validate_subschema(merged)
 
 
+@cover('_export_to')
 def test_merging_export_to_field():
     root = {
         '_export_to': {
@@ -206,6 +231,7 @@ def test_merging_export_to_field():
     validate_subschema(merged)
 
 
+@cover('_fft')
 def test_merging_fft_field():
     root = {
         '_fft': [
@@ -262,6 +288,7 @@ def test_merging_fft_field():
     validate_subschema(merged)
 
 
+@cover('_files')
 def test_merging_files_field():
     root = {
         '_files': [
@@ -326,6 +353,7 @@ def test_merging_files_field():
     validate_subschema(merged)
 
 
+@cover('_private_notes')
 def test_merging_private_notes_field():
     root = {
         '_private_notes': [
@@ -377,6 +405,7 @@ def test_merging_private_notes_field():
     validate_subschema(merged)
 
 
+@cover('abstracts')
 def test_merging_abstracts_field():
     root = {
         'abstracts': [
@@ -428,6 +457,7 @@ def test_merging_abstracts_field():
     validate_subschema(merged)
 
 
+@cover('accelerator_experiments')
 def test_merging_accelerator_experiments_field():
     root = {
         'accelerator_experiments': [
@@ -484,6 +514,7 @@ def test_merging_accelerator_experiments_field():
     validate_subschema(merged)
 
 
+@cover('acquisition_source')
 def test_merging_acquisition_source_field():
     root = {
         'acquisition_source': {
@@ -521,6 +552,7 @@ def test_merging_acquisition_source_field():
     validate_subschema(merged)
 
 
+@cover('arxiv_eprints')
 def test_merging_arxiv_eprints_field():
     root = {
         'arxiv_eprints': [
@@ -584,6 +616,7 @@ def test_merging_arxiv_eprints_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_authors_field():
     root = {
         'authors': [
@@ -634,6 +667,7 @@ def test_merging_authors_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_affiliations_field_per_ref():
     root = {}
     head = {
@@ -701,6 +735,7 @@ def test_merging_affiliations_field_per_ref():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_affiliations_field_per_value():
     root = {}
     head = {
@@ -773,6 +808,7 @@ def test_merging_affiliations_field_per_value():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_alternative_names_field():
     root = {
         'authors': [
@@ -880,6 +916,7 @@ def test_merging_alternative_names_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_credit_roles_field():
     root = {}
     head = {
@@ -952,6 +989,7 @@ def test_merging_credit_roles_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_curated_relation_field():
     root = {}
     head = {
@@ -985,6 +1023,7 @@ def test_merging_curated_relation_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_emails_field():
     root = {}
     head = {
@@ -1025,6 +1064,7 @@ def test_merging_emails_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_full_name_field():
     root = {
         'authors': [
@@ -1062,6 +1102,7 @@ def test_merging_full_name_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_ids_field():
     root = {}
     head = {
@@ -1105,6 +1146,7 @@ def test_merging_ids_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_inspire_roles_field():
     root = {}
     head = {
@@ -1142,6 +1184,7 @@ def test_merging_inspire_roles_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_raw_affiliations_field():
     root = {}
     head = {
@@ -1191,6 +1234,7 @@ def test_merging_raw_affiliations_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_record_field():
     root = {}
     head = {
@@ -1234,6 +1278,7 @@ def test_merging_record_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_signature_block_field():
     root = {}
     head = {
@@ -1267,6 +1312,7 @@ def test_merging_signature_block_field():
     validate_subschema(merged)
 
 
+@cover('authors')
 def test_merging_uuid_field():
     root = {}
     head = {
@@ -1300,6 +1346,7 @@ def test_merging_uuid_field():
     validate_subschema(merged)
 
 
+@cover('book_series')
 def test_merging_book_series_field():
     root = {
         'book_series': [
@@ -1347,6 +1394,7 @@ def test_merging_book_series_field():
     validate_subschema(merged)
 
 
+@cover('citeable')
 def test_merging_citeable_field():
     root = {'citeable': False}
     head = {'citeable': False}
@@ -1366,6 +1414,7 @@ def test_merging_citeable_field():
     validate_subschema(merged)
 
 
+@cover('collaborations')
 def test_merging_collaborations_field():
     root = {
         'collaborations': [
@@ -1438,6 +1487,7 @@ def test_merging_collaborations_field():
     validate_subschema(merged)
 
 
+@cover('control_number')
 def test_merging_control_number_field():
     root = {'control_number': 963517}
     head = {'control_number': 963518}
@@ -1458,6 +1508,7 @@ def test_merging_control_number_field():
     validate_subschema(merged)
 
 
+@cover('copyright')
 def test_merging_copyright_field():
     root = {
         'copyright': [
@@ -1507,6 +1558,7 @@ def test_merging_copyright_field():
     validate_subschema(merged)
 
 
+@cover('core')
 def test_merging_core_field():
     root = {'core': False}
     head = {'core': False}
@@ -1526,6 +1578,7 @@ def test_merging_core_field():
     validate_subschema(merged)
 
 
+@cover('corporate_author')
 def test_merging_corporate_author_field():
     root = {
         'corporate_author': [
@@ -1559,6 +1612,7 @@ def test_merging_corporate_author_field():
     validate_subschema(merged)
 
 
+@cover('deleted')
 def test_merging_deleted_field():
     root = {'deleted': False}
     head = {'deleted': False}
@@ -1578,6 +1632,7 @@ def test_merging_deleted_field():
     validate_subschema(merged)
 
 
+@cover('deleted_records')
 def test_merging_deleted_records_field():
     root = {
         'deleted_records': [
@@ -1617,6 +1672,7 @@ def test_merging_deleted_records_field():
     validate_subschema(merged)
 
 
+@cover('document_type')
 def test_merging_document_type():
     root = {'document_type': ['thesis']}
     head = {'document_type': ['paper']}
@@ -1637,6 +1693,7 @@ def test_merging_document_type():
     validate_subschema(merged)
 
 
+@cover('document_type')
 def test_merging_document_type_head_equals_to_root():
     root = {'document_type': ['thesis']}
     head = {'document_type': ['thesis']}
@@ -1657,6 +1714,7 @@ def test_merging_document_type_head_equals_to_root():
     validate_subschema(merged)
 
 
+@cover('document_type')
 def test_merging_document_type_update_equals_to_root():
     root = {'document_type': ['thesis']}
     head = {'document_type': ['article']}
@@ -1678,6 +1736,7 @@ def test_merging_document_type_update_equals_to_root():
     validate_subschema(merged)
 
 
+@cover('dois')
 def test_merging_dois_field():
     root = {
         'dois': [
@@ -1727,6 +1786,7 @@ def test_merging_dois_field():
     validate_subschema(merged)
 
 
+@cover('editions')
 def test_merging_editions_field():
     root = {'editions': ['edition1']}
     head = {'editions': ['editionA']}
@@ -1746,6 +1806,7 @@ def test_merging_editions_field():
     validate_subschema(merged)
 
 
+@cover('energy_ranges')
 def test_merging_energy_ranges_field():
     root = {'energy_ranges': ['0-3 GeV']}
     head = {'energy_ranges': ['3-10 GeV']}
@@ -1765,6 +1826,7 @@ def test_merging_energy_ranges_field():
     validate_subschema(merged)
 
 
+@cover('external_system_identifiers')
 def test_merging_external_system_identifiers_field():
     root = {
         'external_system_identifiers': [
@@ -1822,6 +1884,7 @@ def test_merging_external_system_identifiers_field():
     validate_subschema(merged)
 
 
+@cover('funding_info')
 def test_merging_funding_info_field():
 
     root = {
@@ -1865,6 +1928,7 @@ def test_merging_funding_info_field():
     validate_subschema(merged)
 
 
+@cover('imprints')
 def test_merging_imprints_field():
     root = {
         'imprints': [
@@ -1911,6 +1975,7 @@ def test_merging_imprints_field():
     validate_subschema(merged)
 
 
+@cover('inspire_categories')
 def test_merging_inspire_categories_field():
     root = {'inspire_categories': [
         {
@@ -1965,6 +2030,7 @@ def test_merging_inspire_categories_field():
     validate_subschema(merged)
 
 
+@cover('isbns')
 def test_merging_isbns_field():
     root = {'isbns': [
         {
@@ -2009,6 +2075,7 @@ def test_merging_isbns_field():
     validate_subschema(merged)
 
 
+@cover('keywords')
 def test_merging_keywords_field():
     root = {'keywords': [
         {
@@ -2057,6 +2124,7 @@ def test_merging_keywords_field():
     validate_subschema(merged)
 
 
+@cover('languages')
 def test_merging_languages_field():
     root = {}
     # not sure if this is a significant case
@@ -2077,6 +2145,7 @@ def test_merging_languages_field():
     validate_subschema(merged)
 
 
+@cover('legacy_creation_date')
 def test_merging_legacy_creation_date_field():
     root = {}  # record: 1124236
     head = {'legacy_creation_date': '2012-07-30'}
@@ -2096,6 +2165,7 @@ def test_merging_legacy_creation_date_field():
     validate_subschema(merged)
 
 
+@cover('license')
 def test_merging_license_field():
     root = {
         'license': [
@@ -2151,6 +2221,7 @@ def test_merging_license_field():
     validate_subschema(merged)
 
 
+@cover('new_record')
 def test_merging_new_record_field():
     root = {}  # record: 37545
     head = {'new_record': {'$ref': 'd361769'}}
@@ -2170,6 +2241,7 @@ def test_merging_new_record_field():
     validate_subschema(merged)
 
 
+@cover('new_record')
 def test_merging_new_record_field_filled_root():
     root = {}  # record: 37545
     head = {'new_record': {'$ref': 'd361769'}}
@@ -2189,6 +2261,7 @@ def test_merging_new_record_field_filled_root():
     validate_subschema(merged)
 
 
+@cover('number_of_pages')
 def test_merging_number_of_pages_field():
     root = {'number_of_pages': 109}  # record: 1512524
     head = {'number_of_pages': 108}
@@ -2208,6 +2281,7 @@ def test_merging_number_of_pages_field():
     validate_subschema(merged)
 
 
+@cover('persistent_identifiers')
 def test_merging_persistent_identifiers_field():
     root = {}
     head = {
@@ -2248,6 +2322,7 @@ def test_merging_persistent_identifiers_field():
     validate_subschema(merged)
 
 
+@cover('preprint_date')
 def test_merging_preprint_date_field():
     root = {'preprint_date': '2015-05-02'}  # record: 1375944
     head = {'preprint_date': '2015-05-03'}
@@ -2267,6 +2342,7 @@ def test_merging_preprint_date_field():
     validate_subschema(merged)
 
 
+@cover('public_notes')
 def test_merging_public_notes_field():
     root = {}  # 1598270
     head = {'public_notes': [
@@ -2294,6 +2370,7 @@ def test_merging_public_notes_field():
     validate_subschema(merged)
 
 
+@cover('publication_info')
 def test_merging_publication_info_field():
     root = {
         'publication_info': [
@@ -2420,6 +2497,7 @@ def test_merging_publication_info_field():
     validate_subschema(merged)
 
 
+@cover('publication_type')
 def test_merging_publication_type_field():
     root = {'publication_type': ['introductory']}
     head = {'publication_type': ['introductory', 'lectures']}
@@ -2439,6 +2517,7 @@ def test_merging_publication_type_field():
     validate_subschema(merged)
 
 
+@cover('refereed')
 def test_merging_refereed_field():
     root = {}
     head = {'refereed': True}
@@ -2458,6 +2537,7 @@ def test_merging_refereed_field():
     validate_subschema(merged)
 
 
+@cover('report_numbers')
 def test_merging_report_numbers_field():
     root = {'report_numbers': [
                 {
@@ -2497,6 +2577,7 @@ def test_merging_report_numbers_field():
     validate_subschema(merged)
 
 
+@cover('$ref')
 def test_merging_self_field():
     root = {}
     head = {'$ref': 'url foo'}
@@ -2515,6 +2596,7 @@ def test_merging_self_field():
     assert conflict == expected_conflict
 
 
+@cover('special_collections')
 def test_merging_special_collections_field():
     root = {'special_collections': ['CDF-INTERNAL-NOTE', 'CDF-NOTE']}
     head = {'special_collections': ['CDF-INTERNAL-NOTE']}
@@ -2534,6 +2616,7 @@ def test_merging_special_collections_field():
     validate_subschema(merged)
 
 
+@cover('texkeys')
 def test_merging_texkeys_field():
     root = {'texkeys': ['Kotwal:2016']}
     head = {'texkeys': ['Kotwal:2016', 'Kotwalfoo:2017']}
@@ -2553,6 +2636,7 @@ def test_merging_texkeys_field():
     validate_subschema(merged)
 
 
+@cover('thesis_info')
 def test_merging_thesis_info_field():
     root = {
         'thesis_info': {
@@ -2615,6 +2699,7 @@ def test_merging_thesis_info_field():
     validate_subschema(merged)
 
 
+@cover('title_translations')
 def test_merging_title_translations_field():
     root = {'title_translations': [
         {
@@ -2658,6 +2743,7 @@ def test_merging_title_translations_field():
     validate_subschema(merged)
 
 
+@cover('titles')
 def test_merging_titles_field():
     root = {'titles': [
         {
@@ -2709,6 +2795,7 @@ def test_merging_titles_field():
     validate_subschema(merged)
 
 
+@cover('urls')
 def test_merging_urls_field():
     root = {'urls': [
         {'description': 'descr 1', 'value': 'a'}
@@ -2734,6 +2821,7 @@ def test_merging_urls_field():
     validate_subschema(merged)
 
 
+@cover('withdrawn')
 def test_merging_wirthdrawn_field():
     root = {}
     head = {'withdrawn': True}
@@ -2754,6 +2842,7 @@ def test_merging_wirthdrawn_field():
 
 
 # References Field
+@cover('references')
 def test_merging_references_field_curated_relation():
     root = {}
     head = {
@@ -2797,6 +2886,7 @@ def test_merging_references_field_curated_relation():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_raw_refs():
     root = {}
     head = {
@@ -2852,6 +2942,7 @@ def test_merging_references_field_raw_refs():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_authors():
     root = {}
 
@@ -2953,6 +3044,7 @@ def test_merging_references_field_reference_authors():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_arxiv_eprint():
     root = {
         'references': [
@@ -3003,6 +3095,7 @@ def test_merging_references_field_reference_arxiv_eprint():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_book_series():
     root = {
         'references': [
@@ -3075,6 +3168,7 @@ def test_merging_references_field_reference_book_series():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_document_type():
     root = {}
     head = {
@@ -3116,6 +3210,7 @@ def test_merging_references_field_reference_document_type():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_imprint():
     root = {}
     head = {
@@ -3157,6 +3252,7 @@ def test_merging_references_field_reference_imprint():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_isbn():
     root = {}
     head = {
@@ -3198,6 +3294,7 @@ def test_merging_references_field_reference_isbn():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_label():
     root = {}
     head = {
@@ -3239,6 +3336,7 @@ def test_merging_references_field_reference_label():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_misc():
     root = {}
     head = {
@@ -3284,6 +3382,7 @@ def test_merging_references_field_reference_misc():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_persistent_identifiers():
     root = {}
     head = {
@@ -3335,6 +3434,7 @@ def test_merging_references_field_reference_persistent_identifiers():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_report_number():
     root = {
         'references': [
@@ -3387,6 +3487,7 @@ def test_merging_references_field_reference_report_number():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_texkey():
     root = {}
     head = {
@@ -3428,6 +3529,7 @@ def test_merging_references_field_reference_texkey():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_title():
     root = {}
     head = {
@@ -3481,6 +3583,7 @@ def test_merging_references_field_reference_title():
     validate_subschema(merged)
 
 
+@cover('references')
 def test_merging_references_field_reference_urls():
     root = {}
     head = {
@@ -3538,3 +3641,45 @@ def test_merging_references_field_reference_urls():
     assert merged == expected_merged
     assert conflict == expected_conflict
     validate_subschema(merged)
+
+
+@pytest.mark.xfail
+@cover('self')
+def test_self_field():
+    pytest.fail("Not tested yet.")
+
+
+@pytest.mark.xfail
+@cover('documents')
+def test_documents_field():
+    pytest.fail("Not tested yet.")
+
+
+@pytest.mark.xfail
+@cover('figures')
+def test_figures_field():
+    pytest.fail("Not tested yet.")
+
+
+@pytest.mark.xfail
+@cover('record_affiliations')
+def test_record_affiliations_field():
+    pytest.fail("Not tested yet.")
+
+
+@pytest.mark.xfail
+@cover('related_records')
+def test_related_records_field():
+    pytest.fail("Not tested yet.")
+
+
+def test_schema_keys_coverage():
+    # This test check that every key in the schema has been covered by at
+    # least one test.
+    schema = load_schema('hep')
+    key_list = schema['properties'].keys()
+    missing = []
+    for key in key_list:
+        if key not in COVERED_SCHEMA_KEYS:
+            missing.append(key)
+    assert not missing
