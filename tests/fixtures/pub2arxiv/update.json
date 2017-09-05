@@ -1,0 +1,686 @@
+{
+   "preprint_date":"2017-04-14",
+   "report_numbers":[
+      {
+         "value":"FERMILAB-CONF-16-163-AD"
+      }
+   ],
+    "acquisition_source": {
+        "datetime": "2017-05-11T09:11:50.192275",
+        "method": "hepcrawl",
+        "source": "elsevier",
+        "submission_number": "dbca741a362911e78bfd0242ac12000b"
+    },
+   "license":[
+      {
+         "imposing":"arXiv",
+         "url":"http://creativecommons.org/licenses/by/4.0/"
+      }
+   ],
+   "control_number":1591653,
+   "public_notes":[
+      {
+         "source":"arXiv",
+         "value":"3 pp"
+      },
+      {
+         "value":"*Brief entry*"
+      }
+   ],
+   "self":{
+      "$ref":"http://localhost:5000/api/literature/1591653"
+   },
+   "arxiv_eprints":[
+      {
+         "categories":[
+            "physics.acc-ph"
+         ],
+         "value":"1704.04471"
+      }
+   ],
+   "_files":[
+      {
+         "checksum":"md5:da60ba128b6330803030e9b4e97806b9",
+         "bucket":"d4b163d1-2081-4ffc-950c-4e9a95dfa6f0",
+         "version_id":"c7d09737-3003-4c0b-bd78-046789fad238",
+         "key":"1704.04471.pdf",
+         "size":641371
+      },
+      {
+         "checksum":"md5:d42eb1d81dce32fa3b2db258e30663ce",
+         "bucket":"d4b163d1-2081-4ffc-950c-4e9a95dfa6f0",
+         "version_id":"082b6682-116a-439f-ae78-6ba144a3e51b",
+         "key":"1704.04471.tar.gz",
+         "size":627151
+      }
+   ],
+   "inspire_categories":[
+      {
+         "source":"undefined",
+         "term":"Accelerators"
+      },
+      {
+         "source":"arxiv",
+         "term":"Accelerators"
+      }
+   ],
+   "_collections":[
+      "Literature"
+   ],
+   "titles":[
+      {
+         "source":"arXiv",
+         "title":"Design Of The LBNF Beamline"
+      }
+   ],
+   "references":[
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "Main Injector Technical Design Handbook, November 1995"
+            ],
+            "number":[
+               "1"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":"",
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "url":[
+                     "http://www-fmi.fnal.gov/fmiinternal/MI_Technical_Design/index.html"
+                  ],
+                  "publisher":[
+                     "Fermilab"
+                  ],
+                  "linemarker":[
+                     "1"
+                  ],
+                  "misc":[
+                     "Main Injector Technical Design Handbook, November 1995"
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      },
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "NOvA Technical Design Report, October 2007"
+            ],
+            "number":[
+               "2"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":[
+               "D.S. Ayres et al."
+            ],
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "url":[
+                     "http://www-nova.fnal.gov/nova_cd2_review/tdr_oct_23/toc.pdf"
+                  ],
+                  "linemarker":[
+                     "2"
+                  ],
+                  "misc":[
+                     "NOvA Technical Design Report, October 2007"
+                  ],
+                  "author":[
+                     "D.S. Ayres et al."
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      },
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "Project X",
+               "website:"
+            ],
+            "number":[
+               "3"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":[
+               "P. Derwent et al."
+            ],
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "url":[
+                     "http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid=1232"
+                  ],
+                  "linemarker":[
+                     "3"
+                  ],
+                  "misc":[
+                     "Project X",
+                     "website:"
+                  ],
+                  "author":[
+                     "P. Derwent et al."
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      },
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "Project X",
+               "website:"
+            ],
+            "number":[
+               "4"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":[
+               "P. Derwent et al."
+            ],
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "url":[
+                     "http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid=1295"
+                  ],
+                  "linemarker":[
+                     "4"
+                  ],
+                  "misc":[
+                     "Project X",
+                     "website:"
+                  ],
+                  "author":[
+                     "P. Derwent et al."
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      },
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "June 24, 2016"
+            ],
+            "number":[
+               "5"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":[
+               "T. Hamernik et al."
+            ],
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "reportnumber":[
+                     "arXiv:1307.7335 [hep-ex]"
+                  ],
+                  "linemarker":[
+                     "5"
+                  ],
+                  "title":[
+                     "Long-Baseline Neutrino Facility (LBNF) and Deep Underground Neutrino Experiment (DUNE) Conceptual Design Report, Volume 3"
+                  ],
+                  "misc":[
+                     "June 24, 2016"
+                  ],
+                  "author":[
+                     "T. Hamernik et al."
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      },
+      {
+         "curated_relation":false,
+         "record":{
+            "$ref":""
+         },
+         "reference":{
+            "texkey":"",
+            "collaboration":"",
+            "dois":"",
+            "misc":[
+               "LBNF/DUNE Conceptual Design Report, Volume 3"
+            ],
+            "number":[
+               "6"
+            ],
+            "imprint":"",
+            "titles":"",
+            "authors":"",
+            "publication_info":{
+               "journal_volume":"",
+               "page_start":"",
+               "journal_title":"",
+               "artid":"",
+               "year":""
+            },
+            "book_series":"",
+            "persistent_identifiers":"",
+            "urls":""
+         },
+         "raw_refs":[
+            {
+               "position":"",
+               "source":"",
+               "value":{
+                  "linemarker":[
+                     "6"
+                  ],
+                  "misc":[
+                     "LBNF/DUNE Conceptual Design Report, Volume 3"
+                  ]
+               },
+               "schema":""
+            }
+         ]
+      }
+   ],
+   "urls":[
+      {
+         "value":"http://inspirehep.net/record/1591653/files/arXiv:1704.04471.pdf"
+      }
+   ],
+   "authors":[
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Papadimitriou, V."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Ammigan, K."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Anderson, J."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Anderson, K.E."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Andrews, R."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Bocean, V."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Crowley, C.F."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Eddy, N."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Hartsell, B.D."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Hays, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Hurh, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Hylen, J."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Johnstone, J.A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Kasper, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Kobilarcik, T."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Krafczyk, G.E."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Lundberg, B."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Marchionni, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Mokhov, N.V."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Moore, C.D."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Pushka, D."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Rakhno, I."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Reitzner, S.D."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Schlabach, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Sidorov, V."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Stefanik, A.M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Tariq, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Valerio, L."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Vaziri, K."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Velev, G."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Vogel, G."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Williams, K."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Fermilab"
+            }
+         ],
+         "full_name":"Zwaska, R.M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Daresbury and Rutherford"
+            }
+         ],
+         "full_name":"Densham, C."
+      }
+   ],
+   "texkeys":[
+      "Papadimitriou:2017ytl"
+   ],
+   "$schema":"http://localhost:5000/schemas/records/hep.json",
+   "document_type":[
+      "article"
+   ],
+   "abstracts":[
+      {
+         "source":"arXiv",
+         "value":"Update The Long Baseline Neutrino Facility (LBNF) will utilize a beamline located at Fermilab to provide and aim a neutrino beam of sufficient intensity and appropriate energy range toward the Deep Underground Neutrino Experiment (DUNE) detectors, placed deep underground at the SURF Facility in Lead, South Dakota. The primary proton beam (60-120 GeV) will be extracted from the MI-10 section of Fermilab's Main Injector. Neutrinos will be produced when the protons interact with a solid target to produce mesons which will be subsequently focused by magnetic horns into a 194m long decay pipe where they decay into muons and neutrinos. The parameters of the facility were determined taking into account the physics goals, spatial and radiological constraints, and the experience gained by operating the NuMI facility at Fermilab. The Beamline facility is designed for initial operation at a proton-beam power of 1.2 MW, with the capability to support an upgrade to 2.4 MW. LBNF/DUNE obtained CD-1 approval in November 2015. We discuss here the design status and the associated challenges as well as the R&D and plans for improvements before baselining the facility."
+      }
+   ],
+   "citeable":true
+}

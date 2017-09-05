@@ -1,0 +1,1307 @@
+{
+   "core":true,
+   "acquisition_source":{
+      "source":"ejl",
+      "method":"batchuploader"
+   },
+   "_collections":[
+      "Literature"
+   ],
+   "control_number":1503327,
+   "public_notes":[
+      {
+         "value":"*Temporary record*"
+      }
+   ],
+   "self":{
+      "$ref":"http://localhost:5000/api/literature/1503327"
+   },
+   "number_of_pages":8,
+   "publication_info":[
+      {
+         "parent_isbn":"5953000898",
+         "cnum":"C04-09-27.1",
+         "page_start":"255",
+         "page_end":"262",
+         "parent_record":{
+            "$ref":"http://localhost:5000/api/literature/1436453"
+         }
+      }
+   ],
+   "_files":[
+
+   ],
+   "inspire_categories":[
+      {
+         "source":"undefined",
+         "term":"Experiment-HEP"
+      }
+   ],
+   "titles":[
+      {
+         "title":"Investigation of charmonium states production in p-A And nucleus-nucleus collisions at the CERN SPS"
+      }
+   ],
+   "references":[
+      {
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/524685"
+         },
+         "reference":{
+            "publication_info":{
+               "journal_volume":"C33",
+               "page_start":"33",
+               "year":2000,
+               "artid":"33",
+               "journal_title":"Eur.Phys.J."
+            },
+            "label":"l",
+            "misc":[
+               "(NA50 Collaboration) and references therein. [2] B.Alessandro et al (NA50 Collaboration)"
+            ],
+            "authors":[
+               {
+                  "full_name":"M.C.Abreu, "
+               }
+            ]
+         },
+         "curated_relation":false
+      },
+      {
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/624624"
+         },
+         "reference":{
+            "publication_info":{
+               "journal_volume":"G30",
+               "page_start":"679",
+               "year":2003,
+               "artid":"81175",
+               "journal_title":"J.Phys."
+            },
+            "label":"l",
+            "misc":[
+               "(NA50 Collaboration) [3] B.Alessandro et al (NA50 Collaboration), CERN-PH-EP/2004-052, submitted to Eur. Phys. J.C. [4] G. Borges et al (NA50 Collaboration) [5] H.8antos et al.(NA50 Collaboration)"
+            ],
+            "authors":[
+               {
+                  "full_name":"P.Cortese, "
+               }
+            ]
+         },
+         "curated_relation":false
+      },
+      {
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/537484"
+         },
+         "reference":{
+            "publication_info":{
+               "journal_volume":"B499",
+               "page_start":"85",
+               "year":2001,
+               "artid":"85",
+               "journal_title":"Phys.Lett."
+            },
+            "label":"l",
+            "misc":[
+               "[6] (NA50 Collaboration)"
+            ],
+            "authors":[
+               {
+                  "full_name":"M.Abreu, "
+               }
+            ]
+         },
+         "curated_relation":false
+      },
+      {
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/631943"
+         },
+         "reference":{
+            "publication_info":{
+               "journal_volume":"A721",
+               "page_start":"249",
+               "year":2003,
+               "artid":"249",
+               "journal_title":"Nucl.Phys."
+            },
+            "label":"l",
+            "misc":[
+               "[7] (NA50 Collaboration)"
+            ],
+            "authors":[
+               {
+                  "full_name":"A.B.Kurepin, "
+               }
+            ]
+         },
+         "curated_relation":false
+      },
+      {
+         "record":{
+            "$ref":"http://localhost:5000/api/literature/624623"
+         },
+         "reference":{
+            "publication_info":{
+               "journal_volume":"A715",
+               "page_start":"675",
+               "year":2003,
+               "artid":"675",
+               "journal_title":"Nucl.Phys."
+            },
+            "misc":[
+               "[8] N.8.Topilskaya et al. (NA50 Collaboration)"
+            ],
+            "label":"l"
+         },
+         "curated_relation":false
+      }
+   ],
+   "urls":[
+      {
+         "description":"Fulltext",
+         "value":"http://inspirehep.net/record/1503327/files/1436453_255-262.pdf"
+      }
+   ],
+   "authors":[
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Alessandro, B."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IFA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Uppsala U."
+            }
+         ],
+         "full_name":"Alexa, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Arnaldi, R."
+      },
+      {
+         "full_name":"Atayan, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Beole, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IFA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Uppsala U."
+            }
+         ],
+         "full_name":"Boldea, V."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Tecnica de Lisboa"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Lisbon, Tech. U."
+            }
+         ],
+         "full_name":"Bordalo, P."
+      },
+      {
+         "full_name":"Borges, G."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Castanier, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Castor, J."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Chaurand, B."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPN, Univ. Claude Bernard"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Lyon, IPN"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Cheynis, B."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Chiavassa, E."
+      },
+      {
+         "full_name":"Cicalo, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Comets, M.P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IFA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Uppsala U."
+            }
+         ],
+         "full_name":"Constantinescu, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. de! Piemonte Orientale"
+            },
+            {
+               "value":"INFN-Torino"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Piemonte Orientale U., Alessandria"
+            },
+            {
+               "value":"INFN, Turin"
+            }
+         ],
+         "full_name":"Cortese, P."
+      },
+      {
+         "full_name":"Falco, A.De"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. de! Piemonte Orientale"
+            },
+            {
+               "value":"INFN-Torino"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Piemonte Orientale U., Alessandria"
+            },
+            {
+               "value":"INFN, Turin"
+            }
+         ],
+         "full_name":"Dellacasa, G."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"De Marco, N."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Devaux, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IFA"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Uppsala U."
+            }
+         ],
+         "full_name":"Dita, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Fargeix, J."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Force, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Gallio, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Gerschel, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Giubellino, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"INR"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Moscow, INR"
+            }
+         ],
+         "full_name":"Golubeva, M.B."
+      },
+      {
+         "full_name":"Grigorian, A.A."
+      },
+      {
+         "full_name":"Grigorian, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"INR"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Moscow, INR"
+            }
+         ],
+         "full_name":"Guber, F.F."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPN, Univ. Claude Bernard"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Lyon, IPN"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Guichard, A."
+      },
+      {
+         "full_name":"Gulkanyan, H."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPN, Univ. Claude Bernard"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Lyon, IPN"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Haroutunian, R."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Idzik, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Jouan, D."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"INR"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Moscow, INR"
+            }
+         ],
+         "full_name":"Karavitcheva, T.L."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Kluberg, L."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"INR"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Moscow, INR"
+            }
+         ],
+         "full_name":"Kurepin, A.B."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Le Bornec, Y."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"CERN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"CERN"
+            }
+         ],
+         "full_name":"Lourem, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"MacCormick, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Marzari-Chiesa, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            },
+            {
+               "value":"Univ. of Mining and Metallurgy"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            },
+            {
+               "value":"Guangdong, Inst. Mining Metallurgy"
+            }
+         ],
+         "full_name":"Masera, M."
+      },
+      {
+         "full_name":"Masoni, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Monteno, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IRS"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            },
+            {
+               "value":"Univ. Louis Pasteur"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Stuttgart U."
+            },
+            {
+               "value":"Paris, IN2P3"
+            },
+            {
+               "value":"Louis Pasteur U., Strasbourg I"
+            }
+         ],
+         "full_name":"Musso, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Ecole Polytechnique"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Petiau, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Piccotti, A."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPN, Univ. Claude Bernard"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Lyon, IPN"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Pizzi, J.R."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Prino, F."
+      },
+      {
+         "full_name":"Puddu, G."
+      },
+      {
+         "full_name":"Quintans, C."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. de! Piemonte Orientale"
+            },
+            {
+               "value":"INFN-Torino"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Piemonte Orientale U., Alessandria"
+            },
+            {
+               "value":"INFN, Turin"
+            }
+         ],
+         "full_name":"Ramello, L."
+      },
+      {
+         "full_name":"Ramos, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Riccati, L."
+      },
+      {
+         "full_name":"Santos, H."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. Blaise Pascal"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"U. Blaise Pascal, Clermont-Ferrand"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Saturnini, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Scomparin, E."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Cagliari/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Cagliari"
+            }
+         ],
+         "full_name":"Serci, S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"LIP, Lisbon"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"LIP, Lisbon"
+            }
+         ],
+         "full_name":"Shahoyan, R."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Sigaudo"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. de! Piemonte Orientale"
+            },
+            {
+               "value":"INFN-Torino"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Piemonte Orientale U., Alessandria"
+            },
+            {
+               "value":"INFN, Turin"
+            }
+         ],
+         "full_name":"Sitta, M."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"CERN"
+            },
+            {
+               "value":"IST, Univ. Tecnica de Lisboa"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"CERN"
+            },
+            {
+               "value":"Lisbon, CENTRA"
+            }
+         ],
+         "full_name":"Sonderegger, P."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Tarrago"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"INR"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Moscow, INR"
+            }
+         ],
+         "full_name":"Topilskaya, N.S."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Cagliari/INFN, Cagliari, Italy"
+            },
+            {
+               "value":"CERN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Cagliari U."
+            },
+            {
+               "value":"INFN, Cagliari"
+            },
+            {
+               "value":"CERN"
+            }
+         ],
+         "full_name":"Usai, G.L."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"Univ. di Torino/INFN"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"INFN, Turin"
+            },
+            {
+               "value":"Turin U."
+            }
+         ],
+         "full_name":"Vercellin"
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Villatte, L."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Willis, N."
+      },
+      {
+         "raw_affiliations":[
+            {
+               "value":"IPNO"
+            },
+            {
+               "value":"Univ. de Paris-Sud"
+            },
+            {
+               "value":"CNRS-IN2P3"
+            }
+         ],
+         "affiliations":[
+            {
+               "value":"Orsay, IPN"
+            },
+            {
+               "value":"Orsay"
+            },
+            {
+               "value":"Paris, IN2P3"
+            }
+         ],
+         "full_name":"Wu, T."
+      }
+   ],
+   "keywords":[
+      {
+         "value":"* Automatic Keywords *",
+         "schema":"INSPIRE"
+      },
+      {
+         "source":"bibclassify",
+         "value":"nucleus nucleus",
+         "schema":"INSPIRE"
+      },
+      {
+         "source":"bibclassify",
+         "value":"charmonium",
+         "schema":"INSPIRE"
+      },
+      {
+         "source":"bibclassify",
+         "value":"CERN SPS",
+         "schema":"INSPIRE"
+      }
+   ],
+   "_private_notes":[
+      {
+         "value":"From Grobid by jerdelet: title, authors, affiliations, abstract"
+      }
+   ],
+   "$schema":"http://localhost:5000/schemas/records/hep.json",
+   "document_type":[
+      "conference paper"
+   ],
+   "texkeys":[
+      "Alessandro:2005kfh"
+   ],
+   "imprints":[
+      {
+         "date":"2005",
+         "publisher":"Joint Institute for Nuclear Research",
+         "place":"Dubna"
+      }
+   ]
+}
