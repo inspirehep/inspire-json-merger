@@ -1,0 +1,518 @@
+[
+    [
+        "SET_FIELD",
+        [
+            "acquisition_source",
+            "method"
+        ],
+        "oai"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "acquisition_source",
+            "source"
+        ],
+        "arxiv"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            0,
+            "full_name"
+        ],
+        "Papadimitriou, Vaia"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            1,
+            "full_name"
+        ],
+        "Ammigan, Kavin"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            2,
+            "full_name"
+        ],
+        "Anderson, John"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            3,
+            "full_name"
+        ],
+        "Anderson, Kris"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            4,
+            "full_name"
+        ],
+        "Andrews, Richard"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            5,
+            "full_name"
+        ],
+        "Bocean, Virgil"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            6,
+            "full_name"
+        ],
+        "Crowley, Cory"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            7,
+            "full_name"
+        ],
+        "Eddy, Nathan"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            8,
+            "full_name"
+        ],
+        "Hartsell, Brian"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            9,
+            "full_name"
+        ],
+        "Hays, Steven"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            10,
+            "full_name"
+        ],
+        "Hurh, Patrick"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            11,
+            "full_name"
+        ],
+        "Hylen, James"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            12,
+            "full_name"
+        ],
+        "Johnstone, John"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            13,
+            "full_name"
+        ],
+        "Kasper, Peter"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            14,
+            "full_name"
+        ],
+        "Kobilarcik, Thomas"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            15,
+            "full_name"
+        ],
+        "Krafczyk, George"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            16,
+            "full_name"
+        ],
+        "Lundberg, Byron"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            17,
+            "full_name"
+        ],
+        "Marchionni, Alberto"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            18,
+            "full_name"
+        ],
+        "Mokhov, Nikolai"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            19,
+            "full_name"
+        ],
+        "Moore, Craig"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            20,
+            "full_name"
+        ],
+        "Pushka, David"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            21,
+            "full_name"
+        ],
+        "Rakhno, Igor"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            22,
+            "full_name"
+        ],
+        "Reitzner, Sarah"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            23,
+            "full_name"
+        ],
+        "Schlabach, Phil"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            24,
+            "full_name"
+        ],
+        "Sidorov, Vladimir"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            25,
+            "full_name"
+        ],
+        "Stefanik, Andrew"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            26,
+            "full_name"
+        ],
+        "Tariq, Salman"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            27,
+            "full_name"
+        ],
+        "Valerio, Linda"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            28,
+            "full_name"
+        ],
+        "Vaziri, Kamran"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            29,
+            "full_name"
+        ],
+        "Velev, Gueorgui"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            30,
+            "full_name"
+        ],
+        "Vogel, Gregory"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            31,
+            "full_name"
+        ],
+        "Williams, Karlton"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            32,
+            "full_name"
+        ],
+        "Zwaska, Robert"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "authors",
+            33,
+            "full_name"
+        ],
+        "Densham, Chris"
+    ],
+    [
+        "SET_FIELD",
+        [
+            "control_number"
+        ],
+        1591653
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "document_type"
+        ],
+        "conference paper"
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "imprint": {
+                    "publisher": "Fermilab"
+                },
+                "publication_info": {
+                    "year": 1995
+                },
+                "misc": [
+                    "Main Injector Technical Design Handbook, November"
+                ],
+                "urls": [
+                    {
+                        "value": "http://www-fmi.fnal.gov/fmiinternal/MI_Technical_Design/index.html"
+                    }
+                ],
+                "label": "1"
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "publication_info": {
+                    "year": 2007
+                },
+                "label": "2",
+                "misc": [
+                    "NOvA Technical Design Report, October"
+                ],
+                "urls": [
+                    {
+                        "value": "http://www-nova.fnal.gov/nova_cd2_review/tdr_oct_23/toc.pdf"
+                    }
+                ],
+                "authors": [
+                    {
+                        "full_name": "Ayres, D.S."
+                    }
+                ]
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "label": "3",
+                "misc": [
+                    "Project X website: 1232"
+                ],
+                "urls": [
+                    {
+                        "value": "http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid="
+                    }
+                ],
+                "authors": [
+                    {
+                        "full_name": "Derwent, P."
+                    }
+                ]
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "label": "4",
+                "misc": [
+                    "Project X website: 1295"
+                ],
+                "urls": [
+                    {
+                        "value": "http://projectxdocdb.fnal.gov/cgi-bin/ShowDocument?docid="
+                    }
+                ],
+                "authors": [
+                    {
+                        "full_name": "Derwent, P."
+                    }
+                ]
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "curated_relation": false,
+            "reference": {
+                "title": {
+                    "title": "Long-Baseline Neutrino Facility (LBNF) and Deep Underground Neutrino Experiment (DUNE) Conceptual Design Report, Volume 3"
+                },
+                "misc": [
+                    "June 24"
+                ],
+                "arxiv_eprint": "1307.7335",
+                "authors": [
+                    {
+                        "full_name": "Hamernik, T."
+                    }
+                ],
+                "publication_info": {
+                    "year": 2016
+                },
+                "label": "5"
+            },
+            "record": {
+                "$ref": "http://localhost:5000/api/literature/1245018"
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "publication_info": {
+                    "year": 2015
+                },
+                "title": {
+                    "title": "Beamline at the Near Site"
+                },
+                "misc": [
+                    "LBNF/DUNE Conceptual Design Report, Volume 3, Annex 3A pp. 1-231"
+                ],
+                "label": "6"
+            }
+        }
+    ],
+    [
+        "ADD_BACK_TO_HEAD",
+        [
+            "references"
+        ],
+        {
+            "reference": {
+                "publication_info": {
+                    "year": 2016
+                },
+                "misc": [
+                    "Document?docid=10686, June 25, 2015. Proceedings of IPAC, Busan, Korea TUPMR025 04 Hadron Accelerators A21 Secondary Beams 1293 Copyrighta9CC-BY-3.0andbytherespectiveauthors"
+                ],
+                "urls": [
+                    {
+                        "value": "http://lbne2-docdb.fnal.gov/cgi-bin/Show"
+                    }
+                ],
+                "label": "6"
+            }
+        }
+    ],
+    [
+        "SET_FIELD",
+        [
+            "self",
+            "$ref"
+        ],
+        "http://localhost:5000/api/literature/1591653"
+    ]
+]
