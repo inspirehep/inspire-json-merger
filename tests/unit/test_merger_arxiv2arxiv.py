@@ -30,7 +30,6 @@ from __future__ import absolute_import, division, print_function, \
 
 import decorator
 import pytest
-
 from inspire_schemas.api import load_schema, validate
 
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
@@ -3643,34 +3642,113 @@ def test_merging_references_field_reference_urls():
     validate_subschema(merged)
 
 
-@pytest.mark.xfail
 @cover('self')
 def test_self_field():
-    pytest.fail("Not tested yet.")
+    root = {}
+    head = {
+        "self": {
+            "$ref": "http://labs.inspirehep.net/api/literature/1622230"
+        }
+    }
+    conflict_val = "http://labs.inspirehep.net/api/literature/9874654321"
+    update = {
+        "self": {
+            "$ref": conflict_val
+        }
+    }
+
+    expected_merged = head
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = inspire_json_merge(root, head, update)
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert conflict == [[u'SET_FIELD', [u'self', u'$ref'], conflict_val]]
+    validate_subschema(merged)
 
 
 @pytest.mark.xfail
 @cover('documents')
 def test_documents_field():
-    pytest.fail("Not tested yet.")
+    pytest.fail("Not tested. Merger doesn't have to handle this field.")
 
 
 @pytest.mark.xfail
 @cover('figures')
 def test_figures_field():
-    pytest.fail("Not tested yet.")
+    pytest.fail("Not tested. Merger doesn't have to handle this field.")
 
 
-@pytest.mark.xfail
 @cover('record_affiliations')
 def test_record_affiliations_field():
-    pytest.fail("Not tested yet.")
+    root = {}
+    head = {
+        'record_affiliations': [
+            {
+                "curated_relation": True,
+                "record": {"$ref": "http://labs.inspirehep.net/api/literature/9874654321"},
+                "value": "parent",
+            },
+        ]
+    }
+    update = {
+        'record_affiliations': [
+            {
+                "curated_relation": False,
+                "record": {"$ref": "http://labs.inspirehep.net/api/literature/9874654321"},
+                "value": "precedessor",
+            },
+        ]
+    }
+    expected_merged = {
+        'record_affiliations': [
+            head['record_affiliations'][0],
+            update['record_affiliations'][0]
+        ]
+    }
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = inspire_json_merge(root, head, update)
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert conflict is None
+    validate_subschema(merged)
 
 
-@pytest.mark.xfail
 @cover('related_records')
 def test_related_records_field():
-    pytest.fail("Not tested yet.")
+    root = {}
+    head = {
+        'related_records': [
+            {
+                "curated_relation": True,
+                "record": {"$ref": "http://labs.inspirehep.net/api/literature/9874654321"},
+                "relation": "parent",
+            },
+        ]
+    }
+    update = {
+        'related_records': [
+            {
+                "curated_relation": False,
+                "record": {"$ref": "http://labs.inspirehep.net/api/literature/9874654321"},
+                "relation": "predecessor",
+            },
+        ]
+    }
+    expected_merged = {
+        'related_records': [
+            head['related_records'][0],
+            update['related_records'][0]
+        ]
+    }
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = inspire_json_merge(root, head, update)
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert conflict is None
+    validate_subschema(merged)
 
 
 def test_schema_keys_coverage():
