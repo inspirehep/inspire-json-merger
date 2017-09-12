@@ -3434,7 +3434,7 @@ def test_merging_references_field_reference_persistent_identifiers():
 
 
 @cover('references')
-def test_merging_references_field_reference_report_number():
+def test_merging_references_field_reference_report_numbers():
     root = {
         'references': [
             {
@@ -3442,7 +3442,7 @@ def test_merging_references_field_reference_report_number():
                     '$ref': 'http://newlabs.inspirehep.net/api/literature/619171'
                 },
                 'reference': {
-                    'report_number': 'IFT-UAM-CSIC-14-035'
+                    'report_numbers': ['IFT-UAM-CSIC-14-035']
                 }
             }
         ]
@@ -3454,7 +3454,7 @@ def test_merging_references_field_reference_report_number():
                     '$ref': 'http://newlabs.inspirehep.net/api/literature/619171'
                 },
                 'reference': {
-                    'report_number': 'IFT-UAM-CSIC-14-036'
+                    'report_numbers': ['IFT-UAM-CSIC-14-036']
                 }
             }
         ]
@@ -3466,14 +3466,28 @@ def test_merging_references_field_reference_report_number():
                     '$ref': 'http://newlabs.inspirehep.net/api/literature/619171'
                 },
                 'reference': {
-                    'report_number': 'IFT-UAM-CSIC-14-037'
+                    'report_numbers': ['IFT-UAM-CSIC-14-037']
                 }
             }
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'report_number'], 'IFT-UAM-CSIC-14-036']]
-    expected_merged = update
+    expected_conflict = None
+    expected_merged = {
+        'references': [
+            {
+                'record': {
+                    '$ref': 'http://newlabs.inspirehep.net/api/literature/619171'
+                },
+                'reference': {
+                    'report_numbers': [
+                        'IFT-UAM-CSIC-14-036',
+                        'IFT-UAM-CSIC-14-037',
+                    ]
+                }
+            }
+        ]
+    }
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
