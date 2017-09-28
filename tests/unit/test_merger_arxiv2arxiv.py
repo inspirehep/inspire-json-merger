@@ -94,9 +94,9 @@ def test_merging_schema_field():
 
 @cover('_collections')
 def test_merging_collections_field():
-    root = {'_collections': ['Literature']}
-    head = {'_collections': ['Literature', 'Conference']}
-    update = {'_collections': ['Literature', 'Paper']}
+    root = {'_collections': ['BABAR Analysis Documents']}
+    head = {'_collections': ['BABAR Analysis Documents', 'CDF Internal Notes']}
+    update = {'_collections': ['BABAR Analysis Documents', 'CDF Notes']}
 
     expected_merged = head
     expected_conflict = None
@@ -2595,26 +2595,6 @@ def test_merging_self_field():
     assert conflict == expected_conflict
 
 
-@cover('special_collections')
-def test_merging_special_collections_field():
-    root = {'special_collections': ['CDF-INTERNAL-NOTE', 'CDF-NOTE']}
-    head = {'special_collections': ['CDF-INTERNAL-NOTE']}
-    update = {'special_collections': []}
-
-    expected_merged = head
-    expected_conflict = None
-
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
-
-    merged = add_arxiv_source(merged)
-    assert merged == expected_merged
-    assert conflict == expected_conflict
-    validate_subschema(merged)
-
-
 @cover('texkeys')
 def test_merging_texkeys_field():
     root = {'texkeys': ['Kotwal:2016']}
@@ -3765,9 +3745,33 @@ def test_related_records_field():
     validate_subschema(merged)
 
 
+@cover('curated')
+def test_curated():
+    root = {}
+    head = {
+        'curated': True
+    }
+    # will never come from updates
+    update = {}
+
+    expected_merged = head
+    expected_conflict = None
+
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = inspire_json_merge(root, head, update)
+
+    expected_conflict = sort_conflicts(expected_conflict)
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert conflict == expected_conflict
+    validate_subschema(merged)
+
+
 def test_schema_keys_coverage():
     # This test check that every key in the schema has been covered by at
     # least one test.
+    # IMPORTANT: this test depends on the others, so keep it as the last
     schema = load_schema('hep')
     key_list = schema['properties'].keys()
     missing = []
