@@ -63,11 +63,11 @@ install_requires = [
     'editdistance>=0.3.1',
     'Flask-BabelEx>=0.9.2',
     'isort>=4.2.2',
-    'json-merger>=0.2.5',
+    'json-merger>=0.2.5,<0.3.0',
     'munkres>=1.0.7',
     'Unidecode>=0.4.19',
     'autosemver',
-    'inspire-schemas~=49.0,>=49.0.0',
+    'inspire-schemas~=50.0,>=50.0.1',
 ]
 
 packages = find_packages()
