@@ -24,8 +24,6 @@ from __future__ import absolute_import
 
 from json_merger.config import DictMergerOps, UnifierOps
 
-from inspire_json_merger.utils.utils import sort_conflicts
-
 from .comparators import COMPARATORS
 
 """
@@ -52,16 +50,9 @@ def json_merger(root, head, update, merger_operations):
     try:
         merger.merge()
     except MergeError as e:
-        conflicts = sort_conflicts(
-            [
-                json.loads(
-                    conflict.to_json()
-                ) for conflict in e.content
-            ]
-        )
+        conflicts = e.content
 
     merged = merger.merged_root
-
     return merged, conflicts
 
 

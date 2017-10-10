@@ -92,19 +92,3 @@ def scan_author_string_for_phrases(s):
         retval['titles'] = [x.strip() for x in retval['titles'] if x != '']
 
     return retval
-
-
-def sort_conflicts(conflicts):
-    """It sorts a list of conflicts in according with the second element of each item of the list.
-
-        :param conflicts: all the merge conflicts
-        :type conflicts: list
-        :returns: sorted list of conflicts
-        :rtype: list
-        """
-    if conflicts:
-        return sorted(
-            conflicts,
-            key=lambda conflict: conflict[1]
-        )
-    return None

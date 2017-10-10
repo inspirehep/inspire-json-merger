@@ -30,10 +30,10 @@ from __future__ import absolute_import, print_function
 
 import json
 import os
-
 import pytest
+import sys
 
-from inspire_json_merger.utils.utils import sort_conflicts
+sys.path.append(os.path.join(os.path.dirname(__file__), 'utils'))
 
 
 class AbstractFixtureLoader(object):
@@ -64,12 +64,10 @@ def update_fixture_loader():
             head = self.load_single(test_dir, 'head.json')
             update = self.load_single(test_dir, 'update.json')
             expected_conflict = _convert_falsy_value_to_none(
-                sort_conflicts(
-                    list(
-                        self.load_single(
-                            test_dir,
-                            'expected_conflict.json'
-                        )
+                list(
+                    self.load_single(
+                        test_dir,
+                        'expected_conflict.json'
                     )
                 )
             )
