@@ -25,15 +25,13 @@
 
 from __future__ import absolute_import, print_function
 
-import json
-
 from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
     ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER, \
     ArxivToArxivOperations, PublisherToArxivOperations, \
     PublisherToPublisherOperations
-from inspire_json_merger.utils.utils import sort_conflicts
+
 
 # mapping between configuration names and their relative classes.
 _MERGER_CONFIGS = {
@@ -80,9 +78,7 @@ def inspire_json_merge(root, head, update):
     try:
         merger.merge()
     except MergeError as e:
-        conflicts = sort_conflicts(
-            [json.loads(confl.to_json()) for confl in e.content]
-        )
+        conflicts = e.content
 
     merged = merger.merged_root
     return merged, conflicts
