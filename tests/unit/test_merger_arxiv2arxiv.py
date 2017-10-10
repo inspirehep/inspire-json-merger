@@ -25,15 +25,19 @@ Important: in order to check the schema's coverage, please add the `cover`
 decorator to each test, referring to the schema's key under test.
 """
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
+from __future__ import absolute_import, division, print_function
 
 import decorator
 import pytest
+
+from json_merger.conflict import Conflict
+
 from inspire_schemas.api import load_schema, validate
 
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
-from inspire_json_merger.utils.utils import sort_conflicts
+
+from utils import assert_ordered_conflicts
+
 
 # list of all the schema's keys tested
 COVERED_SCHEMA_KEYS = []
@@ -70,26 +74,10 @@ def validate_subschema(obj):
     assert validate(obj.get(key), sub_schema) is None
 
 
+@pytest.mark.xfail(reason='Schema is set in the workflow always as `hep.json`')
 @cover('$schema')
 def test_merging_schema_field():
-    root = {'$schema': 'http://inspire-nightly.cern.ch/schemas/records/hep.json'}  # record_id: 1308464
-    head = {'$schema': 'http://qa.inspirehep.net/schemas/records/hep.json'}
-    update = {'$schema': 'http://inspirehep.net/schemas/records/hep.json'}
-
-    expected_merged = {'$schema': 'http://qa.inspirehep.net/schemas/records/hep.json'}
-    expected_conflict = [['SET_FIELD', ['$schema'], 'http://inspirehep.net/schemas/records/hep.json']]
-
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
-
-    merged = add_arxiv_source(merged)
-
-    merged = add_arxiv_source(merged)
-    assert merged == expected_merged
-    assert conflict == expected_conflict
-    validate_subschema(merged)
+    pytest.fail("Trivial test not implemented")
 
 
 @cover('_collections')
@@ -103,8 +91,6 @@ def test_merging_collections_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -186,8 +172,6 @@ def test_merging_desy_bookkeeping_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -222,134 +206,22 @@ def test_merging_export_to_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
     validate_subschema(merged)
 
 
+@pytest.mark.xfail(reason='Going to be removed')
 @cover('_fft')
 def test_merging_fft_field():
-    root = {
-        '_fft': [
-            {
-                'creation_datetime': '2014-07-28T23:15:16',
-                'description': 'Fulltext',
-                'filename': 'fermilab-thesis-2014-17',
-                'format': '.pdf',
-                'path': '/opt/cds-invenio/var/data/files/g95/1902084/content.pdf;1',
-                'type': 'Main',
-                'version': 1
-            }
-        ]
-    }
-    # record_id: 1308464
-    head = {
-        '_fft': [
-            {
-                'creation_datetime': '2014-07-28T23:15:16',
-                'description': 'Fulltext',
-                'filename': 'fermilab-thesis-2014-18',
-                'format': '.pdf',
-                'path': '/opt/cds-invenio/var/data/files/g95/1902084/content.pdf;1',
-                'type': 'Main',
-                'version': 1
-            }
-        ]
-    }
-    update = {
-        '_fft': [
-            {
-                'creation_datetime': '2014-07-28T23:15:16',
-                'description': 'Fulltext',
-                'filename': 'fermilab-thesis-2014-19',
-                'format': '.pdf',
-                'path': '/opt/cds-invenio/var/data/files/g95/1902084/content.pdf;1',
-                'type': 'Main',
-                'version': 1
-            }
-        ]
-    }
-
-    expected_merged = head
-    expected_conflict = [['SET_FIELD', ['_fft', 0, 'filename'], 'fermilab-thesis-2014-19']]
-
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
-
-    merged = add_arxiv_source(merged)
-    assert merged == expected_merged
-    assert conflict == expected_conflict
-    validate_subschema(merged)
+    pytest.fail("Not tested. Merger doesn't have to handle this field.")
 
 
+@pytest.mark.xfail(reason='This field will be processed after the merger')
 @cover('_files')
 def test_merging_files_field():
-    root = {
-        '_files': [
-            {
-                'bucket': 'foo',
-                'checksum': 'bar',
-                'key': 'baz',
-                'previewer': 'spam',
-                'size': 1,
-                'type': 'eggs',
-                'version_id': 'version'
-            }
-        ]
-    }
-    # record_id: not found 9/05/2017
-    head = {
-        '_files': [
-            {
-                'bucket': 'foo1',
-                'checksum': 'bar',
-                'key': 'baz',
-                'previewer': 'spam',
-                'size': 1,
-                'type': 'eggs',
-                'version_id': 'version'
-            }
-        ]
-    }
-    update = {
-        '_files': [
-            {
-                'bucket': 'foo2',
-                'checksum': 'bar',
-                'key': 'baz',
-                'previewer': 'spam',
-                'size': 1,
-                'type': 'eggs',
-                'version_id': 'version'
-            }, {
-                'bucket': 'foo2',
-                'checksum': 'bar',
-                'key': 'baz',
-                'previewer': 'spam',
-                'size': 1,
-                'type': 'eggs',
-                'version_id': 'second version'
-            }
-        ]
-    }
-
-    expected_merged = update
-    expected_conflict = [['SET_FIELD', ['_files', 0, 'bucket'], 'foo1']]
-
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
-
-    merged = add_arxiv_source(merged)
-    assert merged == expected_merged
-    assert conflict == expected_conflict
-    validate_subschema(merged)
+    pytest.fail("Not tested. Merger doesn't have to handle this field.")
 
 
 @cover('_private_notes')
@@ -391,12 +263,16 @@ def test_merging_private_notes_field():
             }
         ]
     }
-    expected_conflict = [['SET_FIELD', ['_private_notes', 0, 'value'], 'Update from APS OAI Harvest bar']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('_private_notes', 0, 'value'),
+            'Update from APS OAI Harvest bar'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -437,18 +313,16 @@ def test_merging_abstracts_field():
 
     expected_merged = update
     expected_conflict = [
-        [
+        Conflict(
             'SET_FIELD',
-            ['abstracts', 0, 'value'],
+            ('abstracts', 0, 'value'),
             'We investigate the structure of a proto-neutron star with '
             'trapped neutrinos by us ing quantum hadrodynamics. bar'
-        ]
+        )
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -505,8 +379,6 @@ def test_merging_accelerator_experiments_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -540,10 +412,6 @@ def test_merging_acquisition_source_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    assert merged is not {}
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -607,8 +475,6 @@ def test_merging_arxiv_eprints_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -650,19 +516,27 @@ def test_merging_authors_field():
             }
         ]
     }
+
     expected_conflict = [
-        ['SET_FIELD', ['authors', 0, 'uuid'], '160b80bf-7553-47f0-b40b-327e28e7756c'],
-        ['SET_FIELD', ['authors', 0, 'full_name'], 'Cox, Brian E.']
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'uuid'),
+            '160b80bf-7553-47f0-b40b-327e28e7756c'
+        ),
+
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'full_name'),
+            'Cox, Brian E.'
+        )
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -718,19 +592,27 @@ def test_merging_affiliations_field_per_ref():
             }
         ]
     }
+
     expected_conflict = [
-        ['SET_FIELD', ['authors', 0, 'uuid'], '160b80bf-7553-47f0-b40b-327e28e7756d'],
-        ['SET_FIELD', ['authors', 0, 'affiliations', 0, 'value'], 'Illinois U., Urbana'],
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'uuid'),
+            '160b80bf-7553-47f0-b40b-327e28e7756d'
+        ),
+
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'affiliations', 0, 'value'),
+            'Illinois U., Urbana'
+        ),
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -786,24 +668,33 @@ def test_merging_affiliations_field_per_value():
             }
         ]
     }
+
     expected_conflict = [
-        ['SET_FIELD', ['authors', 0, 'uuid'], '160b80bf-7553-47f0-b40b-327e28e7756d'],
-        ['SET_FIELD', ['authors', 0, 'full_name'], 'Cox, Brian E.'],
-        [
+        Conflict(
             'SET_FIELD',
-            ['authors', 0, 'affiliations', 0, 'record', '$ref'],
+            ('authors', 0, 'uuid'),
+            '160b80bf-7553-47f0-b40b-327e28e7756d'
+        ),
+
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'full_name'),
+            'Cox, Brian E.'
+        ),
+
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'affiliations', 0, 'record', '$ref'),
             'http://newlabs.inspirehep.net/api/institutions/902866'
-        ]
+        ),
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -813,18 +704,6 @@ def test_merging_alternative_names_field():
         'authors': [
             {
                 'full_name': 'Pitts, Kevin T.',
-                'alternative_names': [
-                    'K Pitts',
-                    'K T Pitts',
-                    'Pitts Kevin',
-                    'Pitts Kevin T',
-                    'Pitts T',
-                    'Pitts, K',
-                    'Pitts, K T',
-                    'Pitts, Kevin',
-                    'Pitts, Kevin T',
-                    'Pitts, T',
-                ]
             }
         ]
     }
@@ -835,19 +714,6 @@ def test_merging_alternative_names_field():
                 'alternative_names': [
                     'K Pitts',
                     'K T Pitts',
-                    'Kevin Pitts',
-                    'Kevin T Pitts',
-                    'Pitts',
-                    'Pitts K',
-                    'Pitts K T',
-                    'Pitts Kevin',
-                    'Pitts Kevin T',
-                    'Pitts T',
-                    'Pitts, K',
-                    'Pitts, K T',
-                    'Pitts, Kevin',
-                    'Pitts, Kevin T',
-                    'Pitts, T'
                 ]
             }
         ]
@@ -857,19 +723,6 @@ def test_merging_alternative_names_field():
             {
                 'full_name': 'Pitts, Kevin T.',
                 'alternative_names': [
-                    'K Pitts',
-                    'K T Pitts',
-                    'Kevin Pitts',
-                    'Pitts',
-                    'Pitts K',
-                    'Pitts K T',
-                    'Pitts Kevin',
-                    'Pitts Kevin T',
-                    'Pitts T',
-                    'Pitts, K',
-                    'Pitts, K T',
-                    'Pitts, Kevin',
-                    'Pitts, Kevin T',
                     'Pitts, T',
                     'T Pitts'
                 ]
@@ -884,18 +737,6 @@ def test_merging_alternative_names_field():
                 'alternative_names': [
                     'K Pitts',
                     'K T Pitts',
-                    'Kevin Pitts',
-                    'Kevin T Pitts',
-                    'Pitts',
-                    'Pitts K',
-                    'Pitts K T',
-                    'Pitts Kevin',
-                    'Pitts Kevin T',
-                    'Pitts T',
-                    'Pitts, K',
-                    'Pitts, K T',
-                    'Pitts, Kevin',
-                    'Pitts, Kevin T',
                     'Pitts, T',
                     'T Pitts'
                 ]
@@ -906,8 +747,6 @@ def test_merging_alternative_names_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -925,11 +764,6 @@ def test_merging_credit_roles_field():
                 'credit_roles': [
                     'Conceptualization',
                     'Data curation',
-                    'Formal analysis',
-                    'Funding acquisition',
-                    'Investigation',
-                    'Methodology',
-                    'Project administration',
                 ]
             }
         ]
@@ -942,11 +776,6 @@ def test_merging_credit_roles_field():
                 'credit_roles': [
                     'Resources',
                     'Software',
-                    'Supervision',
-                    'Validation',
-                    'Visualization',
-                    'Writing - original draft',
-                    'Writing - review & editing'
                 ]
             }
         ]
@@ -959,18 +788,8 @@ def test_merging_credit_roles_field():
                 'credit_roles': [
                     'Conceptualization',
                     'Data curation',
-                    'Formal analysis',
-                    'Funding acquisition',
-                    'Investigation',
-                    'Methodology',
-                    'Project administration',
                     'Resources',
                     'Software',
-                    'Supervision',
-                    'Validation',
-                    'Visualization',
-                    'Writing - original draft',
-                    'Writing - review & editing'
                 ]
             }
         ]
@@ -979,8 +798,6 @@ def test_merging_credit_roles_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1009,12 +826,13 @@ def test_merging_curated_relation_field():
     }
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['authors', 0, 'curated_relation'], True]]
+
+    expected_conflict = [
+        Conflict('SET_FIELD', ('authors', 0, 'curated_relation'), True)
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1050,12 +868,15 @@ def test_merging_emails_field():
     }
 
     expected_merged = update
-    expected_conflict = [['ADD_BACK_TO_HEAD', ['authors', 0, 'emails'], 'pitts.kevin@mit.edu']]
+
+    expected_conflict = [
+        Conflict(
+            'ADD_BACK_TO_HEAD', ('authors', 0, 'emails'), 'pitts.kevin@mit.edu'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1088,12 +909,15 @@ def test_merging_full_name_field():
     }
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['authors', 0, 'full_name'], 'Pitts, Kevin T']]
+
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD', ('authors', 0, 'full_name'), 'Pitts, Kevin T'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1132,12 +956,15 @@ def test_merging_ids_field():
     }
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['authors', 0, 'ids', 0, 'value'], 'HEPNAMES-2101']]
+
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD', ('authors', 0, 'ids', 0, 'value'), 'HEPNAMES-2101'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1174,8 +1001,6 @@ def test_merging_inspire_roles_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1215,17 +1040,15 @@ def test_merging_raw_affiliations_field():
 
     expected_merged = update
     expected_conflict = [
-        [
+        Conflict(
             'SET_FIELD',
-            ['authors', 0, 'raw_affiliations', 0, 'value'],
+            ('authors', 0, 'raw_affiliations', 0, 'value'),
             'Department of Physics, Indiana University, Bloomington, IN 47405, USA'
-        ]
+        )
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1259,17 +1082,15 @@ def test_merging_record_field():
 
     expected_merged = head
     expected_conflict = [
-        [
+        Conflict(
             'SET_FIELD',
-            ['authors', 0, 'record', '$ref'],
+            ('authors', 0, 'record', '$ref'),
             'http://newlabs.inspirehep.net/api/literature/169637'
-        ]
+        )
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1298,12 +1119,16 @@ def test_merging_signature_block_field():
     }
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['authors', 0, 'signature_block'], 'Mister Pitts, Kevin Travis']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'signature_block'),
+            'Mister Pitts, Kevin Travis'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1332,12 +1157,15 @@ def test_merging_uuid_field():
     }
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['authors', 0, 'uuid'], 'a2f28e91-a2f1-4466-88d7-14f3bba99a9a']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('authors', 0, 'uuid'),
+            'a2f28e91-a2f1-4466-88d7-14f3bba99a9a')
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1380,12 +1208,15 @@ def test_merging_book_series_field():
     }
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['book_series', 0, 'volume'], 'spam']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD', ('book_series', 0, 'volume'),
+            'spam'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1404,8 +1235,6 @@ def test_merging_citeable_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1473,12 +1302,16 @@ def test_merging_collaborations_field():
             }
         ]
     }
-    expected_conflict = [['SET_FIELD', ['collaborations', 0, 'value'], 'ATLAS']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('collaborations', 0, 'value'),
+            'ATLAS'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1494,12 +1327,16 @@ def test_merging_control_number_field():
     # record_id:
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['control_number'], 963519]]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('control_number',),
+            963519
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1549,8 +1386,6 @@ def test_merging_copyright_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1568,8 +1403,6 @@ def test_merging_core_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1603,8 +1436,6 @@ def test_merging_corporate_author_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1622,8 +1453,6 @@ def test_merging_deleted_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1663,8 +1492,6 @@ def test_merging_deleted_records_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1683,8 +1510,6 @@ def test_merging_document_type():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1705,8 +1530,6 @@ def test_merging_document_type_head_equals_to_root():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1726,8 +1549,6 @@ def test_merging_document_type_update_equals_to_root():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1777,8 +1598,6 @@ def test_merging_dois_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1797,8 +1616,6 @@ def test_merging_editions_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -1816,8 +1633,6 @@ def test_merging_energy_ranges_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1865,17 +1680,15 @@ def test_merging_external_system_identifiers_field():
     # since `DESY` has been curated, we don't want to lose it
     # so it appears in the conflicts
     expected_conflict = [
-                            [
-                                'SET_FIELD',
-                                ['external_system_identifiers', 0, 'value'],
-                                'DA14-kp45bAAA'
-                            ]
-                        ]
+        Conflict(
+            'SET_FIELD',
+            ('external_system_identifiers', 0, 'value'),
+            'DA14-kp45bAAA'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1918,8 +1731,6 @@ def test_merging_funding_info_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -1965,8 +1776,6 @@ def test_merging_imprints_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2021,8 +1830,6 @@ def test_merging_inspire_categories_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2065,8 +1872,6 @@ def test_merging_isbns_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2115,8 +1920,6 @@ def test_merging_keywords_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2136,8 +1939,6 @@ def test_merging_languages_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2155,8 +1956,6 @@ def test_merging_legacy_creation_date_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2212,8 +2011,6 @@ def test_merging_license_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2231,8 +2028,6 @@ def test_merging_new_record_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2252,8 +2047,6 @@ def test_merging_new_record_field_filled_root():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2267,12 +2060,15 @@ def test_merging_number_of_pages_field():
     update = {'number_of_pages': 110}
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['number_of_pages'], 108]]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD', ('number_of_pages',),
+            108
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2306,18 +2102,25 @@ def test_merging_persistent_identifiers_field():
 
     expected_merged = head
     expected_conflict = [
-        ['SET_FIELD', ['persistent_identifiers', 0, 'source'], 'EDP Sciences bar'],
-        ['SET_FIELD', ['persistent_identifiers', 0, 'schema'], 'HDL foo']
+        Conflict(
+            'SET_FIELD',
+            ('persistent_identifiers', 0, 'source'),
+            'EDP Sciences bar'
+        ),
+
+        Conflict(
+            'SET_FIELD',
+            ('persistent_identifiers', 0, 'schema'),
+            'HDL foo'
+        )
     ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -2328,12 +2131,16 @@ def test_merging_preprint_date_field():
     update = {'preprint_date': '2015-05-04'}
 
     expected_merged = head
-    expected_conflict = [['SET_FIELD', ['preprint_date'], '2015-05-04']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('preprint_date',),
+            '2015-05-04'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2353,15 +2160,16 @@ def test_merging_public_notes_field():
     }
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD',
-                          ['public_notes', 0, 'value'],
-                          '50 pages, 32 figures']
-                         ]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('public_notes', 0, 'value'),
+            '50 pages, 32 figures'
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2374,36 +2182,27 @@ def test_merging_publication_info_field():
     root = {
         'publication_info': [
             {
-                'artid': '948-979',
-                'curated_relation': True,
-                'journal_issue': 'foo',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
+                "hidden": True,
+                "journal_title": "Adv.Theor.Math.Phys.",
+                "journal_volume": "12",
+                "page_end": "979",
+                "page_start": "948",
+                "year": 2008
             }
         ]
     }  # record 697133
     head = {
         'publication_info': [
             {
-                'artid': '948-979',
-                'curated_relation': True,
-                'journal_issue': '2',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
+                "hidden": True,
+                "journal_title": "Adv.Theor.Math.Phys.",
+                "journal_record": {
+                    "$ref": "http://labs.inspirehep.net/api/journals/1212914"
+                },
+                "journal_volume": "12",
+                "page_end": "979",
+                "page_start": "948",
+                "year": 2008
             }
         ]
     }
@@ -2422,73 +2221,46 @@ def test_merging_publication_info_field():
                 'page_start': '032',
                 'parent_isbn': '9780521467025',
                 'parent_report_number': 'CERN-PH-TH-2012-115',
-            }, {
-                'artid': '948-977',
-                'curated_relation': True,
-                'journal_issue': '4',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
-            }
+            },
         ]
     }
 
     expected_merged = {
-        'publication_info': [
+        "publication_info": [
             {
-                'artid': '948-979',
-                'curated_relation': True,
-                'journal_issue': '2',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
-            }, {
-                'artid': '948-979',
-                'curated_relation': True,
-                'journal_issue': '1',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
-            }, {
-                'artid': '948-977',
-                'curated_relation': True,
-                'journal_issue': '4',
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                'journal_volume': '12',
-                'year': 2008,
-                'cnum': 'C12-03-10',
-                'material': 'erratum',
-                'page_end': '042',
-                'page_start': '032',
-                'parent_isbn': '9780521467025',
-                'parent_report_number': 'CERN-PH-TH-2012-115',
+                "page_end": "979",
+                "journal_title": "Adv.Theor.Math.Phys.",
+                "journal_volume": "12",
+                "journal_record": {
+                    "$ref": "http://labs.inspirehep.net/api/journals/1212914"
+                },
+                "year": 2008,
+                "hidden": True,
+                "page_start": "948"
+            },
+            {
+                "parent_report_number": "CERN-PH-TH-2012-115",
+                "journal_title": "Adv.Theor.Math.Phys.",
+                "parent_isbn": "9780521467025",
+                "cnum": "C12-03-10",
+                "material": "erratum",
+                "journal_volume": "12",
+                "curated_relation": True,
+                "page_end": "042",
+                "artid": "948-979",
+                "year": 2008,
+                "page_start": "032",
+                "journal_issue": "1"
             }
-        ]
+        ],
+        "acquisition_source": {
+            "source": "arxiv"
+        }
     }
     expected_conflict = None
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2508,8 +2280,6 @@ def test_merging_publication_type_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2523,12 +2293,10 @@ def test_merging_refereed_field():
     update = {'refereed': False}
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['refereed'], True]]
+    expected_conflict = [Conflict('SET_FIELD', ('refereed',), True)]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2563,12 +2331,16 @@ def test_merging_report_numbers_field():
             ]}
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['report_numbers', 0, 'hidden'], True]]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('report_numbers', 0, 'hidden'),
+            True
+        )
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2588,8 +2360,6 @@ def test_merging_self_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2602,12 +2372,12 @@ def test_merging_texkeys_field():
     update = {}
 
     expected_merged = head
-    expected_conflict = [['REMOVE_FIELD', ['texkeys'], None]]
+    expected_conflict = [
+        Conflict('REMOVE_FIELD', ('texkeys',), None)
+    ]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2670,8 +2440,6 @@ def test_merging_thesis_info_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2713,8 +2481,6 @@ def test_merging_title_translations_field():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2766,8 +2532,6 @@ def test_merging_titles_field():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -2787,12 +2551,10 @@ def test_merging_urls_field():
     update = {}
 
     expected_merged = head
-    expected_conflict = [['REMOVE_FIELD', ['urls'], None]]
+    expected_conflict = [Conflict('REMOVE_FIELD', ('urls',), None)]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2807,12 +2569,10 @@ def test_merging_wirthdrawn_field():
     update = {'withdrawn': False}
 
     expected_merged = update
-    expected_conflict = [['SET_FIELD', ['withdrawn'], True]]
+    expected_conflict = [Conflict('SET_FIELD', ('withdrawn',), True)]
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2856,8 +2616,6 @@ def test_merging_references_field_curated_relation():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2912,8 +2670,6 @@ def test_merging_references_field_raw_refs():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -2976,11 +2732,11 @@ def test_merging_references_field_reference_authors():
     }
 
     expected_conflict = [
-        [
+        Conflict(
             'ADD_BACK_TO_HEAD',
-            ['references', 0, 'reference', 'authors'],
+            ('references', 0, 'reference', 'authors'),
             {'full_name': 'Dan, Brown', 'inspire_role': 'author'}
-        ]
+        )
     ]
     expected_merged = {
         'references': [
@@ -3014,8 +2770,6 @@ def test_merging_references_field_reference_authors():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3060,13 +2814,17 @@ def test_merging_references_field_reference_arxiv_eprint():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'arxiv_eprint'], '1703.07275']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'arxiv_eprint'),
+            '1703.07275'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3139,8 +2897,6 @@ def test_merging_references_field_reference_book_series():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -3175,13 +2931,17 @@ def test_merging_references_field_reference_document_type():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'document_type'], 'book']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'document_type'),
+            'book'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3217,13 +2977,17 @@ def test_merging_references_field_reference_imprint():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'imprint', 'date'], '2013']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'imprint', 'date'),
+            '2013'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3259,13 +3023,17 @@ def test_merging_references_field_reference_isbn():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'isbn'], '9780691140347']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'isbn'),
+            '9780691140347'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3301,13 +3069,17 @@ def test_merging_references_field_reference_label():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'label'], 'feynman_be_no_label']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'label'),
+            'feynman_be_no_label'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3352,8 +3124,6 @@ def test_merging_references_field_reference_misc():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3404,8 +3174,6 @@ def test_merging_references_field_reference_persistent_identifiers():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3472,8 +3240,6 @@ def test_merging_references_field_reference_report_numbers():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -3508,13 +3274,17 @@ def test_merging_references_field_reference_texkey():
         ]
     }
 
-    expected_conflict = [['SET_FIELD', ['references', 0, 'reference', 'texkey'], '998']]
+    expected_conflict = [
+        Conflict(
+            'SET_FIELD',
+            ('references', 0, 'reference', 'texkey'),
+            '998'
+        )
+    ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3557,18 +3327,16 @@ def test_merging_references_field_reference_title():
     }
 
     expected_conflict = [
-        [
+        Conflict(
             'SET_FIELD',
-            ['references', 0, 'reference', 'title', 'title'],
+            ('references', 0, 'reference', 'title', 'title'),
             'Components of the dilepton continuum in Pb+Pb at $\sqrt{s_{_{NN}}} = 2.76 $ TeV'
-        ]
+        )
     ]
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -3628,8 +3396,6 @@ def test_merging_references_field_reference_urls():
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
-    expected_conflict = sort_conflicts(expected_conflict)
-
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
     assert conflict == expected_conflict
@@ -3644,20 +3410,27 @@ def test_self_field():
             "$ref": "http://labs.inspirehep.net/api/literature/1622230"
         }
     }
-    conflict_val = "http://labs.inspirehep.net/api/literature/9874654321"
+
     update = {
         "self": {
-            "$ref": conflict_val
+            "$ref": "http://labs.inspirehep.net/api/literature/9874654321"
         }
     }
 
     expected_merged = head
+    expected_conflicts = [
+        Conflict(
+            'SET_FIELD',
+            ('self', '$ref'),
+            "http://labs.inspirehep.net/api/literature/9874654321"
+        )
+    ]
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == [[u'SET_FIELD', [u'self', u'$ref'], conflict_val]]
+    assert conflict == expected_conflicts
     validate_subschema(merged)
 
 
@@ -3670,6 +3443,12 @@ def test_documents_field():
 @pytest.mark.xfail
 @cover('figures')
 def test_figures_field():
+    pytest.fail("Not tested. Merger doesn't have to handle this field.")
+
+
+@pytest.mark.xfail
+@cover('_files')
+def test_files_field():
     pytest.fail("Not tested. Merger doesn't have to handle this field.")
 
 
@@ -3759,8 +3538,6 @@ def test_curated():
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
     merged, conflict = inspire_json_merge(root, head, update)
-
-    expected_conflict = sort_conflicts(expected_conflict)
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged

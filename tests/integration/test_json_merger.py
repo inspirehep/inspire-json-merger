@@ -23,8 +23,9 @@
 from __future__ import absolute_import, division, print_function
 
 import pytest
-
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
+
+from utils import assert_ordered_conflicts
 
 
 @pytest.mark.parametrize('scenario', [
@@ -34,6 +35,6 @@ def test_complete_merge(update_fixture_loader, scenario):
     root, head, update, expected_conflict, expected_merged = update_fixture_loader.load_test(scenario)
 
     merged, conflict = inspire_json_merge(root, head, update)
-
     assert merged == expected_merged
-    assert conflict == expected_conflict
+
+    assert_ordered_conflicts(conflict, expected_conflict)

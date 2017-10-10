@@ -30,8 +30,10 @@ from __future__ import absolute_import, print_function
 
 import json
 import os
-
 import pytest
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'utils'))
 
 
 class AbstractFixtureLoader(object):
