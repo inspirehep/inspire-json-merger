@@ -49,7 +49,7 @@ def scan_author_string_for_phrases(s):
     """
 
     if not isinstance(s, six.text_type):
-        s = s.encode('utf-8')
+        s = s.decode('utf-8')
 
     retval = {
         'TOKEN_TAG_LIST': [
@@ -65,7 +65,7 @@ def scan_author_string_for_phrases(s):
     if len(l) < 2:
         # No commas means a simple name
         new = s.strip()
-        new = s.split(' ')
+        new = new.split(' ')
         if len(new) == 1:
             retval['lastnames'] = new        # rare single-name case
         else:
