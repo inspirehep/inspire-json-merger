@@ -63,7 +63,7 @@ install_requires = [
     'editdistance>=0.3.1',
     'Flask-BabelEx>=0.9.2',
     'isort>=4.2.2',
-    'json-merger~=0.3,>=0.3.1',
+    'json-merger~=0.3,>=0.3.2',
     'munkres>=1.0.7',
     'Unidecode>=0.4.19',
     'autosemver',
