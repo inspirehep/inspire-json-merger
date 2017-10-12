@@ -25,7 +25,8 @@ Important: in order to check the schema's coverage, please add the `cover`
 decorator to each test, referring to the schema's key under test.
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, print_function, \
+    unicode_literals
 
 import decorator
 import pytest
@@ -487,7 +488,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756b',
-                'full_name': 'Cox, Brian F.'
+                'full_name': 'Cox, Μπράιαν F.'
             }
         ]
     }
@@ -495,7 +496,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-                'full_name': 'Cox, Brian'
+                'full_name': 'Cox, Μπράιαν'
             }
         ]
     }
@@ -503,7 +504,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756d',
-                'full_name': 'Cox, Brian E.'
+                'full_name': 'Cox, Μπράιαν E.'
             }
         ]
     }
@@ -512,7 +513,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756d',
-                'full_name': 'Cox, Brian'
+                'full_name': 'Cox, Μπράιαν'
             }
         ]
     }
@@ -527,7 +528,7 @@ def test_merging_authors_field():
         Conflict(
             'SET_FIELD',
             ('authors', 0, 'full_name'),
-            'Cox, Brian E.'
+            'Cox, Μπράιαν E.'
         )
     ]
 
@@ -2226,36 +2227,25 @@ def test_merging_publication_info_field():
     }
 
     expected_merged = {
-        "publication_info": [
+        'publication_info': [
             {
-                "page_end": "979",
-                "journal_title": "Adv.Theor.Math.Phys.",
+                'artid': '948-979',
+                'cnum': 'C12-03-10',
+                'curated_relation': True,
+                'journal_title': 'Adv.Theor.Math.Phys.',
                 "journal_volume": "12",
+                'journal_issue': '1',
                 "journal_record": {
                     "$ref": "http://labs.inspirehep.net/api/journals/1212914"
                 },
+                'material': 'erratum',
+                'page_end':   '042',
+                'page_start': '032',
+                'parent_isbn': '9780521467025',
+                'parent_report_number': 'CERN-PH-TH-2012-115',
                 "year": 2008,
-                "hidden": True,
-                "page_start": "948"
-            },
-            {
-                "parent_report_number": "CERN-PH-TH-2012-115",
-                "journal_title": "Adv.Theor.Math.Phys.",
-                "parent_isbn": "9780521467025",
-                "cnum": "C12-03-10",
-                "material": "erratum",
-                "journal_volume": "12",
-                "curated_relation": True,
-                "page_end": "042",
-                "artid": "948-979",
-                "year": 2008,
-                "page_start": "032",
-                "journal_issue": "1"
             }
-        ],
-        "acquisition_source": {
-            "source": "arxiv"
-        }
+        ]
     }
     expected_conflict = None
 
