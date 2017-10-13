@@ -84,12 +84,10 @@ def get_pk_comparator(primary_key_fields, normalization_functions=None):
     return Ret
 
 
-AffiliationComparator = get_pk_comparator(['record.$ref', 'value'])
+AffiliationComparator = get_pk_comparator([['record.$ref'], ['value']])
 CollectionsComparator = get_pk_comparator(['primary'])
 CreationDatetimeComparator = get_pk_comparator(['creation_datetime'])
 DateComparator = get_pk_comparator(['date'])
-ExtSysNumberComparator = get_pk_comparator(['institute'])
-FilesComparator = get_pk_comparator(['version_id'])
 FundingInfoComparator = get_pk_comparator(['project_number'])
 ImprintsComparator = get_pk_comparator(['publisher'])
 LanguageComparator = get_pk_comparator(['language'])
@@ -105,17 +103,22 @@ ValueComparator = get_pk_comparator(['value'])
 
 
 SingleReferenceComparator = get_pk_comparator([
-    ['arxiv_eprint'],
-    ['dois'],
-    ['isbn'],
-    ['book_series.title'],
-    ['pubblication_info']
+    ['record'],
+    ['reference.arxiv_eprint'],
+    ['reference.dois'],
+    ['reference.isbn'],
+    ['reference.report_numbers'],
+    ['reference.persistent_identifiers'],
+    ['reference.publication_info']
 ])
+
+SinglePublicationInfoComparator = get_pk_comparator(
+    ['journal_title', 'journal_volume']
+)
 
 COMPARATORS = {
     '_desy_bookkeeping': DateComparator,
     '_fft': CreationDatetimeComparator,
-    '_files': FilesComparator,
     '_private_notes': SourceComparator,
     'abstracts': SourceComparator,
     'acquisition_source': SourceComparator,
@@ -138,7 +141,8 @@ COMPARATORS = {
     'new_record': RefComparator,
     'persistent_identifiers': ValueComparator,
     'public_notes': SourceComparator,
-    'references': RecordComparator,
+    'publication_info': SinglePublicationInfoComparator,
+    'references': SingleReferenceComparator,
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,
