@@ -67,7 +67,7 @@ install_requires = [
     'munkres>=1.0.7',
     'Unidecode>=0.4.19',
     'autosemver',
-    'inspire-schemas~=50.0,>=50.0.0',
+    'inspire-schemas~=51.0,>=51.0.0',
 ]
 
 packages = find_packages()
