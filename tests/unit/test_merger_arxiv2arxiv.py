@@ -1783,13 +1783,13 @@ def test_merging_inspire_categories_field():
     root = {'inspire_categories': [
         {
             'source': 'INSPIRE',
-            'term':   'Theory-HEP'
+            'term': 'Theory-HEP'
         }
     ]}
     head = {'inspire_categories': [
         {
             'source': 'curator',
-            'term':   'Theory-HEP'
+            'term': 'Theory-HEP'
         }, {
             'source': 'curator',
             'term': 'Theory-Nucl'
@@ -1798,7 +1798,7 @@ def test_merging_inspire_categories_field():
     update = {'inspire_categories': [
         {
             'source': 'arxiv',
-            'term':   'Computing'
+            'term': 'Computing'
         }, {
             'source': 'arxiv',
             'term': 'Other'
@@ -1808,16 +1808,16 @@ def test_merging_inspire_categories_field():
     expected_merged = {'inspire_categories': [
         {
             'source': 'arxiv',
-            'term':   'Computing'
+            'term': 'Computing'
         }, {
             'source': 'arxiv',
             'term': 'Other'
         }, {
             'source': 'curator',
-            'term':   'Theory-HEP'
+            'term': 'Theory-HEP'
         }, {
             'source': 'curator',
-            'term':   'Theory-Nucl'
+            'term': 'Theory-Nucl'
         },
     ]}
     expected_conflict = []
@@ -1839,7 +1839,7 @@ def test_merging_isbns_field():
             'value': '9789462392434'
         }, {
             'medium': 'print',
-            'value':  '9789462392427'
+            'value': '9789462392427'
         }
     ]}
     # record: 1597991
@@ -1849,7 +1849,7 @@ def test_merging_isbns_field():
             'value': '9789462392434'
         }, {
             'medium': 'print',
-            'value':  '9789462392427'
+            'value': '9789462392427'
         }
     ]}
     update = {'isbns': [
@@ -1858,7 +1858,7 @@ def test_merging_isbns_field():
             'value': '9789462392434'
         }, {
             'medium': 'print',
-            'value':  '9789462392427'
+            'value': '9789462392427'
         }
     ]}
 
@@ -1888,7 +1888,7 @@ def test_merging_keywords_field():
             'value': 'colliding super beams'
         }, {
             'schema': 'INSPIRE',
-            'value':  'scattering'
+            'value': 'scattering'
         }
     ]}
     update = {'keywords': [
@@ -1901,13 +1901,13 @@ def test_merging_keywords_field():
     expected_merged = {'keywords': [
         {
             'schema': 'INSPIRE',
-            'value':  'mass: lower limit'
+            'value': 'mass: lower limit'
         }, {
             'schema': 'INSPIRE',
-            'value':  'colliding super beams'
+            'value': 'colliding super beams'
         }, {
             'schema': 'INSPIRE',
-            'value':  'scattering'
+            'value': 'scattering'
         }
     ]}
     expected_conflict = []
@@ -1977,8 +1977,8 @@ def test_merging_license_field():
         },
         {
             'imposing': 'arXiv',
-            'url':      'http://creativecommons.org/licenses/by/4.0/',
-            'license':  'arxiv foo bar'
+            'url': 'http://creativecommons.org/licenses/by/4.0/',
+            'license': 'arxiv foo bar'
         }
     ]}
     update = {'license': [
@@ -1997,8 +1997,8 @@ def test_merging_license_field():
         },
         {
             'imposing': 'arXiv',
-            'url':      'http://creativecommons.org/licenses/by/4.0/',
-            'license':  'arxiv foo bar'
+            'url': 'http://creativecommons.org/licenses/by/4.0/',
+            'license': 'arxiv foo bar'
         }
     ]}
     expected_conflict = []
@@ -2233,7 +2233,7 @@ def test_merging_publication_info_field():
                     "$ref": "http://labs.inspirehep.net/api/journals/1212914"
                 },
                 'material': 'erratum',
-                'page_end':   '042',
+                'page_end': '042',
                 'page_start': '032',
                 'parent_isbn': '9780521467025',
                 'parent_report_number': 'CERN-PH-TH-2012-115',
@@ -2477,37 +2477,37 @@ def test_merging_titles_field():
     root = {'titles': [
         {
             'source': 'submitter',
-            'title':  'ANTARES: An observatory at the seabed '
+            'title': 'ANTARES: An observatory at the seabed '
                       'to the confines of the Universe'
         }  # record: 1519935
     ]}
     head = {'titles': [
         {
-            'source':   'submitter',
+            'source': 'submitter',
             'subtitle': 'this subtitle has been added by a curator',
-            'title':    'ANTARES: An observatory at the seabed '
+            'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
         }
     ]}
     update = {'titles': [
         {
-            'source':   'submitter',
-            'title':    'ANTARES: Un osservatorio foo bar'
+            'source': 'submitter',
+            'title': 'ANTARES: Un osservatorio foo bar'
         }, {
-            'source':   'submitter',
-            'title':    'ANTARES: An observatory at the seabed '
+            'source': 'submitter',
+            'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
         }
     ]}
 
     expected_merged = {'titles': [
         {
-            'source':   'submitter',
-            'title':    'ANTARES: Un osservatorio foo bar'
+            'source': 'submitter',
+            'title': 'ANTARES: Un osservatorio foo bar'
         }, {
-            'source':   'submitter',
+            'source': 'submitter',
             'subtitle': 'this subtitle has been added by a curator',
-            'title':    'ANTARES: An observatory at the seabed '
+            'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
         }
     ]}
@@ -2821,7 +2821,7 @@ def test_merging_references_field_reference_book_series():
     root = {
         'references': [
             {
-                'record':    {
+                'record': {
                     '$ref': 'http://newlabs.inspirehep.net/api/literature/619171'
                 },
                 'reference': {

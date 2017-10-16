@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 # This file is part of Inspire.
 # Copyright (C) 2017 CERN.
 #
@@ -72,12 +72,11 @@ def inspire_json_merge(root, head, update, head_source=None):
     try:
         merger.merge()
     except MergeError as e:
-        conflicts = e.content
+        conflicts = [json.loads(c.to_json()) for c in e.content]
+
+    conflicts = filter_out(conflicts, configuration.filter_out)
 
     merged = merger.merged_root
-    conflicts = [
-        filter_out(configuration.filter_out, json.loads(conflict.to_json())) for conflict in conflicts
-    ]
     return merged, conflicts
 
 
@@ -111,17 +110,21 @@ def _get_configuration(head_source, update_source):
 
 
 def get_head_source(json_obj):
-    def _has_non_arxiv_field(field_name):
-        source = '{}.source'.format(field_name)
-        return (
-            field_name in json_obj and (not get_value(json_obj, source)
-            or any(source.lower() != 'arxiv' for source in get_value(json_obj, source)))
-    )
 
-    if _has_non_arxiv_field('publication_info') or _has_non_arxiv_field('dois'):
+    def no_freetext_in_publication_info(obj):
+        return 'publication_info' in obj and \
+            any('pubinfo_freetext' not in pubinfo for pubinfo in obj.get('publication_info'))
+
+    def no_arxiv_in_dois(obj):
+        return 'dois' in obj and \
+            any(source != 'arxiv' for source in get_value(obj, 'dois.source'))
+
+    if no_freetext_in_publication_info(json_obj) or no_arxiv_in_dois(json_obj):
         return 'publisher'
+
     elif 'arxiv_eprints' in json_obj:
         return 'arxiv'
+
     else:
         return 'publisher'
 
