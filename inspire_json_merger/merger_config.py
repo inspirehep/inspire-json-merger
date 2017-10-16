@@ -30,49 +30,11 @@ from .comparators import COMPARATORS
 This module provides different sets of rules that `inspire_json_merge`
 """
 
-ARXIV_TO_ARXIV = 'ArxivToArxiv'
-PUBLISHER_TO_ARXIV = 'PublisherToArxiv'
-PUBLISHER_TO_PUBLISHER = 'PublisherToPublisher'
-ARXIV_TO_PUBLISHER = None,
-
-
-def json_merger(root, head, update, merger_operations):
-
-    merger = Merger(
-        root=root, head=head, update=update,
-        default_dict_merge_op=merger_operations.default_dict_merge_op,
-        default_list_merge_op=merger_operations.default_list_merge_op,
-        list_dict_ops=merger_operations.list_dict_ops,
-        list_merge_ops=merger_operations.list_merge_ops,
-        comparators=merger_operations.comparators,
-    )
-    conflicts = None
-    try:
-        merger.merge()
-    except MergeError as e:
-        conflicts = e.content
-
-    merged = merger.merged_root
-    return merged, conflicts
-
-
-def factory(config_type):
-    configuration_dict = {
-        ARXIV_TO_ARXIV: ArxivToArxivOperations(),
-        PUBLISHER_TO_ARXIV: PublisherToArxivOperations(),
-        PUBLISHER_TO_PUBLISHER: PubToPubOperations()
-    }
-
-    curr_merger_config = configuration_dict.get(config_type, None)
-    if not curr_merger_config:
-        raise ValueError('Type not defined: %t ' % config_type)
-
-    return curr_merger_config
-
 
 class MergerConfigurationOperations(object):
     default_dict_merge_op = DictMergerOps.FALLBACK_KEEP_UPDATE
     default_list_merge_op = UnifierOps.KEEP_ONLY_UPDATE_ENTITIES
+    filter_out = None
     list_dict_ops = None
     list_merge_ops = None
     comparators = None
@@ -82,6 +44,12 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
+    filter_out = [
+        ['_collections'],
+        ['_files'],
+        ['authors', 'uuid'],
+        ['authors', 'signature_block'],
+    ]
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
@@ -192,6 +160,29 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
 
 class PublisherToArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
+    filter_out = [
+        ['_desy_bookkeeping'],
+        ['_export_to'],
+        ['authors', 'curated_relation'],
+        ['control_number'],
+        ['deleted'],
+        ['deleted_records'],
+        ['energy_ranges'],
+        ['funding_info'],
+        ['inspire_categories'],
+        ['legacy_creation_date'],
+        ['new_record'],
+        ['persistent_identifiers'],
+        ['preprint_date'],
+        ['references', 'reference', 'texkey'],
+        ['report_numbers'],
+        ['self'],
+        ['special_collections'],
+        ['succeeding_entry'],
+        ['texkeys'],
+        ['thesis_info'],
+        ['withdrawn'],
+    ]
     list_merge_ops = {
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -314,6 +305,11 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
+    filter_out = [
+        ['_collections'],
+        ['authors', 'uuid'],
+        ['authors', 'signature_block'],
+    ]
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,

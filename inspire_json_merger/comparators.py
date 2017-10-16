@@ -47,18 +47,14 @@ def author_tokenize(name):
     return res
 
 
-class NewIDNormalizer(object):
-    """Callable that can be used to normalize by a given id for authors.
-    Because now all the ids are in the list."""
+class IDNormalizer(object):
+    """Callable that can be used to normalize by a given id for authors."""
     def __init__(self, id_type):
         self.id_type = id_type
 
     def __call__(self, author):
-        """Sadly this will get only the first one. but well, it's just an
-        optimisation for faster matches."""
-
         for id_field in author.get('ids', []):
-            if id_field.get('schema').lower() == self.id_type.lower():
+            if id_field.get('schema') == self.id_type:
                 return id_field.get('value')
         # This is safe since the normalization is not the final decider.
         return None
@@ -68,11 +64,12 @@ class AuthorComparator(DistanceFunctionComparator):
     threshold = 0.12
     distance_function = AuthorNameDistanceCalculator(author_tokenize)
     norm_functions = [
-            NewIDNormalizer('ORCID'),
-            NewIDNormalizer('INSPIRE BAI'),
-            AuthorNameNormalizer(author_tokenize),
-            AuthorNameNormalizer(author_tokenize, 1),
-            AuthorNameNormalizer(author_tokenize, 1, True)
+        IDNormalizer('ORCID'),
+        IDNormalizer('INSPIRE ID'),
+        IDNormalizer('INSPIRE BAI'),
+        AuthorNameNormalizer(author_tokenize),
+        AuthorNameNormalizer(author_tokenize, 1),
+        AuthorNameNormalizer(author_tokenize, 1, True)
     ]
 
 

@@ -62,6 +62,7 @@ install_requires = [
     'check-manifest>=0.25',
     'editdistance>=0.3.1',
     'Flask-BabelEx>=0.9.2',
+    'inspire-utils>=0.0.10',
     'isort>=4.2.2',
     'json-merger~=0.3,>=0.3.2',
     'munkres>=1.0.7',

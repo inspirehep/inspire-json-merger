@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#
+# -*- coding: utf-8 -*- 
 # This file is part of Inspire.
 # Copyright (C) 2017 CERN.
 #
@@ -25,22 +24,17 @@
 
 from __future__ import absolute_import, print_function
 
-from inspire_utils.helpers import get_value
+import json
+
+from inspire_utils.record import get_value
 from json_merger.merger import MergeError, Merger
 
-from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
-    ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER, \
-    ArxivToArxivOperations, PublisherToArxivOperations, \
-    PublisherToPublisherOperations
-
-
-# mapping between configuration names and their relative classes.
-_MERGER_CONFIGS = {
-    ARXIV_TO_ARXIV: ArxivToArxivOperations(),
-    PUBLISHER_TO_ARXIV: PublisherToArxivOperations(),
-    ARXIV_TO_PUBLISHER: None,
-    PUBLISHER_TO_PUBLISHER: PublisherToPublisherOperations()
-}
+from inspire_json_merger.merger_config import (
+    ArxivToArxivOperations,
+    PublisherToArxivOperations,
+    PublisherToPublisherOperations,
+)
+from inspire_json_merger.utils.filterout_utils import filter_out
 
 
 def inspire_json_merge(root, head, update, head_source=None):
@@ -61,11 +55,11 @@ def inspire_json_merge(root, head, update, head_source=None):
         an object containing all generated conflicts.
     """
     configuration = _get_configuration(
-        head or get_head_source(head),
+        head_source or get_head_source(head),
         get_acquisition_source(update)
     )
 
-    conflicts = None
+    conflicts = []
     merger = Merger(
         root=root, head=head, update=update,
         default_dict_merge_op=configuration.default_dict_merge_op,
@@ -81,6 +75,9 @@ def inspire_json_merge(root, head, update, head_source=None):
         conflicts = e.content
 
     merged = merger.merged_root
+    conflicts = [
+        filter_out(configuration.filter_out, json.loads(conflict.to_json())) for conflict in conflicts
+    ]
     return merged, conflicts
 
 
@@ -103,23 +100,22 @@ def _get_configuration(head_source, update_source):
                          .format(head_source, update_source))
     if head_source.lower() == 'arxiv':
         if update_source.lower() == 'arxiv':
-            return _MERGER_CONFIGS.get(ARXIV_TO_ARXIV)
+            return ArxivToArxivOperations
         else:
-            return _MERGER_CONFIGS.get(PUBLISHER_TO_ARXIV)
+            return PublisherToArxivOperations
     else:
         if update_source.lower() == 'arxiv':
-            raise Exception('Not yet implemented')
-            # return _MERGER_CONFIGS.get(ARXIV_TO_PUBLISHER)
+            raise NotImplementedError('arXiv on publisher update is not yet implemented.')
         else:
-            return _MERGER_CONFIGS.get(PUBLISHER_TO_PUBLISHER)
+            return PublisherToPublisherOperations
 
 
 def get_head_source(json_obj):
     def _has_non_arxiv_field(field_name):
         source = '{}.source'.format(field_name)
         return (
-            json_obj.get(field_name) and not get_value(json_obj, source)
-            or any(source.lower() != 'arxiv' for source in get_value(json_obj, source))
+            field_name in json_obj and (not get_value(json_obj, source)
+            or any(source.lower() != 'arxiv' for source in get_value(json_obj, source)))
     )
 
     if _has_non_arxiv_field('publication_info') or _has_non_arxiv_field('dois'):
