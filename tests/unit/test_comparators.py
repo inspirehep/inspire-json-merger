@@ -25,11 +25,13 @@ from __future__ import absolute_import, division, print_function, \
 import pytest
 from inspire_schemas.api import load_schema, validate
 
-from json_merger.config import DictMergerOps, UnifierOps
+from json_merger.config import UnifierOps
 
 from inspire_json_merger.comparators import IDNormalizer
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
 from inspire_json_merger.merger_config import ArxivToArxivOperations
+
+from utils import assert_ordered_conflicts
 
 ArxivToArxivOperations.list_merge_ops['references'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
 ArxivToArxivOperations.list_merge_ops['publication_info'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
@@ -101,15 +103,15 @@ def test_comparing_references_field_same_dois():
         ]
     }
 
-    expected_conflict = None
+    expected_conflict = []
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
+    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -139,7 +141,7 @@ def test_comparing_references_field_different_dois():
         ]
     }
 
-    expected_conflict = None
+    expected_conflict = []
 
     expected_merged = {
         'references': [
@@ -162,11 +164,11 @@ def test_comparing_references_field_different_dois():
     }
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
+    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -198,7 +200,7 @@ def test_comparing_references_field_different_number_of_dois():
         ]
     }
 
-    expected_conflict = None
+    expected_conflict = []
     expected_merged = {
         'references': [
             {
@@ -214,11 +216,11 @@ def test_comparing_references_field_different_number_of_dois():
     }
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
+    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
 
 
@@ -242,13 +244,13 @@ def test_comparing_publication_info():
         ]
     }
 
-    expected_conflict = None
+    expected_conflict = []
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update)
+    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
-    assert conflict == expected_conflict
+    assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
