@@ -357,14 +357,6 @@
         }
     ],
     "number_of_pages": 23,
-    "_fft": [
-        {
-            "path": "/virtualenv/var/data/workflows/files/05/23/f07a-6b9b-4445-9063-41aa7d367413/data",
-            "format": ".pdf",
-            "type": "arXiv",
-            "filename": "arxiv:1705.02541"
-        }
-    ],
     "accelerator_experiments": [
         {
             "legacy_name": "CERN-LHC-ALICE"

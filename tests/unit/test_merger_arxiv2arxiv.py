@@ -213,12 +213,6 @@ def test_merging_export_to_field():
     validate_subschema(merged)
 
 
-@pytest.mark.xfail(reason='Going to be removed')
-@cover('_fft')
-def test_merging_fft_field():
-    pytest.fail("Not tested. Merger doesn't have to handle this field.")
-
-
 @pytest.mark.xfail(reason='This field will be processed after the merger')
 @cover('_files')
 def test_merging_files_field():

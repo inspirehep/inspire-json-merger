@@ -3,14 +3,6 @@
     "_collections": [
         "Literature"
     ],
-    "_fft": [
-        {
-            "filename": "arxiv:1705.02541",
-            "format": ".pdf",
-            "path": "/virtualenv/var/data/workflows/files/05/23/f07a-6b9b-4445-9063-41aa7d367413/data",
-            "type": "arXiv"
-        }
-    ],
     "_files": [
         {
             "bucket": "c2658e45-6d9c-41b7-bd6d-b16cddb561d6",

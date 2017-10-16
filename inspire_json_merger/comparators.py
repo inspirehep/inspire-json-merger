@@ -118,7 +118,6 @@ SinglePublicationInfoComparator = get_pk_comparator(
 
 COMPARATORS = {
     '_desy_bookkeeping': DateComparator,
-    '_fft': CreationDatetimeComparator,
     '_private_notes': SourceComparator,
     'abstracts': SourceComparator,
     'acquisition_source': SourceComparator,

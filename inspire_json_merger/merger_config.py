@@ -85,7 +85,6 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
-        '_fft': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         '_private_notes': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'abstracts': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -143,7 +142,6 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_desy_bookkeeping': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_export_to': DictMergerOps.FALLBACK_KEEP_HEAD,
-        '_fft': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_private_notes': DictMergerOps.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': DictMergerOps.FALLBACK_KEEP_HEAD,
         'acquisition_source': DictMergerOps.FALLBACK_KEEP_HEAD,
@@ -319,7 +317,6 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
-        '_fft': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         '_private_notes': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'abstracts': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -377,7 +374,6 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_desy_bookkeeping': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_export_to': DictMergerOps.FALLBACK_KEEP_HEAD,
-        '_fft': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_private_notes': DictMergerOps.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': DictMergerOps.FALLBACK_KEEP_HEAD,
         'acquisition_source': DictMergerOps.FALLBACK_KEEP_HEAD,
