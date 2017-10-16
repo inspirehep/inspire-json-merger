@@ -25,6 +25,7 @@
 
 from __future__ import absolute_import, print_function
 
+from inspire_utils.helpers import get_value
 from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
@@ -42,10 +43,7 @@ _MERGER_CONFIGS = {
 }
 
 
-ARXIV_SOURCE = 'arxiv'
-
-
-def inspire_json_merge(root, head, update):
+def inspire_json_merge(root, head, update, head_source=None):
     """
     This function instantiate a ``Merger`` object using a configuration in
     according to the ``source`` value of head and update params.
@@ -55,14 +53,16 @@ def inspire_json_merge(root, head, update):
         root(dict): the last common parent json of head and update
         head(dict): the last version of a record in INSPIRE
         update(dict): the update coming from outside INSPIRE to merge
+        head_source(string): the source of the head record. If ``None``,
+            heuristics are used to derive it from the metadata.
 
     Return
         A tuple containing the resulted merged record in json format and a
         an object containing all generated conflicts.
     """
     configuration = _get_configuration(
-        get_source(head),
-        get_source(update)
+        head or get_head_source(head),
+        get_acquisition_source(update)
     )
 
     conflicts = None
@@ -101,22 +101,38 @@ def _get_configuration(head_source, update_source):
         raise ValueError('Can\'t get any configuration:\n\tHEAD SOURCE: {0}'
                          '\n\tUPDATE SOURCE: {1}'
                          .format(head_source, update_source))
-    if head_source.lower() == ARXIV_SOURCE:
-        if update_source.lower() == ARXIV_SOURCE:
+    if head_source.lower() == 'arxiv':
+        if update_source.lower() == 'arxiv':
             return _MERGER_CONFIGS.get(ARXIV_TO_ARXIV)
         else:
             return _MERGER_CONFIGS.get(PUBLISHER_TO_ARXIV)
     else:
-        if update_source.lower() == ARXIV_SOURCE:
+        if update_source.lower() == 'arxiv':
             raise Exception('Not yet implemented')
             # return _MERGER_CONFIGS.get(ARXIV_TO_PUBLISHER)
         else:
             return _MERGER_CONFIGS.get(PUBLISHER_TO_PUBLISHER)
 
 
-def get_source(json_obj):
+def get_head_source(json_obj):
+    def _has_non_arxiv_field(field_name):
+        source = '{}.source'.format(field_name)
+        return (
+            json_obj.get(field_name) and not get_value(json_obj, source)
+            or any(source.lower() != 'arxiv' for source in get_value(json_obj, source))
+    )
+
+    if _has_non_arxiv_field('publication_info') or _has_non_arxiv_field('dois'):
+        return 'publisher'
+    elif 'arxiv_eprints' in json_obj:
+        return 'arxiv'
+    else:
+        return 'publisher'
+
+
+def get_acquisition_source(json_obj):
     # in case of missing acquisition source, it returns the ARXIV one
     try:
         return json_obj['acquisition_source']['source']
     except KeyError:
-        return ARXIV_SOURCE
+        return 'arxiv'
