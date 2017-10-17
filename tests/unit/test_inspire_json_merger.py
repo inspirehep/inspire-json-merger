@@ -27,9 +27,9 @@ import pytest
 from utils import validate_subschema
 
 from inspire_json_merger.merger_config import (
-    ArxivToArxivOperations,
-    PublisherToArxivOperations,
-    PublisherToPublisherOperations,
+    ArxivOnArxivOperations,
+    PublisherOnArxivOperations,
+    PublisherOnPublisherOperations,
 )
 
 
@@ -190,15 +190,15 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, r
 
 
 def test_get_configuration_arxiv_on_arxiv():
-    assert _get_configuration('arxiv', 'arxiv') == ArxivToArxivOperations
+    assert _get_configuration('arxiv', 'arxiv') == ArxivOnArxivOperations
 
 
 def test_get_configuration_publisher_on_publisher():
-    assert _get_configuration('publisher', 'publisher') == PublisherToPublisherOperations
+    assert _get_configuration('publisher', 'publisher') == PublisherOnPublisherOperations
 
 
 def test_get_configuration_publisher_on_arxiv():
-    assert _get_configuration('arxiv', 'publisher') == PublisherToArxivOperations
+    assert _get_configuration('arxiv', 'publisher') == PublisherOnArxivOperations
 
 
 @pytest.mark.xfail(reason='Not implemented yet')

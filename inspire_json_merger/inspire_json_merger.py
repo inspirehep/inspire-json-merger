@@ -30,9 +30,9 @@ from inspire_utils.record import get_value
 from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.merger_config import (
-    ArxivToArxivOperations,
-    PublisherToArxivOperations,
-    PublisherToPublisherOperations,
+    ArxivOnArxivOperations,
+    PublisherOnArxivOperations,
+    PublisherOnPublisherOperations,
 )
 from inspire_json_merger.utils.filterout_utils import filter_out
 
@@ -99,14 +99,14 @@ def _get_configuration(head_source, update_source):
                          .format(head_source, update_source))
     if head_source.lower() == 'arxiv':
         if update_source.lower() == 'arxiv':
-            return ArxivToArxivOperations
+            return ArxivOnArxivOperations
         else:
-            return PublisherToArxivOperations
+            return PublisherOnArxivOperations
     else:
         if update_source.lower() == 'arxiv':
             raise NotImplementedError('arXiv on publisher update is not yet implemented.')
         else:
-            return PublisherToPublisherOperations
+            return PublisherOnPublisherOperations
 
 
 def get_head_source(json_obj):

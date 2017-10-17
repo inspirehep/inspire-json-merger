@@ -40,7 +40,7 @@ class MergerConfigurationOperations(object):
     comparators = None
 
 
-class ArxivToArxivOperations(MergerConfigurationOperations):
+class ArxivOnArxivOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
@@ -158,7 +158,7 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
     }
 
 
-class PublisherToArxivOperations(MergerConfigurationOperations):
+class PublisherOnArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
     filter_out = [
         ['_desy_bookkeeping'],
@@ -301,7 +301,7 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
     }
 
 
-class PublisherToPublisherOperations(MergerConfigurationOperations):
+class PublisherOnPublisherOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS

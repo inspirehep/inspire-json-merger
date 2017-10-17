@@ -28,12 +28,12 @@ from json_merger.config import UnifierOps
 
 from inspire_json_merger.comparators import IDNormalizer
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
-from inspire_json_merger.merger_config import ArxivToArxivOperations
+from inspire_json_merger.merger_config import ArxivOnArxivOperations
 
 from utils import assert_ordered_conflicts
 
-ArxivToArxivOperations.list_merge_ops['references'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
-ArxivToArxivOperations.list_merge_ops['publication_info'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+ArxivOnArxivOperations.list_merge_ops['references'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+ArxivOnArxivOperations.list_merge_ops['publication_info'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
 
 
 def add_arxiv_source(*json_obj):
