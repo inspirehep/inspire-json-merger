@@ -25,68 +25,59 @@
 from __future__ import absolute_import, division, print_function, \
     unicode_literals
 
-import copy
 
-
-def filter_out(fields, obj):
-    """
-    Use this function to automatically filter all the entries defined for a
+def filter_out(conflicts_list, fields):
+    """Use this function to automatically filter all the entries defined for a
     given rule.
 
     Params:
-        fields(List[List[str]]): fields to filter out from obj.
-        obj(dict): the dict to filter.
+        conflicts_list(List[Conflict]): the list of conflicts to filter.
+        fields(List[str]): fields to filter out, using an accessor syntax of
+            the form ``field.subfield.subsubfield``.
+
+    Return:
+        List[Conflict]: the given list filtered by `fields`
     """
     for field in fields:
-        delete_from_nested_dict(obj, fields)
+        conflicts_list = filter_conflicts_by_path(conflicts_list, field)
+
+    return conflicts_list
 
 
-def delete_from_nested_dict(obj, keys_path):
-    """
-    This function removes entries from a nested dictionary.
-    The entry to remove is defined by specifying the path of keys to reach
-    the object from the root of the dictionary itself. In case of the
-    specified key belongs to objects in a list, all items of the list will be
-    affected by cancellation.
-
-    Params:
-        dictionary(dict): the dictionary containing the entries to delete
-        keys_path(list): a list of strings containing the path to reach the
-        entry to delete.
+def filter_conflicts_by_path(conflict_list, to_delete_path):
+    """Filter a list of conflict for the given string. The string represents
+    the path of the conflict in the form ``field.subfield.subsubfield``.
 
     Example:
+        conflict_list = [
+            ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+            ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png')
+        ]
 
-        >>> obj = {
-        ...     'authors': [
-        ...         {
-        ...             'full_name': 'Sempronio',
-        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-        ...         },
-        ...         {
-        ...             'full_name': 'Tizio Caio',
-        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-        ...         },
-        ...     ]
-        ... }
-        >>> delete_from_nested_dict(obj, ['authors', 'full_name'])
-        >>> 'full_name' not in obj['authors'][0]
-        True
-
+        to_delete_path = 'figures.keys'
     """
-    if not obj or not keys_path:
-        return
+    return [conf for conf in conflict_list if not is_to_delete(conf, to_delete_path)]
 
-    if isinstance(obj, dict):
-        root = keys_path.pop(0)
-        if root in obj.keys():
-            if keys_path == []:
-                del obj[root]
-            else:
-                delete_from_nested_dict(obj[root], copy.copy(keys_path))
 
-    elif isinstance(obj, list):
-        for el in obj:
-            delete_from_nested_dict(el, copy.copy(keys_path))
+def is_to_delete(conflict, keys_path):
+    to_delete = keys_path.split('.')
+    conflict_path = conflict_to_list(conflict)
 
-    else:
-        del obj
+    if len(to_delete) > len(conflict_path):
+        return False
+
+    i = 0
+    while i < len(conflict_path) and i < len(to_delete):
+        c = conflict_path[i]
+        d = to_delete[i]
+
+        if c != d:
+            return False
+        i += 1
+
+    return True
+
+
+def conflict_to_list(conflict):
+    path = conflict[1]
+    return [p for p in path if not isinstance(p, int)]

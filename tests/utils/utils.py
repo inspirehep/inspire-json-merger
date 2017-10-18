@@ -51,4 +51,3 @@ def validate_subschema(obj):
     key = list(obj.keys())[0]  # python 3 compatibility
     sub_schema = schema['properties'].get(key)
     assert validate(obj.get(key), sub_schema) is None
-

@@ -58,7 +58,6 @@ def inspire_json_merge(root, head, update, head_source=None):
         head_source or get_head_source(head),
         get_acquisition_source(update)
     )
-
     conflicts = []
     merger = Merger(
         root=root, head=head, update=update,
@@ -72,9 +71,10 @@ def inspire_json_merge(root, head, update, head_source=None):
     try:
         merger.merge()
     except MergeError as e:
-        conflicts = [json.loads(c.to_json()) for c in e.content]
+        conflicts = e.content
 
     conflicts = filter_out(conflicts, configuration.filter_out)
+    conflicts = [json.loads(c.to_json()) for c in conflicts]
 
     merged = merger.merged_root
     return merged, conflicts

@@ -34,6 +34,7 @@ history = open('CHANGES.rst').read()
 tests_require = [
     'coverage>=4.0',
     'decorator',
+    'mock~=2.0,>=2.0.0',
     'pydocstyle>=1.0.0',
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
