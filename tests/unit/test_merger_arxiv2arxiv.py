@@ -25,8 +25,7 @@ Important: in order to check the schema's coverage, please add the `cover`
 decorator to each test, referring to the schema's key under test.
 """
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
+from __future__ import absolute_import, division, print_function
 
 import decorator
 import pytest
@@ -2109,28 +2108,28 @@ def test_merging_refereed_field():
 @cover('report_numbers')
 def test_merging_report_numbers_field():
     root = {'report_numbers': [
-                {
-                    'source': 'arXiv',
-                    'value': 'arXiv:1705.01099'
-                }
-            ]}  # record: 1598022
+        {
+            'source': 'arXiv',
+            'value': 'arXiv:1705.01099'
+        }
+    ]}  # record: 1598022
     head = {'report_numbers': [
-                {
-                    'hidden': True,
-                    'source': 'arXiv',
-                    'value': 'arXiv:1705.01099'
-                }, {
-                    'source': 'foo bar',
-                    'value': 'foo:123456'
-                }
-            ]}
+        {
+            'hidden': True,
+            'source': 'arXiv',
+            'value': 'arXiv:1705.01099'
+        }, {
+            'source': 'foo bar',
+            'value': 'foo:123456'
+        }
+    ]}
     update = {'report_numbers': [
-                {
-                    'hidden': False,
-                    'source': 'hepcrawl',
-                    'value': 'arXiv:1705.01099'
-                }
-            ]}
+        {
+            'hidden': False,
+            'source': 'hepcrawl',
+            'value': 'arXiv:1705.01099'
+        }
+    ]}
 
     expected_merged = update
     expected_conflict = [
@@ -2298,8 +2297,7 @@ def test_merging_titles_field():
             'title': 'ANTARES: Un osservatorio foo bar'
         }, {
             'source': 'submitter',
-            'title': 'ANTARES: An observatory at the seabed '
-                        'to the confines of the Universe'
+            'title': 'ANTARES: An observatory at the seabed to the confines of the Universe'
         }
     ]}
 
@@ -2622,7 +2620,7 @@ def test_merging_references_field_reference_book_series():
                 },
                 'reference': {
                     'book_series': {
-                            'title': 'IEEE Nucl.Sci. Symp.Conf.Rec.'
+                        'title': 'IEEE Nucl.Sci. Symp.Conf.Rec.'
                     },
                 }
             }
@@ -2637,7 +2635,7 @@ def test_merging_references_field_reference_book_series():
                 },
                 'reference': {
                     'book_series': {
-                            'title': 'IEEE Nucl.Sci. Symp.Conf.Rec. foo'
+                        'title': 'IEEE Nucl.Sci. Symp.Conf.Rec. foo'
                     }
                 }
             }
@@ -2653,7 +2651,7 @@ def test_merging_references_field_reference_book_series():
                 },
                 'reference': {
                     'book_series': {
-                            'title': 'IEEE Nucl.Sci. Symp.Conf.Rec. foo'
+                        'title': 'IEEE Nucl.Sci. Symp.Conf.Rec. foo'
                     },
                 }
             }

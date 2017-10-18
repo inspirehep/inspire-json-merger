@@ -20,7 +20,7 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from json_merger.config import DictMergerOps, UnifierOps
 

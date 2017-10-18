@@ -69,13 +69,13 @@ def rec_dois():
                     'value': '10.3847/2041-8213/aa9110'
                 }
             ],
-            'arxiv_eprints':    [
+            'arxiv_eprints': [
                 {
                     'categories': [
                         'gr-qc',
                         'astro-ph.HE'
                     ],
-                    'value':      '1710.05832'
+                    'value': '1710.05832'
                 }
             ]
         }
@@ -87,23 +87,23 @@ def rec_publication_info():
         {
             'publication_info': [
                 {
-                    'artid':            '161101',
-                    'journal_record':   {
+                    'artid': '161101',
+                    'journal_record': {
                         '$ref': 'http://labs.inspirehep.net/api/journals/1214495'
                     },
-                    'journal_title':    'Phys.Rev.Lett.',
-                    'journal_volume':   '119',
+                    'journal_title': 'Phys.Rev.Lett.',
+                    'journal_volume': '119',
                     'pubinfo_freetext': 'Phys. Rev. Lett. 119 161101 (2017)',
-                    'year':             2017
+                    'year': 2017
                 }
             ],
-            'arxiv_eprints':    [
+            'arxiv_eprints': [
                 {
                     'categories': [
                         'gr-qc',
                         'astro-ph.HE'
                     ],
-                    'value':      '1710.05832'
+                    'value': '1710.05832'
                 }
             ]
         }
@@ -142,17 +142,14 @@ def test_get_head_source_arxiv_dois(rec_dois):
     assert get_head_source(rec_dois) == 'arxiv'
 
 
-def test_get_head_source_arxiv_dois(rec_dois):
+def test_get_head_source_arxiv_dois_no_eprint(rec_dois):
     # record has dois without arxiv source but no arxiv_eprint, no publication_info
     del rec_dois['arxiv_eprints']
     validate_subschema(rec_dois)
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_head_source_arxiv_dois_and_freetext(
-        rec_dois,
-        rec_publication_info
-    ):
+def test_get_head_source_arxiv_dois_and_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
     rec.get('dois')[0]['source'] = 'arxiv'
     rec['publication_info'] = rec_publication_info['publication_info']
@@ -160,20 +157,14 @@ def test_get_head_source_arxiv_dois_and_freetext(
     assert get_head_source(rec_dois) == 'arxiv'
 
 
-def test_get_head_source_no_arxiv_dois_and_freetext(
-        rec_dois,
-        rec_publication_info
-    ):
+def test_get_head_source_no_arxiv_dois_and_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
     rec['publication_info'] = rec_publication_info['publication_info']
     validate_subschema(rec_dois)
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_head_source_arxiv_dois_and_no_freetext(
-        rec_dois,
-        rec_publication_info
-    ):
+def test_get_head_source_arxiv_dois_and_no_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
     rec.get('dois')[0]['source'] = 'arxiv'
     rec['publication_info'] = rec_publication_info['publication_info']
@@ -182,20 +173,14 @@ def test_get_head_source_arxiv_dois_and_no_freetext(
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_head_source_no_arxiv_dois_and_no_freetext(
-        rec_dois,
-        rec_publication_info
-    ):
+def test_get_head_source_no_arxiv_dois_and_no_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
     rec['publication_info'] = rec_publication_info['publication_info']
     validate_subschema(rec_dois)
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(
-        rec_dois,
-        rec_publication_info
-    ):
+def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, rec_publication_info):
     rec = rec_dois
     rec.get('dois')[0]['source'] = 'arxiv'
     rec['publication_info'] = rec_publication_info['publication_info']

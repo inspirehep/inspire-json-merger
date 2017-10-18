@@ -24,7 +24,7 @@
 
 """Project to set all the configurations necessary for the json-merger"""
 
-import os
+from __future__ import absolute_import, division, print_function
 
 from setuptools import find_packages, setup
 
@@ -53,21 +53,17 @@ for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
-    'pytest-runner>=2.6.2',
     'autosemver',
+    'pytest-runner>=2.6.2',
 ]
 
 install_requires = [
-    'check-manifest>=0.25',
     'editdistance>=0.3.1',
-    'Flask-BabelEx>=0.9.2',
     'inspire-utils>=0.0.10',
     'isort>=4.2.2',
     'json-merger~=0.3,>=0.3.2',
     'munkres>=1.0.7',
     'Unidecode>=0.4.19',
-    'autosemver',
     'inspire-schemas~=51.0,>=51.0.0',
 ]
 
