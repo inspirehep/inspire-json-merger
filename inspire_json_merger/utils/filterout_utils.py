@@ -22,8 +22,7 @@
 
 """Configuration and tools to clean hep literatures before inspire merging"""
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
+from __future__ import absolute_import, division, print_function
 
 
 def filter_out(conflicts_list, fields):

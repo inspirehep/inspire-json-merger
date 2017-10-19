@@ -1082,10 +1082,9 @@ def test_merging_collaborations_field():
     validate_subschema(merged)
 
 
-@pytest.mark.xfail(reason='Control number should always be present')
 @cover('control_number')
 def test_merging_control_number_field():
-    root = {'control_number': 963517}
+    root = {}
     head = {'control_number': 963517}
     update = {}
     # record_id:
@@ -2888,18 +2887,6 @@ def test_self_field():
 
 
 @pytest.mark.xfail
-@cover('documents')
-def test_documents_field():
-    pytest.fail("Not tested. Merger doesn't have to handle this field.")
-
-
-@pytest.mark.xfail
-@cover('figures')
-def test_figures_field():
-    pytest.fail("Not tested. Merger doesn't have to handle this field.")
-
-
-@pytest.mark.xfail
 @cover('_files')
 def test_files_field():
     pytest.fail("Not tested. Merger doesn't have to handle this field.")
@@ -2984,6 +2971,105 @@ def test_curated():
     expected_conflict = []
 
     merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+@cover('figures')
+def test_figures():
+    root = {}
+    head = {
+        'figures': [
+            {
+                'key': 'figure1.png',
+                'caption': 'Figure 1',
+                'source': 'arXiv',
+            },
+            {
+                'key': 'figure2.png',
+                'caption': 'Figure 2',
+                'source': 'arXiv',
+            }
+        ]
+    }
+    update = {
+        'figures': [
+            {
+                'key': 'new_figure1.png',
+                'caption': 'Figure 1',
+                'source': 'arXiv',
+            },
+            {
+                'key': 'new_figure2.png',
+                'caption': 'Figure 2',
+                'source': 'arXiv',
+            }
+        ]
+    }
+
+    expected_merged = update
+    expected_conflict = []
+
+    merged, conflict = inspire_json_merge(root, head, update,
+                                          head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+@cover('documents')
+def test_documents():
+    root = {}
+    head = {
+        'documents': [
+            {
+                'key': 'pdf1.pdf',
+                'description': 'paper',
+                'source':  'arXiv',
+                'fulltext': True
+            },
+            {
+                'key': 'pdf.tex',
+                'description': 'latex version',
+                'source': 'arXiv',
+            }
+        ]
+    }
+    update = {
+        'documents': [
+            {
+                'key': 'pdf.pdf',
+                'description': 'paper',
+                'source': 'arXiv',
+            },
+            {
+                'key': 'foo.xml',
+                'description': 'some xml files',
+                'source': 'arXiv',
+            }
+        ]
+    }
+
+    expected_merged = {
+        'documents': [
+            {
+                'key': 'pdf.pdf',
+                'description': 'paper',
+                'source':  'arXiv',
+                'fulltext': True
+            },
+            {
+                'key': 'foo.xml',
+                'description': 'some xml files',
+                'source': 'arXiv',
+            }
+        ]
+    }
+    expected_conflict = []
+
+    merged, conflict = inspire_json_merge(root, head, update,
+                                          head_source='arxiv')
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)

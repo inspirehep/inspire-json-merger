@@ -99,7 +99,7 @@ URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 
 
-SingleReferenceComparator = get_pk_comparator([
+ReferenceComparator = get_pk_comparator([
     ['record'],
     ['reference.arxiv_eprint'],
     ['reference.dois'],
@@ -109,9 +109,19 @@ SingleReferenceComparator = get_pk_comparator([
     ['reference.publication_info']
 ])
 
-SinglePublicationInfoComparator = get_pk_comparator(
+PublicationInfoComparator = get_pk_comparator([
     ['journal_title', 'journal_volume']
-)
+])
+
+FigureComparator = get_pk_comparator([
+    ['source', 'caption']
+])
+
+DocumentComparator = get_pk_comparator([
+    ['source', 'description'],
+    ['source', 'fulltext'],
+    ['source', 'original_url'],
+])
 
 COMPARATORS = {
     '_desy_bookkeeping': DateComparator,
@@ -127,8 +137,10 @@ COMPARATORS = {
     'collaborations': RecordComparator,
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
+    'documents': DocumentComparator,
     'dois': ValueComparator,
     'external_system_identifiers': SchemaComparator,
+    'figures': FigureComparator,
     'funding_info': FundingInfoComparator,
     'imprints': ImprintsComparator,
     'isbns': ValueComparator,
@@ -137,8 +149,8 @@ COMPARATORS = {
     'new_record': RefComparator,
     'persistent_identifiers': ValueComparator,
     'public_notes': SourceComparator,
-    'publication_info': SinglePublicationInfoComparator,
-    'references': SingleReferenceComparator,
+    'publication_info': PublicationInfoComparator,
+    'references': ReferenceComparator,
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,
