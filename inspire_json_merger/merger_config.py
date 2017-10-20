@@ -20,72 +20,115 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from json_merger.config import DictMergerOps, UnifierOps
 
 from .comparators import COMPARATORS
-
 """
 This module provides different sets of rules that `inspire_json_merge`
 """
-
-ARXIV_TO_ARXIV = 'ArxivToArxiv'
-PUBLISHER_TO_ARXIV = 'PublisherToArxiv'
-PUBLISHER_TO_PUBLISHER = 'PublisherToPublisher'
-ARXIV_TO_PUBLISHER = None,
-
-
-def json_merger(root, head, update, merger_operations):
-
-    merger = Merger(
-        root=root, head=head, update=update,
-        default_dict_merge_op=merger_operations.default_dict_merge_op,
-        default_list_merge_op=merger_operations.default_list_merge_op,
-        list_dict_ops=merger_operations.list_dict_ops,
-        list_merge_ops=merger_operations.list_merge_ops,
-        comparators=merger_operations.comparators,
-    )
-    conflicts = None
-    try:
-        merger.merge()
-    except MergeError as e:
-        conflicts = e.content
-
-    merged = merger.merged_root
-    return merged, conflicts
-
-
-def factory(config_type):
-    configuration_dict = {
-        ARXIV_TO_ARXIV: ArxivToArxivOperations(),
-        PUBLISHER_TO_ARXIV: PublisherToArxivOperations(),
-        PUBLISHER_TO_PUBLISHER: PubToPubOperations()
-    }
-
-    curr_merger_config = configuration_dict.get(config_type, None)
-    if not curr_merger_config:
-        raise ValueError('Type not defined: %t ' % config_type)
-
-    return curr_merger_config
 
 
 class MergerConfigurationOperations(object):
     default_dict_merge_op = DictMergerOps.FALLBACK_KEEP_UPDATE
     default_list_merge_op = UnifierOps.KEEP_ONLY_UPDATE_ENTITIES
+    filter_out = None
     list_dict_ops = None
     list_merge_ops = None
     comparators = None
 
 
-class ArxivToArxivOperations(MergerConfigurationOperations):
+class ArxivOnArxivOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
+    filter_out = [
+        '_collections',
+        '_files',
+        'abstracts',
+        'acquisition_source',
+        'arxiv_eprints',
+        'authors',
+        'authors.affiliations',
+        'authors.alternative_names',
+        'authors.credit_roles',
+        'authors.emails',
+        'authors.full_name',
+        'authors.raw_affiliations',
+        'authors.record',
+        'authors.signature_block',
+        'authors.uuid',
+        'authors.book_series',
+        'authors.citeable',
+        'authors.collaborations',
+        'control_number',
+        'copyright',
+        'core',
+        'corporate_author',
+        'deleted',
+        'deleted_records',
+        'documents',
+        'dois',
+        'editions',
+        'energy_ranges',
+        'external_system_identifiers',
+        'figures',
+        'funding_info',
+        'imprints',
+        'inspire_categories',
+        'isbns',
+        'keywords',
+        'languages',
+        'legacy_creation_date',
+        'license',
+        'new_record',
+        'number_of_pages',
+        'persistent_identifiers',
+        'preprint_date',
+        'public_notes',
+        'publication_info',
+        'publication_type',
+        'record_affiliations',
+        'refereed',
+        'references',
+        'references.curated_relation',
+        'references.raw_refs',
+        'references.record',
+        'references.reference',
+        'references.reference.arxiv_eprint',
+        'references.reference.authors',
+        'references.reference.book_series',
+        'references.reference.collaboration',
+        'references.reference.document_type',
+        'references.reference.dois',
+        'references.reference.imprint',
+        'references.reference.isbn',
+        'references.reference.label',
+        'references.reference.misc',
+        'references.reference.persistent_identifiers',
+        'references.reference.publication_info',
+        'references.reference.report_number',
+        'references.reference.texkey',
+        'references.reference.title',
+        'references.reference.urls',
+        'related_records',
+        'report_numbers',
+        'self',
+        'special_collections',
+        'succeeding_entry',
+        'texkeys',
+        'thesis_info',
+        'thesis_info.institutions',
+        'title_translations',
+        'titles',
+        'urls',
+        'withdrawn',
+    ]
+
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
-        '_fft': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         '_private_notes': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'abstracts': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -94,7 +137,8 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'authors': UnifierOps.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.affiliations': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'authors.alternative_names': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'authors.credit_roles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+        'authors.credit_roles':
+            UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'authors.emails': UnifierOps.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.full_name': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'authors.ids': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
@@ -105,11 +149,13 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'copyright': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'corporate_author': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'deleted_records': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
+        'documents': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'document_type': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'dois': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'editions':  UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'energy_ranges': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'external_system_identifiers': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
+        'figures': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'funding_info': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'inspire_categories': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'isbns': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -139,11 +185,11 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'titles': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'urls': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     }
+
     list_dict_ops = {
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_desy_bookkeeping': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_export_to': DictMergerOps.FALLBACK_KEEP_HEAD,
-        '_fft': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_private_notes': DictMergerOps.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': DictMergerOps.FALLBACK_KEEP_HEAD,
         'acquisition_source': DictMergerOps.FALLBACK_KEEP_HEAD,
@@ -159,7 +205,6 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
         'authors.uuid': DictMergerOps.FALLBACK_KEEP_UPDATE,
         'book_series': DictMergerOps.FALLBACK_KEEP_HEAD,
         'control_number': DictMergerOps.FALLBACK_KEEP_HEAD,
-        'curated': DictMergerOps.FALLBACK_KEEP_HEAD,
         'curated': DictMergerOps.FALLBACK_KEEP_HEAD,
         'deleted': DictMergerOps.FALLBACK_KEEP_HEAD,
         'deleted_records': DictMergerOps.FALLBACK_KEEP_HEAD,
@@ -192,8 +237,89 @@ class ArxivToArxivOperations(MergerConfigurationOperations):
     }
 
 
-class PublisherToArxivOperations(MergerConfigurationOperations):
+class PublisherOnArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
+    filter_out = [
+        '_collections',
+        '_files',
+        'abstracts',
+        'acquisition_source',
+        'arxiv_eprints',
+        'authors',
+        'authors.affiliations',
+        'authors.alternative_names',
+        'authors.credit_roles',
+        'authors.emails',
+        'authors.full_name',
+        'authors.raw_affiliations',
+        'authors.record',
+        'authors.signature_block',
+        'authors.uuid',
+        'authors.book_series',
+        'authors.citeable',
+        'authors.collaborations',
+        'control_number',
+        'copyright',
+        'core',
+        'corporate_author',
+        'deleted',
+        'deleted_records',
+        'dois',
+        'editions',
+        'energy_ranges',
+        'external_system_identifiers',
+        'funding_info',
+        'imprints',
+        'inspire_categories',
+        'isbns',
+        'keywords',
+        'languages',
+        'legacy_creation_date',
+        'license',
+        'new_record',
+        'number_of_pages',
+        'persistent_identifiers',
+        'preprint_date',
+        'public_notes',
+        'publication_info',
+        'publication_type',
+        'refereed',
+        'references',
+        'references.curated_relation',
+        'references.raw_refs',
+        'references.record',
+        'references.reference',
+        'references.reference.arxiv_eprint',
+        'references.reference.authors',
+        'references.reference.book_series',
+        'references.reference.collaboration',
+        'references.reference.document_type',
+        'references.reference.dois',
+        'references.reference.imprint',
+        'references.reference.isbn',
+        'references.reference.label',
+        'references.reference.misc',
+        'references.reference.persistent_identifiers',
+        'references.reference.publication_info',
+        'references.reference.report_number',
+        'references.reference.texkey',
+        'references.reference.title',
+        'references.reference.urls',
+        'references.report_numbers',
+        'references.self',
+        'references.special_collections',
+        'references.succeeding_entry',
+        'references.texkeys',
+        'references.thesis_info',
+        'references.thesis_info.institutions',
+        'references.title_translations',
+        'references.titles',
+        'references.urls',
+        'withdrawn',
+        'related_records',
+        'record_affiliations',
+    ]
+
     list_merge_ops = {
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -213,11 +339,13 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
         'copyright': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'corporate_author': UnifierOps.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'deleted_records': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
+        'documents': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'document_type': UnifierOps.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'dois': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'editions': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'energy_ranges': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'external_system_identifiers': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
+        'figures': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'funding_info': UnifierOps.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'imprints': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'inspire_categories': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
@@ -312,14 +440,94 @@ class PublisherToArxivOperations(MergerConfigurationOperations):
     }
 
 
-class PublisherToPublisherOperations(MergerConfigurationOperations):
+class PublisherOnPublisherOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
+    filter_out = [
+        '_collections',
+        '_files',
+        'abstracts',
+        'acquisition_source',
+        'arxiv_eprints',
+        'authors',
+        'authors.affiliations',
+        'authors.alternative_names',
+        'authors.credit_roles',
+        'authors.emails',
+        'authors.full_name',
+        'authors.raw_affiliations',
+        'authors.record',
+        'authors.signature_block',
+        'authors.uuid',
+        'authors.book_series',
+        'authors.citeable',
+        'authors.collaborations',
+        'control_number',
+        'copyright',
+        'core',
+        'corporate_author',
+        'deleted',
+        'deleted_records',
+        'dois',
+        'editions',
+        'energy_ranges',
+        'external_system_identifiers',
+        'funding_info',
+        'imprints',
+        'inspire_categories',
+        'isbns',
+        'keywords',
+        'languages',
+        'legacy_creation_date',
+        'license',
+        'new_record',
+        'number_of_pages',
+        'persistent_identifiers',
+        'preprint_date',
+        'public_notes',
+        'publication_info',
+        'publication_type',
+        'refereed',
+        'references',
+        'references.curated_relation',
+        'references.raw_refs',
+        'references.record',
+        'references.reference',
+        'references.reference.arxiv_eprint',
+        'references.reference.authors',
+        'references.reference.book_series',
+        'references.reference.collaboration',
+        'references.reference.document_type',
+        'references.reference.dois',
+        'references.reference.imprint',
+        'references.reference.isbn',
+        'references.reference.label',
+        'references.reference.misc',
+        'references.reference.persistent_identifiers',
+        'references.reference.publication_info',
+        'references.reference.report_number',
+        'references.reference.texkey',
+        'references.reference.title',
+        'references.reference.urls',
+        'report_numbers',
+        'self',
+        'special_collections',
+        'succeeding_entry',
+        'texkeys',
+        'thesis_info',
+        'thesis_info.institutions',
+        'title_translations',
+        'titles',
+        'urls',
+        'withdrawn',
+        'related_records',
+        'record_affiliations',
+    ]
+
     list_merge_ops = {
         '_collections': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_desy_bookkeeping': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
-        '_fft': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         '_files': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         '_private_notes': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'abstracts': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -340,10 +548,12 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         'corporate_author': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'deleted_records': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'document_type': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
+        'documents': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'dois': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'editions':  UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'energy_ranges': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
         'external_system_identifiers': UnifierOps.KEEP_ONLY_UPDATE_ENTITIES,
+        'figures': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'funding_info': UnifierOps.KEEP_ONLY_HEAD_ENTITIES,
         'inspire_categories': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'isbns': UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
@@ -377,7 +587,6 @@ class PublisherToPublisherOperations(MergerConfigurationOperations):
         '$schema': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_desy_bookkeeping': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_export_to': DictMergerOps.FALLBACK_KEEP_HEAD,
-        '_fft': DictMergerOps.FALLBACK_KEEP_HEAD,
         '_private_notes': DictMergerOps.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': DictMergerOps.FALLBACK_KEEP_HEAD,
         'acquisition_source': DictMergerOps.FALLBACK_KEEP_HEAD,

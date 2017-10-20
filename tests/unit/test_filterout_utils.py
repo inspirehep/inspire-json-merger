@@ -22,74 +22,111 @@
 
 from __future__ import absolute_import, division, print_function
 
-import pytest
 
-from inspire_json_merger.utils.filterout_utils import delete_from_nested_dict, \
-    filter_out
+from inspire_json_merger.utils.filterout_utils import (
+    filter_conflicts_by_path,
+    filter_out,
+    is_to_delete,
+    conflict_to_list
+)
 
-
-@pytest.fixture()
-def test_input():
-    return {
-        'authors': [
-            {
-                'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-                'full_name': 'Sempronio',
-                'affiliations': [
-                    {
-                        'value': 'Illinois Urbana',
-                        'recid': 902867,
-                    }, {
-                        'value': 'MIT',
-                        'recid': 123456,
-                    }
-                ]
-            },
-            {
-                'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-                'full_name': 'Tizio Caio',
-                'record': {
-                    '$ref': 'foobar'
-                }
-            },
-        ]
-    }
+from json_merger.conflict import Conflict
 
 
-def test_delete_from_nested_dict_delete_field(test_input):
-    delete_from_nested_dict(test_input, ['authors', 'uuid'])
-    for item in test_input['authors']:
-        if 'uuid' in item:
-            pytest.fail('FAIL: field not removed')
+def test_conflict_to_list():
+    c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
+    assert conflict_to_list(c) == ['figures', 'key']
 
 
-def test_delete_from_nested_dict_delete_item_in_list(test_input):
-    delete_from_nested_dict(test_input, ['authors', 'affiliations', 'recid'])
-    for item in test_input['authors'][0]['affiliations']:
-        if 'recid' in item:
-            pytest.fail('FAIL: field not removed')
+def test_is_to_delete_false():
+    c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
+    to_delete = 'authors'
+    assert is_to_delete(c, to_delete) is False
 
 
-def test_delete_from_nested_dict_delete_item_in_dict(test_input):
-    delete_from_nested_dict(test_input, ['authors', 'record', '$ref'])
-    for item in test_input['authors'][1]['record']:
-        if '$ref' in item:
-            pytest.fail('FAIL: field not removed')
+def test_is_to_delete_true():
+    c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
+    to_delete = 'figures'
+    assert is_to_delete(c, to_delete) is True
 
 
-def test_delete_from_nested_dict_empty_list(test_input):
-    original_input = test_input
-    delete_from_nested_dict(test_input, [])
-    assert test_input == original_input
+def test_is_to_delete_true_longer_path():
+    c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
+    to_delete = 'figures.key'
+    assert is_to_delete(c, to_delete) is True
 
 
-def test_delete_from_nested_dict_none_list(test_input):
-    original_input = test_input
-    delete_from_nested_dict(test_input, None)
-    assert test_input == original_input
+def test_is_to_delete_wrong_path():
+    c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
+    to_delete = 'figures.keys'
+    assert is_to_delete(c, to_delete) is False
 
 
-def test_delete_from_nested_dict_empty_dict():
-    empty_dict = {}
-    delete_from_nested_dict({}, ['authors'])
-    assert empty_dict == {}
+def test_delete_conflict_with_path_prefix():
+    conflict_list = [
+        ('SET_FIELD', ('authors', 0, 'full_name'), 'John Ellis'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure.png')
+    ]
+    conflict_list = filter_conflicts_by_path(conflict_list, 'authors')
+    assert conflict_list == [('SET_FIELD', ('figures', 1, 'key'), 'figure.png')]
+
+
+def test_delete_conflicts_wrong_path():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
+    ]
+    assert len(filter_conflicts_by_path(conflicts, 'authors.source')) is 3
+
+
+def test_delete_conflicts_good_path():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
+    ]
+    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) is 2
+
+
+def test_delete_conflicts_longer_path():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name', 0, 'foo'), 'John Smith')
+    ]
+    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) is 2
+
+
+def test_delete_conflicts_path_too_long():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
+    ]
+    assert len(filter_conflicts_by_path(conflicts, 'figures.key.foo')) is 3
+
+
+def test_delete_conflicts_more_deletion():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
+    ]
+    assert len(filter_conflicts_by_path(conflicts, 'figures')) is 1
+
+
+def test_filter_out():
+    conflicts = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
+        ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith'),
+        ('SET_FIELD', ('references', 0, 'reference', 'authors', 0, 'inspire_role'), 'John Smith'),
+        ('SET_FIELD', ('report_numbers'), 'DESY-17-036')
+    ]
+    fiels = [
+        'authors.affiliations',
+        'authors.full_name',
+        'report_numbers'
+    ]
+    assert len(filter_out(conflicts, fiels)) is 4

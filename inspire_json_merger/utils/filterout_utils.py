@@ -22,167 +22,61 @@
 
 """Configuration and tools to clean hep literatures before inspire merging"""
 
-from __future__ import absolute_import, division, print_function, \
-    unicode_literals
-
-import copy
-
-from inspire_json_merger.merger_config import ARXIV_TO_ARXIV, \
-    ARXIV_TO_PUBLISHER, PUBLISHER_TO_ARXIV, PUBLISHER_TO_PUBLISHER
-
-AA_FILTER_OUT = [
-    ['_collections'],
-    ['_files'],
-    ['authors', 'uuid'],
-    ['authors', 'signature_block'],
-]
+from __future__ import absolute_import, division, print_function
 
 
-PA_FILTER_OUT = [
-    ['_desy_bookkeeping'],
-    ['_export_to'],
-    ['authors', 'curated_relation'],
-    ['control_number'],
-    ['deleted'],
-    ['deleted_records'],
-    ['energy_ranges'],
-    ['funding_info'],
-    ['inspire_categories'],
-    ['legacy_creation_date'],
-    ['new_record'],
-    ['persistent_identifiers'],
-    ['preprint_date'],
-    ['references', 'reference', 'texkey'],
-    ['report_numbers'],
-    ['self'],
-    ['special_collections'],
-    ['succeeding_entry'],
-    ['texkeys'],
-    ['thesis_info'],
-    ['withdrawn'],
-]
-
-
-PP_FILTER_OUT = [
-    ['_collections'],
-    ['authors', 'uuid'],
-    ['authors', 'signature_block'],
-]
-
-
-AP_FILTER_OUT = []
-
-
-# maps the configuration to the list of fields to filter out
-MAPPING = {
-    ARXIV_TO_ARXIV: AA_FILTER_OUT,
-    PUBLISHER_TO_ARXIV: PUBLISHER_TO_ARXIV,
-    PUBLISHER_TO_PUBLISHER: PP_FILTER_OUT,
-    ARXIV_TO_PUBLISHER: AP_FILTER_OUT
-}
-
-
-def filter_out(rule, obj):
-    """
-    Use this function to automatically filter all the entries defined for a
+def filter_out(conflicts_list, fields):
+    """Use this function to automatically filter all the entries defined for a
     given rule.
 
     Params:
-        rule(string): one of hte `inspire-json-merger` rules.
-        obj(dict): the dict to filter.
+        conflicts_list(List[Conflict]): the list of conflicts to filter.
+        fields(List[str]): fields to filter out, using an accessor syntax of
+            the form ``field.subfield.subsubfield``.
+
+    Return:
+        List[Conflict]: the given list filtered by `fields`
     """
-    if rule in MAPPING:
-        to_delete = MAPPING[rule]
-        deleted_values = []
-        for keys_path in to_delete:
-            delete_from_nested_dict(obj, keys_path)
+    for field in fields:
+        conflicts_list = filter_conflicts_by_path(conflicts_list, field)
 
-    else:
-        raise KeyError('The specified rule `{}` is not allowed.'.format(rule))
+    return conflicts_list
 
 
-def delete_from_nested_dict(obj, keys_path):
-    """
-    This function removes entries from a nested dictionary.
-    The entry to remove is defined by specifying the path of keys to reach
-    the object from the root of the dictionary itself. In case of the
-    specified key belongs to objects in a list, all items of the list will be
-    affected by cancellation.
-
-    Params:
-        dictionary(dict): the dictionary containing the entries to delete
-        keys_path(list): a list of strings containing the path to reach the
-        entry to delete.
+def filter_conflicts_by_path(conflict_list, to_delete_path):
+    """Filter a list of conflict for the given string. The string represents
+    the path of the conflict in the form ``field.subfield.subsubfield``.
 
     Example:
-
-        >>> obj = {
-        ...     'authors': [
-        ...         {
-        ...             'full_name': 'Sempronio',
-        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-        ...         },
-        ...         {
-        ...             'full_name': 'Tizio Caio',
-        ...             'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',
-        ...         },
-        ...     ]
-        ... }
-        >>> delete_from_nested_dict(obj, ['authors', 'full_name'])
-        >>> 'full_name' not in obj['authors'][0]
-        True
-
-    """
-    if not obj or not keys_path or len(keys_path) is 0:
-        return
-
-    if isinstance(obj, dict):
-        root = keys_path.pop(0)
-        if root in obj.keys():
-
-            if len(keys_path) is 0:
-                del obj[root]
-
-            else:
-                delete_from_nested_dict(obj[root], copy.copy(keys_path))
-
-    elif isinstance(obj, list):
-        for el in obj:
-            delete_from_nested_dict(el, copy.copy(keys_path))
-
-    else:
-        del obj
-
-
-if __name__ == '__main__':
-    obj = {
-        'authors': [
-            {
-                'uuid':         '160b80bf-7553-47f0-b40b-327e28e7756c',
-                'full_name':    'Sempronio',
-                'affiliations': [
-                    {
-                        'value': 'Illinois Urbana',
-                        'recid': 902867,
-                    }, {
-                        'value': 'MIT',
-                        'recid': 123456,
-                    }
-                ]
-            },
-            {
-                'uuid':      '160b80bf-7553-47f0-b40b-327e28e7756c',
-                'full_name': 'Tizio Caio',
-                'record':    {
-                    '$ref': 'foobar'
-                }
-            },
+        conflict_list = [
+            ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+            ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png')
         ]
-    }
 
-    delete_from_nested_dict(obj, ['authors', 'uuid'])
-    assert 'uuid' not in obj['authors'][0]
-    assert 'uuid' not in obj['authors'][1]
+        to_delete_path = 'figures.keys'
+    """
+    return [conf for conf in conflict_list if not is_to_delete(conf, to_delete_path)]
 
-    delete_from_nested_dict(obj, ['authors', 'record', '$ref'])
-    assert '$ref' not in obj['authors'][1]['record']
+
+def is_to_delete(conflict, keys_path):
+    to_delete = keys_path.split('.')
+    conflict_path = conflict_to_list(conflict)
+
+    if len(to_delete) > len(conflict_path):
+        return False
+
+    i = 0
+    while i < len(conflict_path) and i < len(to_delete):
+        c = conflict_path[i]
+        d = to_delete[i]
+
+        if c != d:
+            return False
+        i += 1
+
+    return True
+
+
+def conflict_to_list(conflict):
+    path = conflict[1]
+    return [p for p in path if not isinstance(p, int)]

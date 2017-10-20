@@ -24,4 +24,4 @@
 
 """Project to set all the configurations necessary for the json-merger"""
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, division, print_function

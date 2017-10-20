@@ -26,53 +26,9 @@
 
 """Pytest configuration."""
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, print_function, division
 
-import json
 import os
-import pytest
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'utils'))
-
-
-class AbstractFixtureLoader(object):
-    def __init__(self, basedir):
-        self.basedir = basedir
-
-    def _read_file(self, test_dir, file_name):
-        with open(os.path.join(self.basedir, test_dir, file_name)) as f:
-            return f.read()
-
-    def load_single(self, test_dir, file_name):
-        return json.loads(self._read_file(test_dir, file_name))
-
-    def load_test(self, test_dir):
-        raise NotImplementedError('You have to implement me!')
-
-
-@pytest.fixture()
-def update_fixture_loader():
-    class _Loader(AbstractFixtureLoader):
-
-        def load_test(self, test_dir):
-
-            def _convert_falsy_value_to_none(value):
-                return value if value else None
-
-            root = self.load_single(test_dir, 'root.json')
-            head = self.load_single(test_dir, 'head.json')
-            update = self.load_single(test_dir, 'update.json')
-            expected_conflict = _convert_falsy_value_to_none(
-                list(
-                    self.load_single(
-                        test_dir,
-                        'expected_conflict.json'
-                    )
-                )
-            )
-
-            expected_merged = self.load_single(test_dir, 'expected_merged.json')
-            return root, head, update, expected_conflict, expected_merged
-
-    return _Loader('./tests/fixtures/')

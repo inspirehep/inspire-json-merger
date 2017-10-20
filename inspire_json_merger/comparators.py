@@ -20,7 +20,7 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, division, print_function
 
 from json_merger.comparator import PrimaryKeyComparator
 from json_merger.contrib.inspirehep.author_util import AuthorNameDistanceCalculator, \
@@ -47,18 +47,14 @@ def author_tokenize(name):
     return res
 
 
-class NewIDNormalizer(object):
-    """Callable that can be used to normalize by a given id for authors.
-    Because now all the ids are in the list."""
+class IDNormalizer(object):
+    """Callable that can be used to normalize by a given id for authors."""
     def __init__(self, id_type):
         self.id_type = id_type
 
     def __call__(self, author):
-        """Sadly this will get only the first one. but well, it's just an
-        optimisation for faster matches."""
-
         for id_field in author.get('ids', []):
-            if id_field.get('schema').lower() == self.id_type.lower():
+            if id_field.get('schema') == self.id_type:
                 return id_field.get('value')
         # This is safe since the normalization is not the final decider.
         return None
@@ -68,11 +64,12 @@ class AuthorComparator(DistanceFunctionComparator):
     threshold = 0.12
     distance_function = AuthorNameDistanceCalculator(author_tokenize)
     norm_functions = [
-            NewIDNormalizer('ORCID'),
-            NewIDNormalizer('INSPIRE BAI'),
-            AuthorNameNormalizer(author_tokenize),
-            AuthorNameNormalizer(author_tokenize, 1),
-            AuthorNameNormalizer(author_tokenize, 1, True)
+        IDNormalizer('ORCID'),
+        IDNormalizer('INSPIRE ID'),
+        IDNormalizer('INSPIRE BAI'),
+        AuthorNameNormalizer(author_tokenize),
+        AuthorNameNormalizer(author_tokenize, 1),
+        AuthorNameNormalizer(author_tokenize, 1, True)
     ]
 
 
@@ -102,7 +99,7 @@ URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 
 
-SingleReferenceComparator = get_pk_comparator([
+ReferenceComparator = get_pk_comparator([
     ['record'],
     ['reference.arxiv_eprint'],
     ['reference.dois'],
@@ -112,13 +109,22 @@ SingleReferenceComparator = get_pk_comparator([
     ['reference.publication_info']
 ])
 
-SinglePublicationInfoComparator = get_pk_comparator(
+PublicationInfoComparator = get_pk_comparator([
     ['journal_title', 'journal_volume']
-)
+])
+
+FigureComparator = get_pk_comparator([
+    ['source', 'caption']
+])
+
+DocumentComparator = get_pk_comparator([
+    ['source', 'description'],
+    ['source', 'fulltext'],
+    ['source', 'original_url'],
+])
 
 COMPARATORS = {
     '_desy_bookkeeping': DateComparator,
-    '_fft': CreationDatetimeComparator,
     '_private_notes': SourceComparator,
     'abstracts': SourceComparator,
     'acquisition_source': SourceComparator,
@@ -131,8 +137,10 @@ COMPARATORS = {
     'collaborations': RecordComparator,
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
+    'documents': DocumentComparator,
     'dois': ValueComparator,
     'external_system_identifiers': SchemaComparator,
+    'figures': FigureComparator,
     'funding_info': FundingInfoComparator,
     'imprints': ImprintsComparator,
     'isbns': ValueComparator,
@@ -141,8 +149,8 @@ COMPARATORS = {
     'new_record': RefComparator,
     'persistent_identifiers': ValueComparator,
     'public_notes': SourceComparator,
-    'publication_info': SinglePublicationInfoComparator,
-    'references': SingleReferenceComparator,
+    'publication_info': PublicationInfoComparator,
+    'references': ReferenceComparator,
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,

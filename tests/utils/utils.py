@@ -22,20 +22,32 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+from __future__ import absolute_import, division, print_function
+
 import json
 from json_merger.conflict import Conflict
+
+from inspire_schemas.api import load_schema, validate
 
 """Pytest utils."""
 
 
 def assert_ordered_conflicts(conflicts, expected_conflicts):
-    conflict = [json.loads(c.to_json()) for c in conflicts]
-    expected_conflict = [json.loads(
-            Conflict(c[0], c[1], c[2]).to_json()) for c in expected_conflicts
+    # expected conflict is a Conflict class instance
+    expected_conflict = [
+        json.loads(Conflict(c[0], c[1], c[2]).to_json()) for c in expected_conflicts
     ]
 
     # order the lists to check if they match
-    conflict = sorted(conflict, key=lambda c: c['path'])
+    conflicts = sorted(conflicts, key=lambda c: c['path'])
     expected_conflict = sorted(expected_conflict, key=lambda c: c['path'])
 
-    assert conflict == expected_conflict
+    assert conflicts == expected_conflict
+
+
+def validate_subschema(obj):
+    schema = load_schema('hep')
+    key = list(obj.keys())[0]  # python 3 compatibility
+    sub_schema = schema['properties'].get(key)
+    assert validate(obj.get(key), sub_schema) is None
