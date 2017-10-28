@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
-# Copyright (C) 2017 CERN.
+# Copyright (C) 2014-2017 CERN.
 #
 # INSPIRE is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ def scan_author_string_for_phrases(s):
         'nonlastnames': [],
         'titles': [],
         'raw': s}
-    l = s.split(',')
+    l = s.split(',')  # noqa: E741
     if len(l) < 2:
         # No commas means a simple name
         new = s.strip()
