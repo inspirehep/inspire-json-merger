@@ -1,51 +1,59 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Inspire.
-# Copyright (C) 2017 CERN.
+# This file is part of INSPIRE.
+# Copyright (C) 2014-2017 CERN.
 #
-# Inspire is free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
+# INSPIRE is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-# Inspire is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
+# INSPIRE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Inspire; if not, write to the
-# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-# MA 02111-1307, USA.
+# along with INSPIRE. If not, see <http://www.gnu.org/licenses/>.
 #
-# In applying this license, CERN does not
-# waive the privileges and immunities granted to it by virtue of its status
-# as an Intergovernmental Organization or submit itself to any jurisdiction.
+# In applying this license, CERN does not waive the privileges and immunities
+# granted to it by virtue of its status as an Intergovernmental Organization
+# or submit itself to any jurisdiction.
 
-"""Project to set all the configurations necessary for the json-merger"""
+"""INSPIRE-specific configuration of the JSON Merger."""
 
 from __future__ import absolute_import, division, print_function
 
 from setuptools import find_packages, setup
 
+
+URL = 'https://github.com/inspirehep/inspire-json-merger'
+
 readme = open('README.rst').read()
-history = open('CHANGES.rst').read()
+
+setup_requires = [
+    'autosemver~=0.0,>=0.5.2',
+]
+
+install_requires = [
+    'inspire-schemas~=51.0,>=51.0.8',
+    'inspire-utils~=0.0,>=0.0.13',
+    'json-merger[contrib]~=0.0,>=0.3.2',
+]
+
+docs_require = []
 
 tests_require = [
-    'coverage>=4.0',
-    'decorator',
+    'decorator~=4.0,>=4.1.2',
+    'flake8-future-import~=0.0,>=0.4.3',
     'mock~=2.0,>=2.0.0',
-    'pydocstyle>=1.0.0',
-    'pytest-cache>=1.0',
-    'pytest-cov>=1.8.0',
-    'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
+    'pytest-cov~=2.0,>=2.5.1',
+    'pytest-flake8~=0.0,>=0.9.1',
+    'pytest~=3.0,>=3.2.3',
 ]
 
 extras_require = {
-    'docs': [
-        'Sphinx>=1.5.1',
-    ],
+    'docs': docs_require,
     'tests': tests_require,
 }
 
@@ -53,54 +61,39 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-setup_requires = [
-    'autosemver',
-    'pytest-runner>=2.6.2',
-]
-
-install_requires = [
-    'editdistance>=0.3.1',
-    'inspire-utils>=0.0.10',
-    'isort>=4.2.2',
-    'json-merger~=0.3,>=0.3.2',
-    'munkres>=1.0.7',
-    'Unidecode>=0.4.19',
-    'inspire-schemas~=51.0,>=51.0.0',
-]
-
-packages = find_packages()
-
+packages = find_packages(exclude=['docs'])
 
 setup(
     name='inspire-json-merger',
-    description=__doc__,
-    long_description=readme + '\n\n' + history,
-    keywords='Inspire TODO',
-    license='GPLv2',
+    autosemver={
+        'bugtracker_url': URL + '/issues',
+    },
+    url=URL,
+    license='GPLv3',
     author='CERN',
     author_email='admin@inspirehep.net',
-    url='https://github.com/inspirehep/inspire-json-merger',
     packages=packages,
-    autosemver=True,
-    zip_safe=False,
     include_package_data=True,
+    zip_safe=False,
     platforms='any',
-    extras_require=extras_require,
-    install_requires=install_requires,
+    description=__doc__,
+    long_description=readme,
     setup_requires=setup_requires,
+    install_requires=install_requires,
     tests_require=tests_require,
+    extras_require=extras_require,
     classifiers=[
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
-        'Development Status :: 1 - Planning',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
