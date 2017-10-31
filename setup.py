@@ -36,7 +36,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'inspire-schemas~=51.0,>=51.0.8',
+    'inspire-schemas~=53.0,>=53.0.0',
     'inspire-utils~=0.0,>=0.0.13',
     'json-merger[contrib]~=0.0,>=0.3.2',
 ]
