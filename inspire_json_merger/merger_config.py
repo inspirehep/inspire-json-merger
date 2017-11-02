@@ -25,6 +25,7 @@ from __future__ import absolute_import, division, print_function
 from json_merger.config import DictMergerOps, UnifierOps
 
 from .comparators import COMPARATORS
+from .utils.filterout_utils import PRE_FILTERS
 """
 This module provides different sets of rules that `inspire_json_merge`
 """
@@ -33,17 +34,19 @@ This module provides different sets of rules that `inspire_json_merge`
 class MergerConfigurationOperations(object):
     default_dict_merge_op = DictMergerOps.FALLBACK_KEEP_UPDATE
     default_list_merge_op = UnifierOps.KEEP_ONLY_UPDATE_ENTITIES
-    filter_out = None
+    conflict_filters = None
+    comparators = None
+    pre_filters = None
     list_dict_ops = None
     list_merge_ops = None
-    comparators = None
 
 
 class ArxivOnArxivOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
-    filter_out = [
+    pre_filters = PRE_FILTERS
+    conflict_filters = [
         '_collections',
         '_files',
         'abstracts',
@@ -239,7 +242,8 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
 
 class PublisherOnArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    filter_out = [
+    pre_filters = PRE_FILTERS
+    conflict_filters = [
         '_collections',
         '_files',
         'abstracts',
@@ -444,7 +448,8 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
     # We an always default to KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST so
     # this is less verbose.
     comparators = COMPARATORS
-    filter_out = [
+    pre_filters = PRE_FILTERS
+    conflict_filters = [
         '_collections',
         '_files',
         'abstracts',

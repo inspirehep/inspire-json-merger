@@ -25,7 +25,8 @@ from __future__ import absolute_import, division, print_function
 
 from inspire_json_merger.utils.filterout_utils import (
     filter_conflicts_by_path,
-    filter_out,
+    filter_conflicts,
+    filter_documents_same_source,
     is_to_delete,
     conflict_to_list
 )
@@ -60,6 +61,16 @@ def test_is_to_delete_wrong_path():
     c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
     to_delete = 'figures.keys'
     assert is_to_delete(c, to_delete) is False
+
+
+def test_is_to_delete_field_substring():
+    path = 'figures'
+    conflict_list = [
+        ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
+        ('SET_FIELD', ('figures_attached', 0, 'key'), 'figure2.png')
+    ]
+    assert is_to_delete(conflict_list[0], path) is True
+    assert is_to_delete(conflict_list[1], path) is False
 
 
 def test_delete_conflict_with_path_prefix():
@@ -116,7 +127,7 @@ def test_delete_conflicts_more_deletion():
     assert len(filter_conflicts_by_path(conflicts, 'figures')) is 1
 
 
-def test_filter_out():
+def test_filter_conflicts():
     conflicts = [
         ('SET_FIELD', ('figures', 0, 'key'), 'figure1.png'),
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
@@ -124,9 +135,92 @@ def test_filter_out():
         ('SET_FIELD', ('references', 0, 'reference', 'authors', 0, 'inspire_role'), 'John Smith'),
         ('SET_FIELD', ('report_numbers'), 'DESY-17-036')
     ]
-    fiels = [
+    fields = [
         'authors.affiliations',
         'authors.full_name',
         'report_numbers'
     ]
-    assert len(filter_out(conflicts, fiels)) is 4
+    assert len(filter_conflicts(conflicts, fields)) is 4
+
+
+def test_filter_documents_same_source():
+    root = {}
+    head = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'file1.pdf',
+                'url': '/files/1234-1234-1234-1234/file1.pdf',
+            },
+            {
+                'source': 'arXiv',
+                'key': 'file2.pdf',
+                'url': '/files/1234-1234-1234-1234/file2.pdf',
+            },
+            {
+                'source': 'publisher',
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+        ],
+    }
+    update = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'new_file.pdf',
+                'url': '/files/5678-5678-5678-5678/new_file.pdf',
+            },
+        ],
+    }
+    expected_head = {
+        'documents': [
+            {
+                'source': 'publisher',
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+        ],
+    }
+
+    result = filter_documents_same_source(root, head, update)
+    expected = root, expected_head, update
+
+    assert result == expected
+
+
+def test_filter_documents_same_source_multiple_sources_in_update():
+    root = {}
+    head = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'old_file.pdf',
+                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+            },
+        ],
+    }
+    update = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'file1.pdf',
+                'url': '/files/1234-1234-1234-1234/file1.pdf',
+            },
+            {
+                'source': 'arXiv',
+                'key': 'file2.pdf',
+                'url': '/files/1234-1234-1234-1234/file2.pdf',
+            },
+            {
+                'source': 'publisher',
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+        ],
+    }
+
+    result = filter_documents_same_source(root, head, update)
+    expected = root, head, update
+
+    assert result == expected

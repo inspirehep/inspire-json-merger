@@ -32,7 +32,7 @@ from inspire_json_merger.merger_config import (
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
 )
-from inspire_json_merger.utils.filterout_utils import filter_out
+from inspire_json_merger.utils.filterout_utils import filter_conflicts, filter_records
 
 
 def inspire_json_merge(root, head, update, head_source=None):
@@ -57,6 +57,8 @@ def inspire_json_merge(root, head, update, head_source=None):
         get_acquisition_source(update)
     )
     conflicts = []
+
+    root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
     merger = Merger(
         root=root, head=head, update=update,
         default_dict_merge_op=configuration.default_dict_merge_op,
@@ -71,7 +73,7 @@ def inspire_json_merge(root, head, update, head_source=None):
     except MergeError as e:
         conflicts = e.content
 
-    conflicts = filter_out(conflicts, configuration.filter_out)
+    conflicts = filter_conflicts(conflicts, configuration.conflict_filters)
     conflicts = [json.loads(c.to_json()) for c in conflicts]
 
     merged = merger.merged_root
