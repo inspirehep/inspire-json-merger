@@ -24,8 +24,14 @@
 
 from __future__ import absolute_import, division, print_function
 
+from functools import partial
 
-def filter_out(conflicts_list, fields):
+from inspire_utils.record import get_value
+from pyrsistent import freeze, thaw
+from six.moves import zip
+
+
+def filter_conflicts(conflicts_list, fields):
     """Use this function to automatically filter all the entries defined for a
     given rule.
 
@@ -65,18 +71,66 @@ def is_to_delete(conflict, keys_path):
     if len(to_delete) > len(conflict_path):
         return False
 
-    i = 0
-    while i < len(conflict_path) and i < len(to_delete):
-        c = conflict_path[i]
-        d = to_delete[i]
-
-        if c != d:
-            return False
-        i += 1
-
-    return True
+    return all(x == y for (x, y) in zip(to_delete, conflict_path))
 
 
 def conflict_to_list(conflict):
     path = conflict[1]
     return [p for p in path if not isinstance(p, int)]
+
+
+def remove_elements_with_source(source, field):
+    """Remove all elements matching ``source`` in ``field``."""
+    return [element for element in field if element.get('source') != source]
+
+
+def keep_only_update_source_in_field(field, root, head, update):
+    """Remove elements from root and head where ``source`` matches the update.
+
+    This is useful if the update needs to overwrite all elements with the same
+    source.
+
+    .. note::
+        If the update doesn't contain exactly one source in ``field``, the
+        records are returned with no modifications.
+
+    Args:
+        field(str): the field to filter out.
+        root(dict): the root record, whose ``field`` will be cleaned.
+        head(dict): the head record, whose ``field`` will be cleaned.
+        update(dict): the update record, from which the ``source`` is read.
+
+    Returns:
+        tuple: ``(root, head, update)`` with some elements filtered out from
+            ``root`` and ``head``.
+    """
+    update_sources = set(get_value(update, '.'.join([field, 'source']), []))
+    if len(update_sources) != 1:
+        return root, head, update
+    source = update_sources.pop()
+
+    root = freeze(root)
+    head = freeze(head)
+    if field in root:
+        root = root.set(field, remove_elements_with_source(source, root[field]))
+    if field in head:
+        head = head.set(field, remove_elements_with_source(source, head[field]))
+
+    return thaw(root), thaw(head), update
+
+
+def filter_records(root, head, update, filters=()):
+    """Apply the filters to the records."""
+    for filter_ in filters:
+        root, head, update = filter_(root, head, update)
+
+    return root, head, update
+
+
+filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
+filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
+
+PRE_FILTERS = [
+    filter_documents_same_source,
+    filter_figures_same_source,
+]

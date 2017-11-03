@@ -3060,23 +3060,7 @@ def test_documents():
         ]
     }
 
-    expected_merged = {
-        'documents': [
-            {
-                'key': 'pdf.pdf',
-                'description': 'paper',
-                'source': 'arXiv',
-                'fulltext': True,
-                'url': '/files/5678-5678-5678-5678/pdf.pdf',
-            },
-            {
-                'key': 'foo.xml',
-                'description': 'some xml files',
-                'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/foo.xml',
-            }
-        ]
-    }
+    expected_merged = update
     expected_conflict = []
 
     merged, conflict = inspire_json_merge(root, head, update,
