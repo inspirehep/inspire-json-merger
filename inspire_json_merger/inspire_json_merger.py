@@ -29,6 +29,8 @@ from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.merger_config import (
     ArxivOnArxivOperations,
+    ArxivOnPublisherOperations,
+    ManualMergeOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
 )
@@ -46,16 +48,15 @@ def inspire_json_merge(root, head, update, head_source=None):
         head(dict): the last version of a record in INSPIRE
         update(dict): the update coming from outside INSPIRE to merge
         head_source(string): the source of the head record. If ``None``,
-            heuristics are used to derive it from the metadata.
+            heuristics are used to derive it from the metadata. This is useful
+            if the HEAD came from legacy and the acquisition_source does not
+            reflect the state of the record.
 
     Return
         A tuple containing the resulted merged record in json format and a
         an object containing all generated conflicts.
     """
-    configuration = _get_configuration(
-        head_source or get_head_source(head),
-        get_acquisition_source(update)
-    )
+    configuration = _get_configuration(head, update, head_source)
     conflicts = []
 
     root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
@@ -80,37 +81,39 @@ def inspire_json_merge(root, head, update, head_source=None):
     return merged, conflicts
 
 
-def _get_configuration(head_source, update_source):
+def _get_configuration(head, update, head_source=None):
     """
     This function return the right configuration for the inspire_merge
     function in according to the given sources. Both parameters can not be None.
 
-    Params
-        head_source(string): the source of the HEAD file
-        update_source(string): the source of the UPDATE file
+    Params:
+        head(dict): the HEAD record
+        update(dict): the UPDATE record
+        head_source(string): the source of the HEAD record
 
-    Return
-        configuration(MergerConfigurationOperations): an object containing
+    Returns:
+        MergerConfigurationOperations: an object containing
         the rules needed to merge HEAD and UPDATE
     """
-    if head_source is None or update_source is None:
-        raise ValueError('Can\'t get any configuration:\n\tHEAD SOURCE: {0}'
-                         '\n\tUPDATE SOURCE: {1}'
-                         .format(head_source, update_source))
-    if head_source.lower() == 'arxiv':
-        if update_source.lower() == 'arxiv':
+    head_source = (head_source or get_head_source(head)).lower()
+    update_source = get_acquisition_source(update).lower()
+
+    if not is_arxiv_and_publisher(head_source, update_source) and is_manual_merge(head, update):
+        return ManualMergeOperations
+
+    if head_source == 'arxiv':
+        if update_source == 'arxiv':
             return ArxivOnArxivOperations
         else:
             return PublisherOnArxivOperations
     else:
-        if update_source.lower() == 'arxiv':
-            raise NotImplementedError('arXiv on publisher update is not yet implemented.')
+        if update_source == 'arxiv':
+            return ArxivOnPublisherOperations
         else:
             return PublisherOnPublisherOperations
 
 
 def get_head_source(json_obj):
-
     def no_freetext_in_publication_info(obj):
         return 'publication_info' in obj and \
             any('pubinfo_freetext' not in pubinfo for pubinfo in obj.get('publication_info'))
@@ -130,8 +133,14 @@ def get_head_source(json_obj):
 
 
 def get_acquisition_source(json_obj):
-    # in case of missing acquisition source, it returns the ARXIV one
-    try:
-        return json_obj['acquisition_source']['source']
-    except KeyError:
-        return 'arxiv'
+    return json_obj['acquisition_source']['source']
+
+
+def is_manual_merge(head, update):
+    return ('control_number' in update and 'control_number' in head and
+            update['control_number'] != head['control_number'])
+
+
+def is_arxiv_and_publisher(head_source, update_source):
+    sources = {head_source, update_source}
+    return len(sources) == 2 and 'arxiv' in sources

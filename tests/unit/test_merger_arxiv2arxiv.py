@@ -29,13 +29,23 @@ decorator to each test, referring to the schema's key under test.
 from __future__ import absolute_import, division, print_function
 
 import decorator
+from mock import MagicMock
 import pytest
 
 from json_merger.conflict import Conflict
-from inspire_schemas.api import load_schema
+from inspire_json_merger import inspire_json_merger
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
+from inspire_schemas.api import load_schema
 
 from utils import assert_ordered_conflicts, validate_subschema
+
+
+@pytest.fixture(autouse=True, scope='module')
+def mock_get_acquisition_source():
+    original_func = inspire_json_merger.get_acquisition_source
+    inspire_json_merger.get_acquisition_source = MagicMock(return_value='arxiv')
+    yield
+    inspire_json_merger.get_acquisition_source = original_func
 
 
 # list of all the schema's keys tested
@@ -302,27 +312,22 @@ def test_merging_accelerator_experiments_field():
 
 @cover('acquisition_source')
 def test_merging_acquisition_source_field():
-    root = {
-        'acquisition_source': {
-            'method': 'batchuploade',
-            'source': 'ejl'
-        }
-    }
+    root = {}
     # record_id: 1517095
     head = {
         'acquisition_source': {
-            'method': 'batchuploadeR',
-            'source': 'ejl'
+            'method': 'submitter',
+            'source': 'arxiv'
         }
     }
     update = {
         'acquisition_source': {
             'method': 'batchuploader',
-            'source': 'ejl'
+            'source': 'arxiv'
         }
     }
 
-    expected_merged = update
+    expected_merged = head
     expected_conflict = []
 
     merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
@@ -421,7 +426,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756d',
-                'full_name': 'Cox, Μπράιαν'
+                'full_name': 'Cox, Μπράιαν E.'
             }
         ]
     }
@@ -535,7 +540,7 @@ def test_merging_affiliations_field_per_value():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',  # update uuid
-                'full_name': 'Cox, Brian',
+                'full_name': 'Cox, Brian E.',
                 'affiliations': [
                     {
                         'value': 'Illinois Urbana',
@@ -748,7 +753,7 @@ def test_merging_full_name_field():
         ]
     }
 
-    expected_merged = head
+    expected_merged = update  # because is the longest
 
     expected_conflict = []
 
