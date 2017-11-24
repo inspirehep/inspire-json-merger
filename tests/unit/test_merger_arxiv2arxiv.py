@@ -29,13 +29,23 @@ decorator to each test, referring to the schema's key under test.
 from __future__ import absolute_import, division, print_function
 
 import decorator
+from mock import MagicMock
 import pytest
 
 from json_merger.conflict import Conflict
-from inspire_schemas.api import load_schema
+from inspire_json_merger import inspire_json_merger
 from inspire_json_merger.inspire_json_merger import inspire_json_merge
+from inspire_schemas.api import load_schema
 
 from utils import assert_ordered_conflicts, validate_subschema
+
+
+@pytest.fixture(autouse=True, scope='module')
+def mock_get_acquisition_source():
+    original_func = inspire_json_merger.get_acquisition_source
+    inspire_json_merger.get_acquisition_source = MagicMock(return_value='arxiv')
+    yield
+    inspire_json_merger.get_acquisition_source = original_func
 
 
 # list of all the schema's keys tested
@@ -302,27 +312,22 @@ def test_merging_accelerator_experiments_field():
 
 @cover('acquisition_source')
 def test_merging_acquisition_source_field():
-    root = {
-        'acquisition_source': {
-            'method': 'batchuploade',
-            'source': 'ejl'
-        }
-    }
+    root = {}
     # record_id: 1517095
     head = {
         'acquisition_source': {
-            'method': 'batchuploadeR',
-            'source': 'ejl'
+            'method': 'submitter',
+            'source': 'arxiv'
         }
     }
     update = {
         'acquisition_source': {
             'method': 'batchuploader',
-            'source': 'ejl'
+            'source': 'arxiv'
         }
     }
 
-    expected_merged = update
+    expected_merged = head
     expected_conflict = []
 
     merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
@@ -421,7 +426,7 @@ def test_merging_authors_field():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756d',
-                'full_name': 'Cox, Μπράιαν'
+                'full_name': 'Cox, Μπράιαν E.'
             }
         ]
     }
@@ -535,7 +540,7 @@ def test_merging_affiliations_field_per_value():
         'authors': [
             {
                 'uuid': '160b80bf-7553-47f0-b40b-327e28e7756c',  # update uuid
-                'full_name': 'Cox, Brian',
+                'full_name': 'Cox, Brian E.',
                 'affiliations': [
                     {
                         'value': 'Illinois Urbana',
@@ -748,7 +753,7 @@ def test_merging_full_name_field():
         ]
     }
 
-    expected_merged = head
+    expected_merged = update  # because is the longest
 
     expected_conflict = []
 
@@ -1675,7 +1680,7 @@ def test_merging_license_field():
 @cover('new_record')
 def test_merging_new_record_field():
     root = {}  # record: 37545
-    head = {'new_record': {'$ref': 'd361769'}}
+    head = {'new_record': {'$ref': 'http://localhost:5000/api/record/1'}}
     update = {}
 
     expected_merged = head
@@ -1690,7 +1695,7 @@ def test_merging_new_record_field():
 @cover('new_record')
 def test_merging_new_record_field_filled_root():
     root = {}  # record: 37545
-    head = {'new_record': {'$ref': 'd361769'}}
+    head = {'new_record': {'$ref': 'http://localhost:5000/api/record/1'}}
     update = {}
 
     expected_merged = head
@@ -1967,7 +1972,7 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': False,
                     'name': 'Columbia U.',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 }
             ]
         }
@@ -1981,7 +1986,7 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': True,
                     'name': 'Columbia University',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 }
             ]
         }
@@ -1995,11 +2000,11 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': False,
                     'name': 'Second university of foo bar',
-                    'record': {'$ref': 'foo-link2'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/2'}
                 }, {
                     'curated_relation': False,
                     'name': 'Columbia U.',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 },
             ]
         }
@@ -2102,11 +2107,11 @@ def test_merging_titles_field():
 @cover('urls')
 def test_merging_urls_field():
     root = {'urls': [
-        {'description': 'descr 1', 'value': 'a'}
+        {'description': 'descr 1', 'value': 'http://localhost:5000/api/record/1'}
     ]}
     head = {'urls': [
-        {'description': 'descr 1', 'value': 'a'},
-        {'description': 'descr 2', 'value': 'b'},
+        {'description': 'descr 1', 'value': 'http://localhost:5000/api/record/1'},
+        {'description': 'descr 2', 'value': 'http://localhost:5000/api/record/2'},
 
     ]}
     update = {}

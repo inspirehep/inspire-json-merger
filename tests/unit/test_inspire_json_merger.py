@@ -26,17 +26,17 @@ import pytest
 
 from utils import validate_subschema
 
+from inspire_json_merger.inspire_json_merger import (
+    get_acquisition_source,
+    _get_configuration,
+    get_head_source,
+)
 from inspire_json_merger.merger_config import (
     ArxivOnArxivOperations,
+    ArxivOnPublisherOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
-)
-
-
-from inspire_json_merger.inspire_json_merger import (
-    _get_configuration,
-    get_acquisition_source,
-    get_head_source
+    ManualMergeOperations
 )
 
 
@@ -47,14 +47,6 @@ def test_get_acquisition_source_non_arxiv():
         }
     }
     assert get_acquisition_source(rec) == 'foo'
-    validate_subschema(rec)
-
-
-def test_get_acquisition_source_missing():
-    rec = {
-        'acquisition_source': {}
-    }
-    assert get_acquisition_source(rec) == 'arxiv'
     validate_subschema(rec)
 
 
@@ -107,6 +99,28 @@ def rec_publication_info():
                 }
             ]
         }
+
+
+@pytest.fixture
+def arxiv_record():
+    return {
+        '_collections': ['literature'],
+        'document_type': ['article'],
+        'titles': {'title': 'Superconductivity'},
+        'arxiv_eprints': [{'value': '1710.05832'}],
+        'acquisition_source': {'source': 'arxiv'}
+    }
+
+
+@pytest.fixture
+def publisher_record():
+    return {
+        '_collections':  ['literature'],
+        'document_type': ['article'],
+        'titles':        {'title': 'Superconductivity'},
+        'dois': [{'value':  '10.1023/A:1026654312961'}],
+        'acquisition_source': {'source': 'ejl'}
+    }
 
 
 def test_get_head_source_freetext_pub_info_with_eprint(rec_publication_info):
@@ -189,18 +203,31 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, r
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_configuration_arxiv_on_arxiv():
-    assert _get_configuration('arxiv', 'arxiv') == ArxivOnArxivOperations
+def test_get_configuration(arxiv_record, publisher_record):
+    assert _get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
+    assert _get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
+    assert _get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
+    assert _get_configuration(publisher_record, publisher_record) == PublisherOnPublisherOperations
 
+    arxiv1 = arxiv_record
+    arxiv1['control_number'] = 1
 
-def test_get_configuration_publisher_on_publisher():
-    assert _get_configuration('publisher', 'publisher') == PublisherOnPublisherOperations
+    arxiv2 = dict(arxiv_record)
+    arxiv2['control_number'] = 2
 
+    pub1 = publisher_record
+    pub1['control_number'] = 3
 
-def test_get_configuration_publisher_on_arxiv():
-    assert _get_configuration('arxiv', 'publisher') == PublisherOnArxivOperations
+    pub2 = dict(publisher_record)
+    pub2['control_number'] = 4
 
+    assert _get_configuration(arxiv1, arxiv2) == ManualMergeOperations
+    assert _get_configuration(pub1, pub2) == ManualMergeOperations
 
-@pytest.mark.xfail(reason='Not implemented yet')
-def test_get_configuration_arxiv_on_publisher():
-    _get_configuration('publisher', 'arxiv')
+    # even if both have a ``control_number`` arxiv-publisher
+    # will give always the configuration ArxivOnPublisherOperations
+    assert _get_configuration(arxiv1, pub1) == PublisherOnArxivOperations
+    assert _get_configuration(pub1, arxiv1) == ArxivOnPublisherOperations
+
+    arxiv2['control_number'] = 1  # same of the other arxiv record
+    assert _get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations
