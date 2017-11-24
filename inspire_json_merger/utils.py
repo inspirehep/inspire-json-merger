@@ -20,15 +20,80 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-"""Configuration and tools to clean hep literatures before inspire merging"""
+"""Helper functions for authors."""
 
 from __future__ import absolute_import, division, print_function
 
+import re
 from functools import partial
-
+import six
 from inspire_utils.record import get_value
 from pyrsistent import freeze, thaw
-from six.moves import zip
+
+split_on_re = re.compile(r'[\.\s-]')
+
+
+def scan_author_string_for_phrases(s):
+    """Scan a name string and output an object representing its structure.
+    Example:
+        Sample output for the name 'Jingleheimer Schmitt, John Jacob, XVI.' is::
+            {
+                'TOKEN_TAG_LIST' : ['lastnames', 'nonlastnames', 'titles', 'raw'],
+                'lastnames'      : ['Jingleheimer', 'Schmitt'],
+                'nonlastnames'   : ['John', 'Jacob'],
+                'titles'         : ['XVI.'],
+                'raw'            : 'Jingleheimer Schmitt, John Jacob, XVI.'
+            }
+    :param s: the input to be lexically tagged
+    :type s: string
+    :returns: dict of lexically tagged input items.
+    :rtype: dict
+    """
+
+    if not isinstance(s, six.text_type):
+        s = s.decode('utf-8')
+
+    retval = {
+        'TOKEN_TAG_LIST': [
+            'lastnames',
+            'nonlastnames',
+            'titles',
+            'raw'],
+        'lastnames': [],
+        'nonlastnames': [],
+        'titles': [],
+        'raw': s}
+    l = s.split(',')  # noqa: E741
+    if len(l) < 2:
+        # No commas means a simple name
+        new = s.strip()
+        new = new.split(' ')
+        if len(new) == 1:
+            retval['lastnames'] = new        # rare single-name case
+        else:
+            retval['lastnames'] = new[-1:]
+            retval['nonlastnames'] = new[:-1]
+            for tag in ['lastnames', 'nonlastnames']:
+                retval[tag] = [x.strip() for x in retval[tag]]
+                retval[tag] = [re.split(split_on_re, x)
+                               for x in retval[tag]]
+                # flatten sublists
+                retval[tag] = [item for sublist in retval[tag]
+                               for item in sublist]
+                retval[tag] = [x for x in retval[tag] if x != '']
+    else:
+        # Handle lastname-first multiple-names case
+        retval['titles'] = l[2:]             # no titles? no problem
+        retval['nonlastnames'] = l[1]
+        retval['lastnames'] = l[0]
+        for tag in ['lastnames', 'nonlastnames']:
+            retval[tag] = retval[tag].strip()
+            retval[tag] = re.split(split_on_re, retval[tag])
+            # filter empty strings
+            retval[tag] = [x for x in retval[tag] if x != '']
+        retval['titles'] = [x.strip() for x in retval['titles'] if x != '']
+
+    return retval
 
 
 def filter_conflicts(conflicts_list, fields):
@@ -129,7 +194,6 @@ def filter_records(root, head, update, filters=()):
 
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
 filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
-
 PRE_FILTERS = [
     filter_documents_same_source,
     filter_figures_same_source,

@@ -22,16 +22,11 @@
 
 from __future__ import absolute_import, division, print_function
 
-
-from inspire_json_merger.utils.filterout_utils import (
-    filter_conflicts_by_path,
-    filter_conflicts,
-    filter_documents_same_source,
-    is_to_delete,
-    conflict_to_list
-)
-
 from json_merger.conflict import Conflict
+
+from inspire_json_merger.utils import filter_conflicts, \
+    filter_conflicts_by_path, is_to_delete, conflict_to_list, \
+    filter_documents_same_source
 
 
 def test_conflict_to_list():

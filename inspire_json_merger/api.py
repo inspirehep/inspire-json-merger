@@ -27,17 +27,17 @@ import json
 from inspire_utils.record import get_value
 from json_merger.merger import MergeError, Merger
 
-from inspire_json_merger.merger_config import (
+from inspire_json_merger.config import (
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
     ManualMergeOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
 )
-from inspire_json_merger.utils.filterout_utils import filter_conflicts, filter_records
+from inspire_json_merger.utils import filter_conflicts, filter_records
 
 
-def inspire_json_merge(root, head, update, head_source=None):
+def merge(root, head, update, head_source=None):
     """
     This function instantiate a ``Merger`` object using a configuration in
     according to the ``source`` value of head and update params.
@@ -56,7 +56,7 @@ def inspire_json_merge(root, head, update, head_source=None):
         A tuple containing the resulted merged record in json format and a
         an object containing all generated conflicts.
     """
-    configuration = _get_configuration(head, update, head_source)
+    configuration = get_configuration(head, update, head_source)
     conflicts = []
 
     root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
@@ -81,7 +81,7 @@ def inspire_json_merge(root, head, update, head_source=None):
     return merged, conflicts
 
 
-def _get_configuration(head, update, head_source=None):
+def get_configuration(head, update, head_source=None):
     """
     This function return the right configuration for the inspire_merge
     function in according to the given sources. Both parameters can not be None.
