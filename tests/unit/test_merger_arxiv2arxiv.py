@@ -1680,7 +1680,7 @@ def test_merging_license_field():
 @cover('new_record')
 def test_merging_new_record_field():
     root = {}  # record: 37545
-    head = {'new_record': {'$ref': 'd361769'}}
+    head = {'new_record': {'$ref': 'http://localhost:5000/api/record/1'}}
     update = {}
 
     expected_merged = head
@@ -1695,7 +1695,7 @@ def test_merging_new_record_field():
 @cover('new_record')
 def test_merging_new_record_field_filled_root():
     root = {}  # record: 37545
-    head = {'new_record': {'$ref': 'd361769'}}
+    head = {'new_record': {'$ref': 'http://localhost:5000/api/record/1'}}
     update = {}
 
     expected_merged = head
@@ -1972,7 +1972,7 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': False,
                     'name': 'Columbia U.',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 }
             ]
         }
@@ -1986,7 +1986,7 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': True,
                     'name': 'Columbia University',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 }
             ]
         }
@@ -2000,11 +2000,11 @@ def test_merging_thesis_info_field():
                 {
                     'curated_relation': False,
                     'name': 'Second university of foo bar',
-                    'record': {'$ref': 'foo-link2'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/2'}
                 }, {
                     'curated_relation': False,
                     'name': 'Columbia U.',
-                    'record': {'$ref': 'foo-link'}
+                    'record': {'$ref': 'http://localhost:5000/api/record/1'}
                 },
             ]
         }
@@ -2107,11 +2107,11 @@ def test_merging_titles_field():
 @cover('urls')
 def test_merging_urls_field():
     root = {'urls': [
-        {'description': 'descr 1', 'value': 'a'}
+        {'description': 'descr 1', 'value': 'http://localhost:5000/api/record/1'}
     ]}
     head = {'urls': [
-        {'description': 'descr 1', 'value': 'a'},
-        {'description': 'descr 2', 'value': 'b'},
+        {'description': 'descr 1', 'value': 'http://localhost:5000/api/record/1'},
+        {'description': 'descr 2', 'value': 'http://localhost:5000/api/record/2'},
 
     ]}
     update = {}
