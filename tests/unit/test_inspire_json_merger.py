@@ -26,12 +26,12 @@ import pytest
 
 from utils import validate_subschema
 
-from inspire_json_merger.inspire_json_merger import (
+from inspire_json_merger.api import (
     get_acquisition_source,
-    _get_configuration,
+    get_configuration,
     get_head_source,
 )
-from inspire_json_merger.merger_config import (
+from inspire_json_merger.config import (
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
     PublisherOnArxivOperations,
@@ -204,10 +204,10 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, r
 
 
 def test_get_configuration(arxiv_record, publisher_record):
-    assert _get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
-    assert _get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
-    assert _get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
-    assert _get_configuration(publisher_record, publisher_record) == PublisherOnPublisherOperations
+    assert get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
+    assert get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
+    assert get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
+    assert get_configuration(publisher_record, publisher_record) == PublisherOnPublisherOperations
 
     arxiv1 = arxiv_record
     arxiv1['control_number'] = 1
@@ -221,13 +221,13 @@ def test_get_configuration(arxiv_record, publisher_record):
     pub2 = dict(publisher_record)
     pub2['control_number'] = 4
 
-    assert _get_configuration(arxiv1, arxiv2) == ManualMergeOperations
-    assert _get_configuration(pub1, pub2) == ManualMergeOperations
+    assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
+    assert get_configuration(pub1, pub2) == ManualMergeOperations
 
     # even if both have a ``control_number`` arxiv-publisher
     # will give always the configuration ArxivOnPublisherOperations
-    assert _get_configuration(arxiv1, pub1) == PublisherOnArxivOperations
-    assert _get_configuration(pub1, arxiv1) == ArxivOnPublisherOperations
+    assert get_configuration(arxiv1, pub1) == PublisherOnArxivOperations
+    assert get_configuration(pub1, arxiv1) == ArxivOnPublisherOperations
 
     arxiv2['control_number'] = 1  # same of the other arxiv record
-    assert _get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations
+    assert get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations

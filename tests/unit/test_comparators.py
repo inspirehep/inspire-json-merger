@@ -28,8 +28,8 @@ from inspire_schemas.api import load_schema, validate
 from json_merger.config import UnifierOps
 
 from inspire_json_merger.comparators import IDNormalizer
-from inspire_json_merger.inspire_json_merger import inspire_json_merge
-from inspire_json_merger.merger_config import ArxivOnArxivOperations
+from inspire_json_merger.api import merge
+from inspire_json_merger.config import ArxivOnArxivOperations
 
 from utils import assert_ordered_conflicts
 
@@ -107,7 +107,7 @@ def test_comparing_references_field_same_dois():
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -164,7 +164,7 @@ def test_comparing_references_field_different_dois():
     }
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -216,7 +216,7 @@ def test_comparing_references_field_different_number_of_dois():
     }
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
@@ -248,7 +248,7 @@ def test_comparing_publication_info():
     expected_merged = update
 
     root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
-    merged, conflict = inspire_json_merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
     assert merged == expected_merged
