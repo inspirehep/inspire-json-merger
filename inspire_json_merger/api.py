@@ -95,8 +95,8 @@ def get_configuration(head, update, head_source=None):
         MergerConfigurationOperations: an object containing
         the rules needed to merge HEAD and UPDATE
     """
-    head_source = (head_source or get_head_source(head)).lower()
-    update_source = get_acquisition_source(update).lower()
+    head_source = (head_source or get_head_source(head))
+    update_source = get_acquisition_source(update)
 
     if not is_arxiv_and_publisher(head_source, update_source) and is_manual_merge(head, update):
         return ManualMergeOperations
@@ -133,7 +133,8 @@ def get_head_source(json_obj):
 
 
 def get_acquisition_source(json_obj):
-    return json_obj['acquisition_source']['source']
+    source = get_value(json_obj, 'acquisition_source.source')
+    return source.lower() if source else None
 
 
 def is_manual_merge(head, update):
@@ -142,5 +143,5 @@ def is_manual_merge(head, update):
 
 
 def is_arxiv_and_publisher(head_source, update_source):
-    sources = {head_source, update_source}
+    sources = {head_source, update_source} - {None}
     return len(sources) == 2 and 'arxiv' in sources
