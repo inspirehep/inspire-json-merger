@@ -231,3 +231,23 @@ def test_get_configuration(arxiv_record, publisher_record):
 
     arxiv2['control_number'] = 1  # same of the other arxiv record
     assert get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations
+
+
+def test_get_configuration_without_acquisition_source(arxiv_record, publisher_record):
+    arxiv1 = dict(arxiv_record)
+    arxiv1['control_number'] = 1
+    del arxiv1['acquisition_source']
+
+    arxiv2 = dict(arxiv_record)
+    arxiv2['control_number'] = 2
+    del arxiv2['acquisition_source']
+
+    assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
+
+    # arxiv2 is a publisher because doesn't have acquisition source
+    assert get_configuration(arxiv_record, arxiv2) == PublisherOnArxivOperations
+
+    # first one is arxiv because has arxiv_eprint
+    assert get_configuration(arxiv1, arxiv_record) == ArxivOnArxivOperations
+
+    assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
