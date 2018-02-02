@@ -115,10 +115,10 @@ def arxiv_record():
 @pytest.fixture
 def publisher_record():
     return {
-        '_collections':  ['literature'],
+        '_collections': ['literature'],
         'document_type': ['article'],
-        'titles':        {'title': 'Superconductivity'},
-        'dois': [{'value':  '10.1023/A:1026654312961'}],
+        'titles': {'title': 'Superconductivity'},
+        'dois': [{'value': '10.1023/A:1026654312961'}],
         'acquisition_source': {'source': 'ejl'}
     }
 

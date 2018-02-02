@@ -3036,7 +3036,7 @@ def test_documents():
             {
                 'key': 'pdf1.pdf',
                 'description': 'paper',
-                'source':  'arXiv',
+                'source': 'arXiv',
                 'fulltext': True,
                 'url': '/files/1234-1234-1234-1234/pdf1.pdf',
             },
