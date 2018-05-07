@@ -219,3 +219,45 @@ def test_filter_documents_same_source_multiple_sources_in_update():
     expected = root, head, update
 
     assert result == expected
+
+
+def test_filter_documents_remove_head_source():
+    root = {}
+    head = {
+        'documents': [
+            {
+                'source': 'publisher',
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+            {
+                'source': 'arXiv',
+                'key': 'old_file.pdf',
+                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+            },
+        ],
+    }
+    update = {
+        'documents': [
+            {
+                'source': 'publisher',
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+
+        ],
+    }
+    expected_head = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'old_file.pdf',
+                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+            },
+        ],
+    }
+
+    result = filter_documents_same_source(root, head, update)
+    expected = root, expected_head, update
+
+    assert result == expected

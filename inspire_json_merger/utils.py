@@ -146,7 +146,8 @@ def conflict_to_list(conflict):
 
 def remove_elements_with_source(source, field):
     """Remove all elements matching ``source`` in ``field``."""
-    return [element for element in field if element.get('source') != source]
+    return freeze(
+        [element for element in field if element.get('source') != source])
 
 
 def keep_only_update_source_in_field(field, root, head, update):
