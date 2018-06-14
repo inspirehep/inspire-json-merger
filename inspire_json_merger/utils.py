@@ -132,7 +132,8 @@ def filter_conflicts_by_path(conflict_list, to_delete_path):
 def is_to_delete(conflict, keys_path):
     to_delete = keys_path.split('.')
     conflict_path = conflict_to_list(conflict)
-
+    if conflict[0] == 'MANUAL_MERGE':
+        return False
     if len(to_delete) > len(conflict_path):
         return False
 
