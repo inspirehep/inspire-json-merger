@@ -1303,6 +1303,55 @@ def test_merging_dois_field():
     validate_subschema(merged)
 
 
+@cover('dois')
+def test_merging_dois_field_handles_duplicates():
+    root = {
+        'dois': [
+            {
+                'material': 'preprint',
+                'value': '10.1023/A:1026654312961'
+            },
+            {
+                'value': '10.1023/A:1026654312961'
+            }
+        ]
+    }
+    head = {
+        'dois': [
+            {
+                'material': 'preprint',
+                'source': 'nowhere',
+                'value': '10.1023/A:1026654312961'
+            }
+        ]
+    }
+    update = {
+        'dois': [
+            {
+                'material': 'publication',
+                'value': '10.1023/A:1026654312961'
+            }
+        ]
+    }
+
+    expected_merged = {
+        'dois': [
+            {
+                'material': 'publication',
+                'source': 'nowhere',
+                'value': '10.1023/A:1026654312961'
+            }
+        ]
+    }
+    expected_conflict = []
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+
 @cover('editions')
 def test_merging_editions_field():
     root = {'editions': ['edition1']}
