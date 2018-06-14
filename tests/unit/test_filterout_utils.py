@@ -40,6 +40,12 @@ def test_is_to_delete_false():
     assert is_to_delete(c, to_delete) is False
 
 
+def test_is_to_delete_manual_merge():
+    c = Conflict('MANUAL_MERGE', ('figures', 0, 'key'), 'figure1.png')
+    to_delete = 'figures'
+    assert is_to_delete(c, to_delete) is False
+
+
 def test_is_to_delete_true():
     c = Conflict('SET_FIELD', ('figures', 0, 'key'), 'figure1.png')
     to_delete = 'figures'
