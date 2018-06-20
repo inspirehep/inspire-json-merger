@@ -115,6 +115,137 @@ def test_comparing_references_field_same_dois():
     validate_subschema(merged)
 
 
+def test_comparing_references_field_publication_info_match():
+    root = {}
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in head',
+                    ],
+                    'publication_info': {
+                        'journal_title': 'J.Testing',
+                        'journal_volume': '42',
+                        'page_start': '5',
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in update',
+                    ],
+                    'publication_info': {
+                        'journal_title': 'J.Testing',
+                        'journal_volume': '42',
+                        'page_start': '5',
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+
+    expected_conflict = []
+    expected_merged = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in update',
+                    ],
+                    'publication_info': {
+                        'journal_title': 'J.Testing',
+                        'journal_volume': '42',
+                        'page_start': '5',
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+def test_comparing_references_field_publication_info_no_match():
+    root = {}
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in head',
+                    ],
+                    'publication_info': {
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in update',
+                    ],
+                    'publication_info': {
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+
+    expected_conflict = []
+    expected_merged = {
+        'references': [
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in head',
+                    ],
+                    'publication_info': {
+                        'year': 2009,
+                    },
+                }
+            },
+            {
+                'reference': {
+                    'misc': [
+                        'Reference in update',
+                    ],
+                    'publication_info': {
+                        'year': 2009,
+                    },
+                },
+            },
+        ],
+    }
+
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
 def test_comparing_references_field_different_dois():
     root = {}
     head = {
