@@ -98,6 +98,7 @@ RecordComparator = get_pk_comparator(['record.$ref'])
 RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
 SourceComparator = get_pk_comparator(['source'])
+SourceValueComparator = get_pk_comparator([['source', 'value']])
 TitleComparator = get_pk_comparator(['title'])
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
@@ -142,7 +143,7 @@ COMPARATORS = {
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
     'documents': DocumentComparator,
-    'dois': ValueComparator,
+    'dois': SourceValueComparator,
     'external_system_identifiers': SchemaComparator,
     'figures': FigureComparator,
     'funding_info': FundingInfoComparator,
@@ -158,5 +159,5 @@ COMPARATORS = {
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,
-    'titles': TitleComparator
+    'titles': SourceComparator
 }
