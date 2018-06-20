@@ -389,6 +389,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'authors.book_series',
         'authors.citeable',
         'authors.collaborations',
+        'curated',
         'control_number',
         'copyright',
         'core',
