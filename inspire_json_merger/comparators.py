@@ -85,6 +85,27 @@ def get_pk_comparator(primary_key_fields, normalization_functions=None):
     return Ret
 
 
+class NoMatch(object):
+    """Ensure the result of a normalization function is not a match."""
+    def __equals__(self, other):
+        return False
+
+
+class SubdictNormalizer(object):
+    """Normalizer that only looks at the keys passed as argument.
+
+    If any required key is not present, the element won't match.
+    """
+    def __init__(self, keys):
+        self.keys = set(keys)
+
+    def __call__(self, field):
+        if not self.keys.issubset(field.keys()):
+            return NoMatch()
+
+        return {k: field[k] for k in self.keys}
+
+
 AffiliationComparator = get_pk_comparator([['record.$ref'], ['value']])
 CollectionsComparator = get_pk_comparator(['primary'])
 CreationDatetimeComparator = get_pk_comparator(['creation_datetime'])
@@ -98,20 +119,25 @@ RecordComparator = get_pk_comparator(['record.$ref'])
 RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
 SourceComparator = get_pk_comparator(['source'])
+SourceValueComparator = get_pk_comparator([['source', 'value']])
 TitleComparator = get_pk_comparator(['title'])
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 
 
-ReferenceComparator = get_pk_comparator([
-    ['record'],
-    ['reference.arxiv_eprint'],
-    ['reference.dois'],
-    ['reference.isbn'],
-    ['reference.report_numbers'],
-    ['reference.persistent_identifiers'],
-    ['reference.publication_info']
-])
+ReferenceComparator = get_pk_comparator(
+    [
+        ['record'],
+        ['raw_refs'],
+        ['reference.arxiv_eprint'],
+        ['reference.dois'],
+        ['reference.isbn'],
+        ['reference.report_numbers'],
+        ['reference.persistent_identifiers'],
+        ['reference.publication_info']
+    ],
+    {'reference.publication_info': SubdictNormalizer(['journal_title', 'journal_volume', 'page_start'])}
+)
 
 PublicationInfoComparator = get_pk_comparator([
     ['journal_title', 'journal_volume']
@@ -142,7 +168,7 @@ COMPARATORS = {
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
     'documents': DocumentComparator,
-    'dois': ValueComparator,
+    'dois': SourceValueComparator,
     'external_system_identifiers': SchemaComparator,
     'figures': FigureComparator,
     'funding_info': FundingInfoComparator,
@@ -158,5 +184,5 @@ COMPARATORS = {
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,
-    'titles': TitleComparator
+    'titles': SourceComparator
 }

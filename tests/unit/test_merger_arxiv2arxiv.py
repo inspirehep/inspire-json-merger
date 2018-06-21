@@ -1274,7 +1274,11 @@ def test_merging_dois_field():
                 'material': 'preprint',
                 'source': 'nowhere',
                 'value': '10.1023/A:1026654312961'
-            }
+            },
+            {
+                'source': 'nowhere',
+                'value': '10.1023/B:1026654312961'
+            },
         ]
     }
     update = {
@@ -1282,17 +1286,31 @@ def test_merging_dois_field():
             {
                 'material': 'publication',
                 'value': '10.1023/A:1026654312961'
-            }
+            },
+            {
+                'material': 'erratum',
+                'source': 'nowhere',
+                'value': '10.1023/B:1026654312961'
+            },
         ]
     }
 
     expected_merged = {
         'dois': [
             {
-                'material': 'publication',
+                'material': 'preprint',
                 'source': 'nowhere',
                 'value': '10.1023/A:1026654312961'
-            }
+            },
+            {
+                'material': 'publication',
+                'value': '10.1023/A:1026654312961'
+            },
+            {
+                'material': 'erratum',
+                'source': 'nowhere',
+                'value': '10.1023/B:1026654312961'
+            },
         ]
     }
     expected_conflict = []
@@ -2077,7 +2095,7 @@ def test_merging_titles_field():
     ]}
     update = {'titles': [
         {
-            'source': 'submitter',
+            'source': 'arXiv',
             'title': 'ANTARES: Un osservatorio foo bar'
         }, {
             'source': 'submitter',
@@ -2087,7 +2105,7 @@ def test_merging_titles_field():
 
     expected_merged = {'titles': [
         {
-            'source': 'submitter',
+            'source': 'arXiv',
             'title': 'ANTARES: Un osservatorio foo bar'
         }, {
             'source': 'submitter',
