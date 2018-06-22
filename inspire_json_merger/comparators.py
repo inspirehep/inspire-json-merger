@@ -86,9 +86,10 @@ def get_pk_comparator(primary_key_fields, normalization_functions=None):
 
 
 class NoMatch(object):
-    """Ensure the result of a normalization function is not a match."""
-    def __equals__(self, other):
-        return False
+    """Ensure the result of a normalization function is not a match.
+
+    It has no __eq__ method so two instances always test unequal."""
+    pass
 
 
 class SubdictNormalizer(object):
