@@ -2080,14 +2080,14 @@ def test_merging_title_translations_field():
 def test_merging_titles_field():
     root = {'titles': [
         {
-            'source': 'submitter',
+            'source': 'arXiv',
             'title': 'ANTARES: An observatory at the seabed '
                       'to the confines of the Universe'
         }  # record: 1519935
     ]}
     head = {'titles': [
         {
-            'source': 'submitter',
+            'source': 'arXiv',
             'subtitle': 'this subtitle has been added by a curator',
             'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
@@ -2097,10 +2097,7 @@ def test_merging_titles_field():
         {
             'source': 'arXiv',
             'title': 'ANTARES: Un osservatorio foo bar'
-        }, {
-            'source': 'submitter',
-            'title': 'ANTARES: An observatory at the seabed to the confines of the Universe'
-        }
+        },
     ]}
 
     expected_merged = {'titles': [
@@ -2108,7 +2105,7 @@ def test_merging_titles_field():
             'source': 'arXiv',
             'title': 'ANTARES: Un osservatorio foo bar'
         }, {
-            'source': 'submitter',
+            'source': 'arXiv',
             'subtitle': 'this subtitle has been added by a curator',
             'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'

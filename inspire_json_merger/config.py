@@ -713,7 +713,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'texkeys': U.KEEP_ONLY_HEAD_ENTITIES,
         'thesis_info.institutions': U.KEEP_ONLY_UPDATE_ENTITIES,
         'title_translations': U.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'urls': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     }
     list_dict_ops = {
