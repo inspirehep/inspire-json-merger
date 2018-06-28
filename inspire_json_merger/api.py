@@ -26,6 +26,7 @@ import json
 import itertools
 
 from inspire_utils.record import get_value
+from inspire_utils.helpers import force_list
 from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.config import (
@@ -121,7 +122,7 @@ def get_head_source(json_obj):
 
     def no_arxiv_in_dois(obj):
         return 'dois' in obj and \
-            any(source != 'arxiv' for source in get_value(obj, 'dois.source'))
+            any(source.lower() != 'arxiv' for source in force_list(get_value(obj, 'dois.source')))
 
     if no_freetext_in_publication_info(json_obj) or no_arxiv_in_dois(json_obj):
         return 'publisher'
