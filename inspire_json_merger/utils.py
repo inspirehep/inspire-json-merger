@@ -29,6 +29,7 @@ from functools import partial
 import six
 from inspire_utils.record import get_value
 from pyrsistent import freeze, thaw
+from six.moves import zip
 
 split_on_re = re.compile(r'[\.\s-]')
 
@@ -162,10 +163,10 @@ def keep_only_update_source_in_field(field, root, head, update):
         records are returned with no modifications.
 
     Args:
-        field(str): the field to filter out.
-        root(dict): the root record, whose ``field`` will be cleaned.
-        head(dict): the head record, whose ``field`` will be cleaned.
-        update(dict): the update record, from which the ``source`` is read.
+        field (str): the field to filter out.
+        root (dict): the root record, whose ``field`` will be cleaned.
+        head (dict): the head record, whose ``field`` will be cleaned.
+        update (dict): the update record, from which the ``source`` is read.
 
     Returns:
         tuple: ``(root, head, update)`` with some elements filtered out from
@@ -186,6 +187,62 @@ def keep_only_update_source_in_field(field, root, head, update):
     return thaw(root), thaw(head), update
 
 
+def replace_references_if_uncurated(root, head, update):
+    """Remove references from either ``head`` or ``update`` depending on curation.
+
+    If references have been curated, then it removes all references from the
+    update to keep the existing ones. Otherwise, it removes all references from
+    the head to force replacement with the update ones.
+
+    Args:
+        root (dict): the root record.
+        head (dict): the head record.
+        update (dict): the update record.
+
+    Returns:
+        tuple: ``(root, head, update)`` with ``references`` removed from ``root`` and either
+        ``head`` or ``update``.
+    """
+    if 'references' not in head or 'references' not in update:
+        return root, head, update
+
+    root = freeze(root)
+    head = freeze(head)
+    update = freeze(update)
+
+    references_curated = are_references_curated(root.get('references', []), head.get('references', []))
+    if 'references' in root:
+        root = root.remove('references')
+    if references_curated:
+        update = update.remove('references')
+    else:
+        head = head.remove('references')
+
+    return thaw(root), thaw(head), thaw(update)
+
+
+def are_references_curated(root_refs, head_refs):
+    if not root_refs:
+        return any('legacy_curated' in head_ref for head_ref in head_refs)
+
+    if len(root_refs) != len(head_refs):
+        return True
+
+    if all(ref_equal_up_to_record(root, head) for (root, head) in zip(root_refs, head_refs)):
+        return False
+
+    return True
+
+
+def ref_equal_up_to_record(root_ref, head_ref):
+    if 'record' in root_ref:
+        root_ref = root_ref.remove('record')
+    if 'record' in head_ref:
+        head_ref = head_ref.remove('record')
+
+    return root_ref == head_ref
+
+
 def filter_records(root, head, update, filters=()):
     """Apply the filters to the records."""
     for filter_ in filters:
@@ -199,4 +256,5 @@ filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures'
 PRE_FILTERS = [
     filter_documents_same_source,
     filter_figures_same_source,
+    replace_references_if_uncurated,
 ]
