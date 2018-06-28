@@ -85,28 +85,6 @@ def get_pk_comparator(primary_key_fields, normalization_functions=None):
     return Ret
 
 
-class NoMatch(object):
-    """Ensure the result of a normalization function is not a match.
-
-    It has no __eq__ method so two instances always test unequal."""
-    pass
-
-
-class SubdictNormalizer(object):
-    """Normalizer that only looks at the keys passed as argument.
-
-    If any required key is not present, the element won't match.
-    """
-    def __init__(self, keys):
-        self.keys = set(keys)
-
-    def __call__(self, field):
-        if not self.keys.issubset(field.keys()):
-            return NoMatch()
-
-        return {k: field[k] for k in self.keys}
-
-
 AffiliationComparator = get_pk_comparator([['record.$ref'], ['value']])
 CollectionsComparator = get_pk_comparator(['primary'])
 CreationDatetimeComparator = get_pk_comparator(['creation_datetime'])
@@ -125,20 +103,6 @@ TitleComparator = get_pk_comparator(['title'])
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 
-
-ReferenceComparator = get_pk_comparator(
-    [
-        ['record'],
-        ['raw_refs'],
-        ['reference.arxiv_eprint'],
-        ['reference.dois'],
-        ['reference.isbn'],
-        ['reference.report_numbers'],
-        ['reference.persistent_identifiers'],
-        ['reference.publication_info']
-    ],
-    {'reference.publication_info': SubdictNormalizer(['journal_title', 'journal_volume', 'page_start'])}
-)
 
 PublicationInfoComparator = get_pk_comparator([
     ['journal_title', 'journal_volume']
@@ -181,7 +145,6 @@ COMPARATORS = {
     'persistent_identifiers': ValueComparator,
     'public_notes': SourceComparator,
     'publication_info': PublicationInfoComparator,
-    'references': ReferenceComparator,
     'references.reference.authors': AuthorComparator,
     'report_numbers': ValueComparator,
     'title_translations': LanguageComparator,
