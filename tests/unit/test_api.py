@@ -108,7 +108,7 @@ def arxiv_record():
         'document_type': ['article'],
         'titles': {'title': 'Superconductivity'},
         'arxiv_eprints': [{'value': '1710.05832'}],
-        'acquisition_source': {'source': 'arxiv'}
+        'acquisition_source': {'source': 'arXiv'}
     }
 
 
@@ -151,7 +151,7 @@ def test_get_head_source_no_arxiv_dois(rec_dois):
 
 def test_get_head_source_arxiv_dois(rec_dois):
     # record has dois with arxiv source and arxiv_eprint, no publication_info
-    rec_dois.get('dois')[0]['source'] = 'arxiv'
+    rec_dois.get('dois')[0]['source'] = 'arXiv'
     validate_subschema(rec_dois)
     assert get_head_source(rec_dois) == 'arxiv'
 
@@ -165,7 +165,7 @@ def test_get_head_source_arxiv_dois_no_eprint(rec_dois):
 
 def test_get_head_source_arxiv_dois_and_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arxiv'
+    rec.get('dois')[0]['source'] = 'arXiv'
     rec['publication_info'] = rec_publication_info['publication_info']
     validate_subschema(rec_dois)
     assert get_head_source(rec_dois) == 'arxiv'
@@ -180,7 +180,7 @@ def test_get_head_source_no_arxiv_dois_and_freetext(rec_dois, rec_publication_in
 
 def test_get_head_source_arxiv_dois_and_no_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arxiv'
+    rec.get('dois')[0]['source'] = 'arXiv'
     rec['publication_info'] = rec_publication_info['publication_info']
     del rec['publication_info'][0]['pubinfo_freetext']
     validate_subschema(rec_dois)
@@ -196,7 +196,7 @@ def test_get_head_source_no_arxiv_dois_and_no_freetext(rec_dois, rec_publication
 
 def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arxiv'
+    rec.get('dois')[0]['source'] = 'arXiv'
     rec['publication_info'] = rec_publication_info['publication_info']
     del rec['arxiv_eprints']
     validate_subschema(rec_dois)
