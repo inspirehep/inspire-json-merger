@@ -127,7 +127,6 @@ COMPARATORS = {
     'authors': AuthorComparator,
     'authors.affiliations': AffiliationComparator,
     'authors.ids': SchemaComparator,
-    'authors.raw_affiliations': SourceComparator,
     'book_series': TitleComparator,
     'collaborations': RecordComparator,
     'copyright': MaterialComparator,

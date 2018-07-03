@@ -859,6 +859,10 @@ def test_merging_raw_affiliations_field():
                     {
                         'source': 'arxiv',
                         'value': 'Department of Physics, Indiana University, Bloomington, IN 47405, US'
+                    },
+                    {
+                        'source': 'arxiv',
+                        'value': 'Padua U',
                     }
                 ]
             }
