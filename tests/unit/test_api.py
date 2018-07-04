@@ -30,6 +30,7 @@ from inspire_json_merger.api import (
     get_acquisition_source,
     get_configuration,
     get_head_source,
+    merge,
 )
 from inspire_json_merger.config import (
     ArxivOnArxivOperations,
@@ -251,3 +252,46 @@ def test_get_configuration_without_acquisition_source(arxiv_record, publisher_re
     assert get_configuration(arxiv1, arxiv_record) == ArxivOnArxivOperations
 
     assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
+
+
+def test_merger_handles_list_deletions():
+    root = {
+        'book_series': [
+            {
+                'title': 'IEEE Nucl.Sci.Symp.Conf.Rec.',
+                'volume': '1'
+            },
+            {
+                'title': 'CMS Web-Based Monitoring',
+                'volume': '2'
+            },
+            {
+                'title': 'Lectures in Testing',
+                'volume': '3',
+            },
+        ]
+    }
+    head = {}
+    update = {
+        'book_series': [
+            {
+                'title': 'Lectures in Testing',
+                'volume': '3',
+            },
+        ]
+    }
+
+    expected_merged = update
+    expected_conflict = [
+        {
+            'path': '/book_series',
+            'op': 'remove',
+            'value': None,
+            '$type': u'REMOVE_FIELD'
+        }
+    ]
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert conflict == expected_conflict
+    validate_subschema(merged)
