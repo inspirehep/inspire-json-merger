@@ -94,7 +94,6 @@ ImprintsComparator = get_pk_comparator(['publisher'])
 LanguageComparator = get_pk_comparator(['language'])
 LicenseComparator = get_pk_comparator(['imposing'])
 MaterialComparator = get_pk_comparator(['material'])
-RecordComparator = get_pk_comparator(['record.$ref'])
 RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
 SourceComparator = get_pk_comparator(['source'])
@@ -128,7 +127,7 @@ COMPARATORS = {
     'authors.affiliations': AffiliationComparator,
     'authors.ids': SchemaComparator,
     'book_series': TitleComparator,
-    'collaborations': RecordComparator,
+    'collaborations': ValueComparator,
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
     'documents': DocumentComparator,
