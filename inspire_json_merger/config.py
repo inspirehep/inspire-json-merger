@@ -503,7 +503,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'references.reference.persistent_identifiers': U.KEEP_ONLY_UPDATE_ENTITIES,
         'references.reference.report_numbers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'references.reference.urls': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'report_numbers': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'report_numbers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'texkeys': U.KEEP_ONLY_HEAD_ENTITIES,
         'thesis_info.institutions': U.KEEP_ONLY_UPDATE_ENTITIES,
         'title_translations': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
