@@ -327,7 +327,7 @@ def test_merging_acquisition_source_field():
         }
     }
 
-    expected_merged = head
+    expected_merged = update
     expected_conflict = []
 
     merged, conflict = merge(root, head, update, head_source='arxiv')

@@ -196,7 +196,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         '_export_to': D.FALLBACK_KEEP_HEAD,
         '_private_notes': D.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': D.FALLBACK_KEEP_HEAD,
-        'acquisition_source': D.FALLBACK_KEEP_HEAD,
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'authors': D.FALLBACK_KEEP_HEAD,
         'authors.affiliations': D.FALLBACK_KEEP_HEAD,
         'authors.curated_relation': D.FALLBACK_KEEP_HEAD,
@@ -344,7 +344,8 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'references.raw_refs': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
     }
     list_dict_ops = {
-        'authors.full_name': D.keep_longest
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
+        'authors.full_name': D.keep_longest,
     }
 
 
@@ -363,6 +364,7 @@ class ManualMergeOperations(MergerConfigurationOperations):
     ]
     list_merge_ops = {}
     list_dict_ops = {
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'authors.full_name': D.keep_longest,
     }
 
@@ -722,7 +724,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         '_export_to': D.FALLBACK_KEEP_HEAD,
         '_private_notes': D.FALLBACK_KEEP_HEAD,
         'accelerator_experiments': D.FALLBACK_KEEP_HEAD,
-        'acquisition_source': D.FALLBACK_KEEP_HEAD,
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'authors': D.FALLBACK_KEEP_HEAD,
         'authors.affiliations': D.FALLBACK_KEEP_HEAD,
         'authors.curated_relation': D.FALLBACK_KEEP_HEAD,
