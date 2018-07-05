@@ -1940,12 +1940,55 @@ def test_merging_report_numbers_field():
     update = {'report_numbers': [
         {
             'hidden': False,
-            'source': 'hepcrawl',
+            'source': 'arXiv',
             'value': 'arXiv:1705.01099'
         }
     ]}
 
-    expected_merged = update
+    expected_merged = {'report_numbers': [
+        {
+            'hidden': False,
+            'source': 'arXiv',
+            'value': 'arXiv:1705.01099'
+        }, {
+            'source': 'foo bar',
+            'value': 'foo:123456'
+        }
+    ]}
+    expected_conflict = []
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+@cover('report_numbers')
+def test_merging_report_numbers_field_repeated_values():
+    root = {'report_numbers': [
+        {
+            'source': 'arXiv',
+            'value': 'CERN-CMS-2018-001',
+        },
+    ]}  # record: 1598022
+    head = {'report_numbers': [
+        {
+            'hidden': True,
+            'source': 'arXiv',
+            'value': 'CERN-CMS-2018-001',
+        },
+        {
+            'value': 'CERN-CMS-2018-001',
+        },
+    ]}
+    update = {'report_numbers': [
+        {
+            'source': 'arXiv',
+            'value': 'CERN-CMS-2018-001',
+        },
+    ]}
+
+    expected_merged = head
     expected_conflict = []
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
