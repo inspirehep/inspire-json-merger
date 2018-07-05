@@ -145,6 +145,6 @@ COMPARATORS = {
     'public_notes': SourceComparator,
     'publication_info': PublicationInfoComparator,
     'references.reference.authors': AuthorComparator,
-    'report_numbers': ValueComparator,
+    'report_numbers': SourceValueComparator,
     'title_translations': LanguageComparator,
 }
