@@ -76,6 +76,31 @@ def test_id_normalizer():
     assert normalizer(author) == 'J.Smith.1'
 
 
+def test_comparing_authors_unicode_name():
+    root = {}
+    head = {
+        'authors': [
+            {'full_name': 'Ortín, Tomás'},
+        ],
+    }
+    update = {
+        'authors': [
+            {'full_name': 'Ortin, Tomas'},
+        ],
+    }
+
+    expected_conflict = []
+    expected_merged = head
+
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
 def test_comparing_publication_info():
     root = {}
     head = {

@@ -72,8 +72,11 @@ class AuthorComparator(DistanceFunctionComparator):
         IDNormalizer('INSPIRE ID'),
         IDNormalizer('INSPIRE BAI'),
         AuthorNameNormalizer(author_tokenize),
-        AuthorNameNormalizer(author_tokenize, 1),
-        AuthorNameNormalizer(author_tokenize, 1, True)
+        AuthorNameNormalizer(author_tokenize, asciify=True),
+        AuthorNameNormalizer(author_tokenize, first_names_number=1),
+        AuthorNameNormalizer(author_tokenize, first_names_number=1, asciify=True),
+        AuthorNameNormalizer(author_tokenize, first_names_number=1, first_name_to_initial=True),
+        AuthorNameNormalizer(author_tokenize, first_names_number=1, first_name_to_initial=True, asciify=True),
     ]
 
 
