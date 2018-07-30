@@ -113,19 +113,27 @@ def are_references_curated(root_refs, head_refs):
     if len(root_refs) != len(head_refs):
         return True
 
-    if all(ref_equal_up_to_record(root, head) for (root, head) in zip(root_refs, head_refs)):
+    if all(ref_almost_equal(root, head) for (root, head) in zip(root_refs, head_refs)):
         return False
 
     return True
 
 
-def ref_equal_up_to_record(root_ref, head_ref):
-    if 'record' in root_ref:
-        root_ref = root_ref.remove('record')
-    if 'record' in head_ref:
-        head_ref = head_ref.remove('record')
+def ref_almost_equal(root_ref, head_ref):
+    root_ref = _remove_if_present(root_ref, 'record')
+    head_ref = _remove_if_present(head_ref, 'record')
+
+    root_ref = root_ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
+    head_ref = head_ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
 
     return root_ref == head_ref
+
+
+def _remove_if_present(pmap, key):
+    try:
+        return pmap.remove(key)
+    except KeyError:
+        return pmap
 
 
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
