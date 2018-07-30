@@ -267,3 +267,47 @@ def test_filter_documents_remove_head_source():
     expected = root, expected_head, update
 
     assert result == expected
+
+
+def test_filter_documents_same_source_is_case_insensitive_on_source():
+    root = {}
+    head = {
+        'documents': [
+            {
+                'source': 'arXiv',
+                'key': 'file1.pdf',
+                'url': '/files/1234-1234-1234-1234/file1.pdf',
+            },
+            {
+                'source': 'arXiv',
+                'key': 'file2.pdf',
+                'url': '/files/1234-1234-1234-1234/file2.pdf',
+            },
+            {
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+        ],
+    }
+    update = {
+        'documents': [
+            {
+                'source': 'arxiv',
+                'key': 'new_file.pdf',
+                'url': '/files/5678-5678-5678-5678/new_file.pdf',
+            },
+        ],
+    }
+    expected_head = {
+        'documents': [
+            {
+                'key': 'file3.pdf',
+                'url': '/files/1234-1234-1234-1234/file3.pdf',
+            },
+        ],
+    }
+
+    result = filter_documents_same_source(root, head, update)
+    expected = root, expected_head, update
+
+    assert result == expected
