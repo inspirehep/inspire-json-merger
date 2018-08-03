@@ -82,7 +82,12 @@ class AuthorComparator(DistanceFunctionComparator):
 
 def get_pk_comparator(primary_key_fields, normalization_functions=None):
     class Ret(PrimaryKeyComparator):
-        pass
+        __doc__ = (
+            'primary_key_fields:%s, normalization_functions:%s' % (
+                primary_key_fields,
+                normalization_functions,
+            )
+        )
     Ret.primary_key_fields = primary_key_fields
     Ret.normalization_functions = normalization_functions or {}
     return Ret
@@ -111,7 +116,7 @@ PublicationInfoComparator = get_pk_comparator([
 ])
 
 FigureComparator = get_pk_comparator([
-    ['source', 'caption']
+    ['key']
 ])
 
 DocumentComparator = get_pk_comparator([

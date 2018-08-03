@@ -58,6 +58,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'core',
         'curated',
         'dois',
+        'figures',
         'license',
         'number_of_pages',
         'persistent_identifiers',
@@ -74,6 +75,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
         'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'document_type': U.KEEP_ONLY_HEAD_ENTITIES,
+        'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
     }
 
@@ -125,7 +127,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'core': D.FALLBACK_KEEP_HEAD,
         'dois': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'external_system_identifiers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+        'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'license': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'public_notes': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'publication_info': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
@@ -190,6 +192,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'corporate_author': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'documents': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
     }
 
@@ -232,6 +235,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'corporate_author': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'documents': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
     }
 
