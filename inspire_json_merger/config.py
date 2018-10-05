@@ -24,7 +24,12 @@ from __future__ import absolute_import, division, print_function
 
 from json_merger.config import DictMergerOps as D, UnifierOps as U
 
-from inspire_json_merger.utils import PRE_FILTERS
+from inspire_json_merger.pre_filters import (
+    filter_documents_same_source,
+    filter_figures_same_source,
+    filter_curated_references,
+    filter_publisher_references,
+)
 from .comparators import COMPARATORS
 
 """
@@ -44,7 +49,11 @@ class MergerConfigurationOperations(object):
 
 class ArxivOnArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    pre_filters = PRE_FILTERS
+    pre_filters = [
+        filter_documents_same_source,
+        filter_figures_same_source,
+        filter_curated_references,
+    ]
     conflict_filters = [
         '_collections',
         '_files',
@@ -94,7 +103,11 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
 
 class ArxivOnPublisherOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    pre_filters = PRE_FILTERS
+    pre_filters = [
+        filter_documents_same_source,
+        filter_figures_same_source,
+        filter_publisher_references,
+    ]
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
@@ -165,7 +178,11 @@ class ManualMergeOperations(MergerConfigurationOperations):
 
 class PublisherOnArxivOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    pre_filters = PRE_FILTERS
+    pre_filters = [
+        filter_documents_same_source,
+        filter_figures_same_source,
+        filter_curated_references,
+    ]
     conflict_filters = [
         '_collections',
         '_files',
@@ -208,7 +225,11 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
 
 class PublisherOnPublisherOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    pre_filters = PRE_FILTERS
+    pre_filters = [
+        filter_documents_same_source,
+        filter_figures_same_source,
+        filter_curated_references,
+    ]
     conflict_filters = [
         '_collections',
         '_files',
