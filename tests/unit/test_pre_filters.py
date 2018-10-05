@@ -23,7 +23,9 @@
 from __future__ import absolute_import, division, print_function
 
 from inspire_json_merger.utils import filter_records
-from inspire_json_merger.pre_filters import filter_documents_same_source
+from inspire_json_merger.pre_filters import (filter_documents_same_source,
+                                             filter_curated_references,
+                                             filter_publisher_references)
 
 
 def test_filter_documents_same_source():
@@ -191,5 +193,241 @@ def test_filter_documents_same_source_is_case_insensitive_on_source():
 
     result = filter_records(root, head, update, filters=[filter_documents_same_source])
     expected = root, expected_head, update
+
+    assert result == expected
+
+
+def test_filter_curated_references_takes_update_if_not_curated():
+    root = {}
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_head = {}
+    expected_update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+
+    result = filter_records(root, head, update, filters=[filter_curated_references])
+    expected = root, expected_head, expected_update
+
+    assert result == expected
+
+
+def test_filter_curated_references_keeps_head_if_legacy_curated():
+    root = {}
+    head = {
+        'references': [
+            {
+                'legacy_curated': True,
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_head = {
+        'references': [
+            {
+                'legacy_curated': True,
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    expected_update = {}
+
+    result = filter_records(root, head, update, filters=[filter_curated_references])
+    expected = root, expected_head, expected_update
+
+    assert result == expected
+
+
+def test_filter_curated_references_keeps_update_if_head_equals_to_root():
+    root = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                    'misc': ['foo'],
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_root = {}
+    expected_head = {}
+    expected_update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+
+    result = filter_records(root, head, update, filters=[filter_curated_references])
+    expected = expected_root, expected_head, expected_update
+
+    assert result == expected
+
+
+def test_filter_curated_references_keeps_head_if_differs_from_root():
+    root = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                    'dois': ['10.1234/5678'],
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_root = {}
+    expected_head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                    'dois': ['10.1234/5678'],
+                },
+            },
+        ],
+    }
+    expected_update = {}
+
+    result = filter_records(root, head, update, filters=[filter_curated_references])
+    expected = expected_root, expected_head, expected_update
+
+    assert result == expected
+
+
+def test_filter_publisher_references_keeps_head():
+    root = {}
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+            },
+        ],
+    }
+    expected_update = {}
+
+    result = filter_records(root, head, update, filters=[filter_publisher_references])
+    expected = root, expected_head, expected_update
+
+    assert result == expected
+
+
+def test_filter_publisher_references_keeps_update_if_no_refs_in_head():
+    root = {}
+    head = {}
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+
+    result = filter_records(root, head, update, filters=[filter_publisher_references])
+    expected = root, head, expected_update
 
     assert result == expected

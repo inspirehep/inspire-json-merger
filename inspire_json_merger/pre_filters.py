@@ -100,6 +100,19 @@ def filter_curated_references(root, head, update):
     return root, head, update
 
 
+def filter_publisher_references(root, head, update):
+    """Remove references from ``update`` if there are any in ``head``.
+
+    This is useful when merging a record from a publisher with an update form arXiv,
+    as arXiv should never overwrite references from the publisher.
+    """
+    if 'references' in head:
+        root = _remove_if_present(root, 'references')
+        update = _remove_if_present(update, 'references')
+
+    return root, head, update
+
+
 def are_references_curated(root_refs, head_refs):
     if not root_refs:
         return any('legacy_curated' in head_ref for head_ref in head_refs)
@@ -132,8 +145,3 @@ def _remove_if_present(pmap, key):
 
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
 filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
-PRE_FILTERS = [
-    filter_documents_same_source,
-    filter_figures_same_source,
-    filter_curated_references,
-]
