@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+from inspire_json_merger.utils import filter_records
 from inspire_json_merger.pre_filters import filter_documents_same_source
 
 
@@ -65,7 +66,7 @@ def test_filter_documents_same_source():
         ],
     }
 
-    result = filter_documents_same_source(root, head, update)
+    result = filter_records(root, head, update, filters=[filter_documents_same_source])
     expected = root, expected_head, update
 
     assert result == expected
@@ -102,7 +103,7 @@ def test_filter_documents_same_source_multiple_sources_in_update():
         ],
     }
 
-    result = filter_documents_same_source(root, head, update)
+    result = filter_records(root, head, update, filters=[filter_documents_same_source])
     expected = root, head, update
 
     assert result == expected
@@ -144,7 +145,7 @@ def test_filter_documents_remove_head_source():
         ],
     }
 
-    result = filter_documents_same_source(root, head, update)
+    result = filter_records(root, head, update, filters=[filter_documents_same_source])
     expected = root, expected_head, update
 
     assert result == expected
@@ -188,7 +189,7 @@ def test_filter_documents_same_source_is_case_insensitive_on_source():
         ],
     }
 
-    result = filter_documents_same_source(root, head, update)
+    result = filter_records(root, head, update, filters=[filter_documents_same_source])
     expected = root, expected_head, update
 
     assert result == expected

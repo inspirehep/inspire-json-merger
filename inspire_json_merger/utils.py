@@ -26,6 +26,7 @@ from __future__ import absolute_import, division, print_function
 
 import re
 import six
+from pyrsistent import freeze, thaw
 from six.moves import zip
 
 split_on_re = re.compile(r'[\.\s-]')
@@ -145,7 +146,8 @@ def conflict_to_list(conflict):
 
 def filter_records(root, head, update, filters=()):
     """Apply the filters to the records."""
+    root, head, update = freeze(root), freeze(head), freeze(update)
     for filter_ in filters:
         root, head, update = filter_(root, head, update)
 
-    return root, head, update
+    return thaw(root), thaw(head), thaw(update)

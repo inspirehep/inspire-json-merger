@@ -49,30 +49,28 @@ def keep_only_update_source_in_field(field, root, head, update):
 
     Args:
         field (str): the field to filter out.
-        root (dict): the root record, whose ``field`` will be cleaned.
-        head (dict): the head record, whose ``field`` will be cleaned.
-        update (dict): the update record, from which the ``source`` is read.
+        root (pmap): the root record, whose ``field`` will be cleaned.
+        head (pmap): the head record, whose ``field`` will be cleaned.
+        update (pmap): the update record, from which the ``source`` is read.
 
     Returns:
         tuple: ``(root, head, update)`` with some elements filtered out from
             ``root`` and ``head``.
     """
-    update_sources = {source.lower() for source in get_value(update, '.'.join([field, 'source']), [])}
+    update_sources = {source.lower() for source in get_value(thaw(update), '.'.join([field, 'source']), [])}
     if len(update_sources) != 1:
         return root, head, update
     source = update_sources.pop()
 
-    root = freeze(root)
-    head = freeze(head)
     if field in root:
         root = root.set(field, remove_elements_with_source(source, root[field]))
     if field in head:
         head = head.set(field, remove_elements_with_source(source, head[field]))
 
-    return thaw(root), thaw(head), update
+    return root, head, update
 
 
-def replace_references_if_uncurated(root, head, update):
+def filter_curated_references(root, head, update):
     """Remove references from either ``head`` or ``update`` depending on curation.
 
     If references have been curated, then it removes all references from the
@@ -80,9 +78,9 @@ def replace_references_if_uncurated(root, head, update):
     the head to force replacement with the update ones.
 
     Args:
-        root (dict): the root record.
-        head (dict): the head record.
-        update (dict): the update record.
+        root (pmap): the root record.
+        head (pmap): the head record.
+        update (pmap): the update record.
 
     Returns:
         tuple: ``(root, head, update)`` with ``references`` removed from ``root`` and either
@@ -90,10 +88,6 @@ def replace_references_if_uncurated(root, head, update):
     """
     if 'references' not in head or 'references' not in update:
         return root, head, update
-
-    root = freeze(root)
-    head = freeze(head)
-    update = freeze(update)
 
     references_curated = are_references_curated(root.get('references', []), head.get('references', []))
     if 'references' in root:
@@ -103,7 +97,7 @@ def replace_references_if_uncurated(root, head, update):
     else:
         head = head.remove('references')
 
-    return thaw(root), thaw(head), thaw(update)
+    return root, head, update
 
 
 def are_references_curated(root_refs, head_refs):
@@ -141,5 +135,5 @@ filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures'
 PRE_FILTERS = [
     filter_documents_same_source,
     filter_figures_same_source,
-    replace_references_if_uncurated,
+    filter_curated_references,
 ]
