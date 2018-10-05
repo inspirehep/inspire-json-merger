@@ -1,0 +1,137 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of INSPIRE.
+# Copyright (C) 2014-2017 CERN.
+#
+# INSPIRE is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# INSPIRE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with INSPIRE. If not, see <http://www.gnu.org/licenses/>.
+#
+# In applying this license, CERN does not waive the privileges and immunities
+# granted to it by virtue of its status as an Intergovernmental Organization
+# or submit itself to any jurisdiction.
+
+"""Pre-filters to transform the records before the merger operates."""
+
+from __future__ import absolute_import, division, print_function
+
+from functools import partial
+from inspire_utils.record import get_value
+from pyrsistent import freeze, thaw
+from six.moves import zip
+
+
+def remove_elements_with_source(source, field):
+    """Remove all elements matching ``source`` in ``field``."""
+    return freeze(
+        [element for element in field if element.get('source', '').lower() != source]
+    )
+
+
+def keep_only_update_source_in_field(field, root, head, update):
+    """Remove elements from root and head where ``source`` matches the update.
+
+    This is useful if the update needs to overwrite all elements with the same
+    source.
+
+    .. note::
+        If the update doesn't contain exactly one source in ``field``, the
+        records are returned with no modifications.
+
+    Args:
+        field (str): the field to filter out.
+        root (dict): the root record, whose ``field`` will be cleaned.
+        head (dict): the head record, whose ``field`` will be cleaned.
+        update (dict): the update record, from which the ``source`` is read.
+
+    Returns:
+        tuple: ``(root, head, update)`` with some elements filtered out from
+            ``root`` and ``head``.
+    """
+    update_sources = {source.lower() for source in get_value(update, '.'.join([field, 'source']), [])}
+    if len(update_sources) != 1:
+        return root, head, update
+    source = update_sources.pop()
+
+    root = freeze(root)
+    head = freeze(head)
+    if field in root:
+        root = root.set(field, remove_elements_with_source(source, root[field]))
+    if field in head:
+        head = head.set(field, remove_elements_with_source(source, head[field]))
+
+    return thaw(root), thaw(head), update
+
+
+def replace_references_if_uncurated(root, head, update):
+    """Remove references from either ``head`` or ``update`` depending on curation.
+
+    If references have been curated, then it removes all references from the
+    update to keep the existing ones. Otherwise, it removes all references from
+    the head to force replacement with the update ones.
+
+    Args:
+        root (dict): the root record.
+        head (dict): the head record.
+        update (dict): the update record.
+
+    Returns:
+        tuple: ``(root, head, update)`` with ``references`` removed from ``root`` and either
+        ``head`` or ``update``.
+    """
+    if 'references' not in head or 'references' not in update:
+        return root, head, update
+
+    root = freeze(root)
+    head = freeze(head)
+    update = freeze(update)
+
+    references_curated = are_references_curated(root.get('references', []), head.get('references', []))
+    if 'references' in root:
+        root = root.remove('references')
+    if references_curated:
+        update = update.remove('references')
+    else:
+        head = head.remove('references')
+
+    return thaw(root), thaw(head), thaw(update)
+
+
+def are_references_curated(root_refs, head_refs):
+    if not root_refs:
+        return any('legacy_curated' in head_ref for head_ref in head_refs)
+
+    if len(root_refs) != len(head_refs):
+        return True
+
+    if all(ref_equal_up_to_record(root, head) for (root, head) in zip(root_refs, head_refs)):
+        return False
+
+    return True
+
+
+def ref_equal_up_to_record(root_ref, head_ref):
+    if 'record' in root_ref:
+        root_ref = root_ref.remove('record')
+    if 'record' in head_ref:
+        head_ref = head_ref.remove('record')
+
+    return root_ref == head_ref
+
+
+filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
+filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
+PRE_FILTERS = [
+    filter_documents_same_source,
+    filter_figures_same_source,
+    replace_references_if_uncurated,
+]

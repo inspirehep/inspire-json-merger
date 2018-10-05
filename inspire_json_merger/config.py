@@ -24,7 +24,7 @@ from __future__ import absolute_import, division, print_function
 
 from json_merger.config import DictMergerOps as D, UnifierOps as U
 
-from inspire_json_merger.utils import PRE_FILTERS
+from inspire_json_merger.pre_filters import PRE_FILTERS
 from .comparators import COMPARATORS
 
 """
