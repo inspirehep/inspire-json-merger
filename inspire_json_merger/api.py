@@ -140,8 +140,7 @@ def get_acquisition_source(json_obj):
 
 
 def is_manual_merge(head, update):
-    return ('control_number' in update and 'control_number' in head and
-            update['control_number'] != head['control_number'])
+    return ('control_number' in update and 'control_number' in head and update['control_number'] != head['control_number'])
 
 
 def is_arxiv_and_publisher(head_source, update_source):
