@@ -79,10 +79,10 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
     list_merge_ops = {
         '_collections': U.KEEP_ONLY_HEAD_ENTITIES,
         '_files': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'authors': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'collaborations': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'document_type': U.KEEP_ONLY_HEAD_ENTITIES,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
@@ -134,7 +134,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'abstracts': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints.categories': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'authors': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_HEAD_ENTITIES,
         'core': D.FALLBACK_KEEP_HEAD,
@@ -202,13 +202,13 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
 
     list_merge_ops = {
         '_collections': U.KEEP_ONLY_HEAD_ENTITIES,
-        'authors': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'collaborations': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
-        'corporate_author': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'corporate_author': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'documents': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
-        'document_type': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
     }
@@ -249,13 +249,13 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
 
     list_merge_ops = {
         '_collections': U.KEEP_ONLY_HEAD_ENTITIES,
-        'authors': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'collaborations': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
-        'corporate_author': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'corporate_author': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'documents': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
-        'document_type': U.KEEP_UPDATE_AND_HEAD_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
     }
