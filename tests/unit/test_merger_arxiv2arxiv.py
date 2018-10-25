@@ -605,3 +605,39 @@ def test_documents():
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
+
+
+def test_head_adds_author_no_conflict():
+    root = {
+        'authors': [
+            {
+                'full_name': 'Pitts Kevin',
+            }
+        ]
+    }
+    head = {
+        'authors': [
+            {
+                'full_name': 'Pitts, Kevin',
+            },
+            {
+                'full_name': 'Pincopallino, K.'
+            }
+        ]
+    }
+    update = {
+        'authors': [
+            {
+                'full_name': 'Pitts Kevin',
+            }
+        ]
+    }
+
+    expected_merged = head
+
+    expected_conflict = []
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
