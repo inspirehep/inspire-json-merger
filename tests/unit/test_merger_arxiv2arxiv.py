@@ -607,37 +607,52 @@ def test_documents():
     validate_subschema(merged)
 
 
-def test_head_adds_author_no_conflict():
+def test_head_curates_author_no_duplicate():
+    # https://labs.inspirehep.net/api/holdingpen/1268973
     root = {
         'authors': [
             {
-                'full_name': 'Pitts Kevin',
-            }
+                "full_name": "Li, Zhengxiang"
+            },
         ]
     }
     head = {
-        'authors': [
+        "authors": [
             {
-                'full_name': 'Pitts, Kevin',
-            },
-            {
-                'full_name': 'Pincopallino, K.'
+                "affiliations": [
+                    {
+                        "value": "Beijing Normal U."
+                    }
+                ],
+                "full_name": "Li, Zheng-Xiang",
             }
         ]
     }
     update = {
         'authors': [
             {
-                'full_name': 'Pitts Kevin',
-            }
+                "full_name": "Li, Zhengxiang"
+            },
         ]
     }
 
-    expected_merged = head
+    expected_merged = update
 
-    expected_conflict = []
+    expected_conflict = [
+        {
+            '$type': 'ADD_BACK_TO_HEAD',
+            'op': 'add',
+            'path': '/authors/-',
+            'value': {
+                'affiliations': [
+                    {'value': 'Beijing Normal U.'}
+                ],
+                'full_name': 'Li, Zheng-Xiang'
+            }
+        }
+    ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
-    assert_ordered_conflicts(conflict, expected_conflict)
+    assert conflict == expected_conflict
     validate_subschema(merged)
