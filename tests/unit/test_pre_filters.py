@@ -273,13 +273,14 @@ def test_filter_curated_references_keeps_head_if_legacy_curated():
     assert result == expected
 
 
-def test_filter_curated_references_keeps_update_if_head_equals_to_root():
+def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
     root = {
         'references': [
             {
                 'reference': {
                     'arxiv_eprint': '1810.12345',
                 },
+                'curated_relation': False,
             },
         ],
     }
@@ -290,6 +291,13 @@ def test_filter_curated_references_keeps_update_if_head_equals_to_root():
                     'arxiv_eprint': '1810.12345',
                     'misc': ['foo'],
                 },
+                'raw_refs': [
+                    {
+                        'source': 'arXiv',
+                        'schema': 'text',
+                        'value': 'foo 1810.12345',
+                    },
+                ]
             },
         ],
     }

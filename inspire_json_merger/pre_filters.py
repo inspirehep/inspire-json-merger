@@ -127,18 +127,28 @@ def are_references_curated(root_refs, head_refs):
 
 
 def ref_almost_equal(root_ref, head_ref):
-    root_ref = _remove_if_present(root_ref, 'record')
-    head_ref = _remove_if_present(head_ref, 'record')
+    return _normalize_ref(root_ref) == _normalize_ref(head_ref)
 
-    root_ref = root_ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
-    head_ref = head_ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
 
-    return root_ref == head_ref
+def _normalize_ref(ref):
+    ref = _remove_if_present(ref, 'record')
+    ref = _remove_if_falsy(ref, 'curated_relation')
+    ref = _remove_if_present(ref, 'raw_refs')
+    ref = ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
+    return ref
 
 
 def _remove_if_present(pmap, key):
     try:
         return pmap.remove(key)
+    except KeyError:
+        return pmap
+
+
+def _remove_if_falsy(pmap, key):
+    try:
+        if not pmap[key]:
+            return pmap.remove(key)
     except KeyError:
         return pmap
 
