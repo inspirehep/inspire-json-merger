@@ -149,6 +149,7 @@ def _remove_if_falsy(pmap, key):
     try:
         if not pmap[key]:
             return pmap.remove(key)
+        return pmap
     except KeyError:
         return pmap
 

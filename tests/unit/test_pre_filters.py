@@ -328,6 +328,69 @@ def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
     assert result == expected
 
 
+def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root_with_curated():
+    root = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                },
+                'curated_relation': True,
+            },
+        ],
+    }
+    head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                    'misc': ['foo'],
+                },
+                'raw_refs': [
+                    {
+                        'source': 'arXiv',
+                        'schema': 'text',
+                        'value': 'foo 1810.12345',
+                    },
+                ]
+            },
+        ],
+    }
+    update = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.56789',
+                },
+            },
+        ],
+    }
+    expected_root = {}
+    expected_head = {
+        'references': [
+            {
+                'reference': {
+                    'arxiv_eprint': '1810.12345',
+                    'misc': ['foo'],
+                },
+                'raw_refs': [
+                    {
+                        'source': 'arXiv',
+                        'schema': 'text',
+                        'value': 'foo 1810.12345',
+                    },
+                ]
+            },
+        ],
+    }
+    expected_update = {}
+
+    result = filter_records(root, head, update, filters=[filter_curated_references])
+    expected = expected_root, expected_head, expected_update
+
+    assert result == expected
+
+
 def test_filter_curated_references_keeps_head_if_differs_from_root():
     root = {
         'references': [
