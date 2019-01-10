@@ -138,6 +138,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_HEAD_ENTITIES,
         'core': D.FALLBACK_KEEP_HEAD,
+        'documents': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'dois': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'external_system_identifiers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
