@@ -36,7 +36,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'inspire-schemas~=59.0,>=59.0.0',
+    'inspire-schemas~=60.0,>=60.0.1',
     'inspire-utils~=3.0,>=3.0.0',
     'json-merger[contrib]~=0.0,>=0.6.0',
     'pyrsistent~=0.0,>=0.14.0',
