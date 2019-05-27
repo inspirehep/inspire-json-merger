@@ -127,7 +127,7 @@ def publisher_record():
 def test_get_head_source_freetext_pub_info_with_eprint(rec_publication_info):
     # record has pubinfo_freetext and arxiv_eprints, no dois
     validate_subschema(rec_publication_info)
-    assert get_head_source(rec_publication_info) is 'arxiv'
+    assert get_head_source(rec_publication_info) == 'arxiv'
 
 
 def test_get_head_source_freetext_pub_info_with_no_eprint(rec_publication_info):
@@ -147,7 +147,7 @@ def test_get_head_source_no_freetext_pub_info(rec_publication_info):
 def test_get_head_source_no_arxiv_dois(rec_dois):
     # record has dois without arxiv source, no publication_info
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) is 'publisher'
+    assert get_head_source(rec_dois) == 'publisher'
 
 
 def test_get_head_source_arxiv_dois(rec_dois):

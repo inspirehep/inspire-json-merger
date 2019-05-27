@@ -88,7 +88,7 @@ def test_delete_conflicts_wrong_path():
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
         ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
     ]
-    assert len(filter_conflicts_by_path(conflicts, 'authors.source')) is 3
+    assert len(filter_conflicts_by_path(conflicts, 'authors.source')) == 3
 
 
 def test_delete_conflicts_good_path():
@@ -97,7 +97,7 @@ def test_delete_conflicts_good_path():
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
         ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
     ]
-    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) is 2
+    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) == 2
 
 
 def test_delete_conflicts_longer_path():
@@ -106,7 +106,7 @@ def test_delete_conflicts_longer_path():
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
         ('SET_FIELD', ('authors', 1, 'full_name', 0, 'foo'), 'John Smith')
     ]
-    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) is 2
+    assert len(filter_conflicts_by_path(conflicts, 'authors.full_name')) == 2
 
 
 def test_delete_conflicts_path_too_long():
@@ -115,7 +115,7 @@ def test_delete_conflicts_path_too_long():
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
         ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
     ]
-    assert len(filter_conflicts_by_path(conflicts, 'figures.key.foo')) is 3
+    assert len(filter_conflicts_by_path(conflicts, 'figures.key.foo')) == 3
 
 
 def test_delete_conflicts_more_deletion():
@@ -124,7 +124,7 @@ def test_delete_conflicts_more_deletion():
         ('SET_FIELD', ('figures', 1, 'key'), 'figure2.png'),
         ('SET_FIELD', ('authors', 1, 'full_name'), 'John Smith')
     ]
-    assert len(filter_conflicts_by_path(conflicts, 'figures')) is 1
+    assert len(filter_conflicts_by_path(conflicts, 'figures')) == 1
 
 
 def test_filter_conflicts():
@@ -140,4 +140,4 @@ def test_filter_conflicts():
         'authors.full_name',
         'report_numbers'
     ]
-    assert len(filter_conflicts(conflicts, fields)) is 4
+    assert len(filter_conflicts(conflicts, fields)) == 4
