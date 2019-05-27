@@ -36,6 +36,8 @@ setup_requires = [
 ]
 
 install_requires = [
+    # newer munkres is Python 3 only
+    'munkres==1.0.12',
     'inspire-schemas~=60.0,>=60.0.1',
     'inspire-utils~=3.0,>=3.0.0',
     'json-merger[contrib]~=0.0,>=0.6.0',
