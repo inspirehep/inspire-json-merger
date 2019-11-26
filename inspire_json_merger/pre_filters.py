@@ -135,6 +135,7 @@ def _normalize_ref(ref):
     ref = _remove_if_falsy(ref, 'curated_relation')
     ref = _remove_if_present(ref, 'raw_refs')
     ref = ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'misc'))
+    ref = ref.transform(['reference'], lambda reference: _remove_if_present(reference, 'authors'))
     return ref
 
 

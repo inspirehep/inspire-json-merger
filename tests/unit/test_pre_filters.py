@@ -290,6 +290,7 @@ def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
                 'reference': {
                     'arxiv_eprint': '1810.12345',
                     'misc': ['foo'],
+                    'authors': ['Smith, J.'],
                 },
                 'raw_refs': [
                     {
@@ -328,7 +329,7 @@ def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
     assert result == expected
 
 
-def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root_with_curated():
+def test_filter_curated_references_keeps_head_if_head_almost_equal_to_root_with_curated():
     root = {
         'references': [
             {
