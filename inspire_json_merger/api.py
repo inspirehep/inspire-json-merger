@@ -22,9 +22,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-import json
-import itertools
-
 from inspire_utils.record import get_value
 from inspire_utils.helpers import force_list
 from json_merger.merger import MergeError, Merger
@@ -36,6 +33,8 @@ from inspire_json_merger.config import (
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
 )
+from inspire_json_merger.postprocess import postprocess_results
+
 from inspire_json_merger.utils import filter_conflicts, filter_records
 
 
@@ -60,7 +59,6 @@ def merge(root, head, update, head_source=None):
     """
     configuration = get_configuration(head, update, head_source)
     conflicts = []
-
     root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
     merger = Merger(
         root=root, head=head, update=update,
@@ -76,11 +74,9 @@ def merge(root, head, update, head_source=None):
     except MergeError as e:
         conflicts = e.content
     conflicts = filter_conflicts(conflicts, configuration.conflict_filters)
-    conflicts_as_json = [json.loads(c.to_json()) for c in conflicts]
-    flat_conflicts_as_json = list(itertools.chain.from_iterable(conflicts_as_json))
-
     merged = merger.merged_root
-    return merged, flat_conflicts_as_json
+
+    return postprocess_results(merged, conflicts)
 
 
 def get_configuration(head, update, head_source=None):
