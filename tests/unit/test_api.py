@@ -22,6 +22,8 @@
 
 from __future__ import absolute_import, division, print_function
 
+from operator import itemgetter
+
 import pytest
 
 from utils import validate_subschema
@@ -295,3 +297,60 @@ def test_merger_handles_list_deletions():
     assert merged == expected_merged
     assert conflict == expected_conflict
     validate_subschema(merged)
+
+
+def test_merger_handles_authors_with_correct_ordering():
+    root = {}
+    head = {
+        "authors": [
+            {
+                'full_name': 'Janeway, Kathryn',
+                'age': 44
+            },
+            {
+                'full_name': 'Picard, Jean-Luc',
+                'age': 55
+            },
+            {
+                "full_name": "Archer, Jonathan",
+            }
+        ],
+    }
+    update = {
+        "authors": [
+            {
+                "full_name": "Kirk, James"
+            },
+            {
+                'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66
+            },
+            {
+                "full_name": "Archer, Jonathan",
+            }
+        ],
+    }
+
+    expected_conflict = [
+        {
+            'path': '/authors/1',
+            'op': 'replace',
+            'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
+            '$type': 'SET_FIELD'
+        },
+        {
+            'path': '/authors/2',
+            'op': 'replace',
+            'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
+            '$type': 'SET_FIELD'
+        },
+    ]
+    expected_merged = {'authors': [
+        {"full_name": "Kirk, James"},
+        {'age': 44, 'full_name': 'Janeway, Kathryn'},
+        {'age': 55, 'full_name': 'Picard, Jean-Luc'},
+        {"full_name": "Archer, Jonathan"}
+    ]}
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(key=itemgetter('path'))

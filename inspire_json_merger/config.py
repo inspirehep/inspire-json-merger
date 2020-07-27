@@ -28,7 +28,7 @@ from inspire_json_merger.pre_filters import (
     filter_documents_same_source,
     filter_figures_same_source,
     filter_curated_references,
-    filter_publisher_references,
+    filter_publisher_references, update_authors_with_ordering_info,
 )
 from .comparators import COMPARATORS
 
@@ -53,6 +53,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
+        update_authors_with_ordering_info
     ]
     conflict_filters = [
         '_collections',
@@ -107,6 +108,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_publisher_references,
+        update_authors_with_ordering_info
     ]
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
@@ -161,7 +163,7 @@ class ManualMergeOperations(MergerConfigurationOperations):
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
-    pre_filters = []  # don't delete files with the same source
+    pre_filters = [update_authors_with_ordering_info]  # don't delete files with the same source
     conflict_filters = [
         '_collections',
         '_desy_bookkeeping',
@@ -183,6 +185,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
+        update_authors_with_ordering_info,
     ]
     conflict_filters = [
         '_collections',
@@ -230,6 +233,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
+        update_authors_with_ordering_info,
     ]
     conflict_filters = [
         '_collections',

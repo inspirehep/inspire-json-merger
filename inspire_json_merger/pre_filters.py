@@ -25,9 +25,13 @@
 from __future__ import absolute_import, division, print_function
 
 from functools import partial
+
+import pyrsistent
 from inspire_utils.record import get_value
 from pyrsistent import freeze, thaw
 from six.moves import zip
+
+from inspire_json_merger.utils import ORDER_KEY
 
 
 def remove_elements_with_source(source, field):
@@ -111,6 +115,29 @@ def filter_publisher_references(root, head, update):
         update = _remove_if_present(update, 'references')
 
     return root, head, update
+
+
+def update_authors_with_ordering_info(root, head, update):
+    """Adds ordering information into authors entries.
+
+    This is helpful so we won't loose correct ordering on conflicts.
+    Args:
+        root (pmap): the root record.
+        head (pmap): the head record.
+        update (pmap): the update record.
+
+    Returns: A tuple containing root, head and update with authors data
+        enriched with ordering information
+
+    """
+    if 'authors' in head:
+        head = head.update({"authors": _update_authors_list_with_ordering_data(head["authors"])})
+    return root, head, update
+
+
+def _update_authors_list_with_ordering_data(input_list):
+    positions = iter(range(len(input_list)))
+    return input_list.transform([pyrsistent.ny], lambda element: element.set(ORDER_KEY, (next(positions))))
 
 
 def are_references_curated(root_refs, head_refs):

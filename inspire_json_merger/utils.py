@@ -31,6 +31,8 @@ from six.moves import zip
 
 split_on_re = re.compile(r'[\.\s-]')
 
+ORDER_KEY = "__pos"
+
 
 def scan_author_string_for_phrases(s):
     """Scan a name string and output an object representing its structure.
