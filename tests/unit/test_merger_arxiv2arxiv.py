@@ -184,12 +184,12 @@ def test_merging_dois_field_handles_repeated_values():
     expected_merged = {
         'dois': [
             {
-                'material': 'publication',
+                'material': 'preprint',
+                'source': 'nowhere',
                 'value': '10.1023/A:1026654312961'
             },
             {
-                'material': 'preprint',
-                'source': 'nowhere',
+                'material': 'publication',
                 'value': '10.1023/A:1026654312961'
             },
             {
@@ -427,13 +427,14 @@ def test_merging_titles_field():
     expected_merged = {'titles': [
         {
             'source': 'arXiv',
-            'title': 'ANTARES: Un osservatorio foo bar'
-        }, {
-            'source': 'arXiv',
             'subtitle': 'this subtitle has been added by a curator',
             'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
-        }
+        },
+        {
+            'source': 'arXiv',
+            'title': 'ANTARES: Un osservatorio foo bar'
+        },
     ]}
     expected_conflict = []
 

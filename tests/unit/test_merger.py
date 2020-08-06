@@ -90,7 +90,7 @@ def test_merging_same_documents_arxiv_on_arxiv(fake_get_config):
     }
     head = root
     update = root
-    expected_merged = update
+    expected_merged = head
     expected_conflict = []
     merged, conflict = merge(root, head, update)
     assert merged == expected_merged

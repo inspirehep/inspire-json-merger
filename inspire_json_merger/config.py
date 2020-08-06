@@ -38,8 +38,8 @@ This module provides different sets of rules that `inspire_json_merge`
 
 
 class MergerConfigurationOperations(object):
-    default_dict_merge_op = D.FALLBACK_KEEP_UPDATE
-    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
+    default_dict_merge_op = D.FALLBACK_KEEP_HEAD
+    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     conflict_filters = None
     comparators = None
     pre_filters = None
@@ -99,6 +99,18 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'persistent_identifiers': D.FALLBACK_KEEP_HEAD,
         'preprint_date': D.FALLBACK_KEEP_HEAD,
         'publication_info': D.FALLBACK_KEEP_HEAD,
+        # Fields bellow are merged and conflicts are ignored, so for those fields we stay with previous merge behaviour.
+        'abstracts': D.FALLBACK_KEEP_UPDATE,
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
+        'arxiv_eprints': D.FALLBACK_KEEP_UPDATE,
+        'authors.affiliations': D.FALLBACK_KEEP_UPDATE,
+        'citeable': D.FALLBACK_KEEP_UPDATE,
+        'dois': D.FALLBACK_KEEP_UPDATE,
+        'figures': D.FALLBACK_KEEP_UPDATE,
+        'license': D.FALLBACK_KEEP_UPDATE,
+        'number_of_pages': D.FALLBACK_KEEP_UPDATE,
+        'public_notes': D.FALLBACK_KEEP_UPDATE,
+
     }
 
 
@@ -110,7 +122,6 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_publisher_references,
         update_authors_with_ordering_info
     ]
-    default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
         '_files',
@@ -160,8 +171,6 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
 
 
 class ManualMergeOperations(MergerConfigurationOperations):
-    default_dict_merge_op = D.FALLBACK_KEEP_HEAD
-    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
     pre_filters = [update_authors_with_ordering_info]  # don't delete files with the same source
     conflict_filters = [
@@ -180,6 +189,7 @@ class ManualMergeOperations(MergerConfigurationOperations):
 
 
 class PublisherOnArxivOperations(MergerConfigurationOperations):
+    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
     pre_filters = [
         filter_documents_same_source,
@@ -272,4 +282,14 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'curated': D.FALLBACK_KEEP_HEAD,
         'preprint_date': D.FALLBACK_KEEP_HEAD,
         'report_numbers': D.FALLBACK_KEEP_HEAD,
+        # Fields bellow are merged and conflicts are ignored, so for those fields we stay with previous merge behaviour.
+        '_files': D.FALLBACK_KEEP_UPDATE,
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
+        'authors.raw_affiliations': D.FALLBACK_KEEP_UPDATE,
+        'citeable': D.FALLBACK_KEEP_UPDATE,
+        'copyright': D.FALLBACK_KEEP_UPDATE,
+        'imprints': D.FALLBACK_KEEP_UPDATE,
+        'inspire_categories': D.FALLBACK_KEEP_UPDATE,
+        'license': D.FALLBACK_KEEP_UPDATE,
+        'number_of_pages': D.FALLBACK_KEEP_UPDATE,
     }

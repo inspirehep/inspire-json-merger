@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import operator
 from operator import itemgetter
 
 import pytest
@@ -283,20 +284,17 @@ def test_merger_handles_list_deletions():
         ]
     }
 
-    expected_merged = update
+    expected_merged = head
     expected_conflict = [
-        {
-            'path': '/book_series',
-            'op': 'remove',
-            'value': None,
-            '$type': u'REMOVE_FIELD'
-        }
+        {'path': '/book_series/0/volume', 'op': 'replace', 'value': '3', '$type': 'SET_FIELD'},
+        {'path': '/book_series/0/title', 'op': 'replace', 'value': 'Lectures in Testing', '$type': 'SET_FIELD'},
+        {'path': '/book_series/2', 'op': 'remove', 'value': None, '$type': 'REMOVE_FIELD'},
+        {'path': '/book_series/1', 'op': 'remove', 'value': None, '$type': 'REMOVE_FIELD'}
     ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
-    assert conflict == expected_conflict
-    validate_subschema(merged)
+    assert sorted(conflict, key=operator.itemgetter("path")) == sorted(expected_conflict, key=operator.itemgetter("path"))
 
 
 def test_merger_handles_authors_with_correct_ordering():
