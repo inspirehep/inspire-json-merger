@@ -39,7 +39,7 @@ This module provides different sets of rules that `inspire_json_merge`
 
 class MergerConfigurationOperations(object):
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
-    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     conflict_filters = None
     comparators = None
     pre_filters = None
@@ -171,6 +171,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
 
 
 class ManualMergeOperations(MergerConfigurationOperations):
+    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
     pre_filters = [update_authors_with_ordering_info]  # don't delete files with the same source
     conflict_filters = [
@@ -189,7 +190,6 @@ class ManualMergeOperations(MergerConfigurationOperations):
 
 
 class PublisherOnArxivOperations(MergerConfigurationOperations):
-    default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
     pre_filters = [
         filter_documents_same_source,
