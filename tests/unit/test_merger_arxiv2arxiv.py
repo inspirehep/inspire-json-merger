@@ -637,21 +637,23 @@ def test_head_curates_author_no_duplicate():
         ]
     }
 
-    expected_merged = update
-
-    expected_conflict = [
-        {
-            '$type': 'ADD_BACK_TO_HEAD',
-            'op': 'add',
-            'path': '/authors/-',
-            'value': {
-                'affiliations': [
+    expected_merged = {
+        'authors': [
+            {'full_name': 'Li, Zhengxiang'},
+            {
+                'full_name': 'Li, Zheng-Xiang', 'affiliations': [
                     {'value': 'Beijing Normal U.'}
-                ],
-                'full_name': 'Li, Zheng-Xiang'
+                ]
             }
-        }
-    ]
+        ]
+    }
+
+    expected_conflict = [{
+        'path': '/authors/1',
+        'op': 'remove',
+        'value': None,
+        '$type': 'REMOVE_FIELD'
+    }]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged

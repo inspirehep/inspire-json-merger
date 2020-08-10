@@ -23,14 +23,17 @@ from __future__ import absolute_import, division, print_function
 
 import itertools
 import json
+from collections import Iterable
 
 from json_merger.conflict import Conflict
+from pyrsistent import thaw
 
 from inspire_json_merger.utils import ORDER_KEY
 
 
 def postprocess_results(merged, conflicts):
     """Run all postprocessing to provide output understandable by record-editor.
+
     Args:
         merged(dict): Merged document
         conflicts(list): List of all possible conflicts
@@ -58,9 +61,13 @@ def remove_ordering_from_conflicts(conflicts):
 
 def remove_ordering_from_authors_merged(merged):
     """Cleans up ordering information in merged record."""
+    authors = []
     if 'authors' in merged:
         for author in merged["authors"]:
+            author = thaw(author)
             author.pop(ORDER_KEY, None)
+            authors.append(author)
+        merged['authors'] = authors
     return merged
 
 
@@ -83,51 +90,119 @@ def postprocess_conflicts(conflicts, merged):
         an list containing all generated conflicts.
     """
     new_conflicts = []
-    possible_duplicates = []
+    possible_duplicates = set()
     for conflict in conflicts:
         conflict_type, conflict_location, conflict_content = conflict
         if conflict_type == "MANUAL_MERGE" and conflict_location[0] == "authors":
             new_conflict, merged, head = _process_author_manual_merge_conflict(conflict, merged)
             if new_conflict:
                 new_conflicts.append(new_conflict)
-                possible_duplicates.append(head)
-        else:
-            new_conflicts.append(conflict)
-    new_conflicts = _remove_duplicates(new_conflicts, set(possible_duplicates))
+                possible_duplicates.add(head)
+        elif not _is_conflict_duplicated(conflict, possible_duplicates):
+            conflict_type, conflict_location, conflict_content = conflict
+            if conflict_type == "ADD_BACK_TO_HEAD":
+                new_conflict, merged = _process_add_back_to_head(conflict, merged)
+                new_conflicts.append(new_conflict)
+            else:
+                new_conflicts.append(conflict)
     return new_conflicts, merged
 
 
-def _remove_duplicates(conflicts, possible_duplicates):
-    new_conflicts = []
-    for conflict in conflicts:
-        conflict_type, conflict_location, conflict_content = conflict
-        if conflict_type == "ADD_BACK_TO_HEAD" and conflict_location[0] == "authors" and conflict_content in possible_duplicates:
-            continue
+def _process_add_back_to_head(conflict, merged):
+    """Process ADD_BACK_TO_HEAD conflicts differently than other conflicts.
+
+    Replace all ADD_BACK_TO_HEAD conflicts to became REMOVE_FIELD conflicts
+    also adds value from conflict back to merged_root
+    REMOVE_FIELD conflict now points to proper element on list.
+    """
+    conflict_type, conflict_location, conflict_content = conflict
+    if conflict_location[0] == 'authors':
+        position, merged['authors'] = _insert_to_list(conflict_content, merged['authors'])
+        insert_path = ('authors', position)
+        new_conflict = Conflict("REMOVE_FIELD", insert_path, None)
+        return new_conflict, merged
+    else:
+        insert_path, merged = _additem(conflict_content, merged, conflict_location)
+        new_conflict = Conflict("REMOVE_FIELD", insert_path, None)
+        return new_conflict, merged
+
+
+def _additem(item, object, path):
+    """Adds item to object on path.
+
+    Args:
+        item: Item to add
+        object: List or Dictionary to which item should be added
+        path(tuple): Path on which item should be added, every element of path is a separate element.
+        Path represents place after which item should be added.
+
+    Returns(tuple): Tuple containing path and item merged with item under proper path.
+    """
+    if path[0]:
+        if path[0] == '-':
+            position, object = _insert_to_list(item, object)
+            return (position, ), object
         else:
-            new_conflicts.append(conflict)
-    return new_conflicts
+            try:
+                idx = int(path[0])
+                if len(path) == 1:
+                    idx, object = _insert_to_list(item, object, idx)
+                    return (idx, ), object
+                else:
+                    new_path, object[idx] = _additem(item, object[idx], path[1:])
+            except ValueError:
+                if len(path) == 1:
+                    object[path[0]] = item
+                    return (path[0],), object
+                else:
+                    new_path, object[path[0]] = _additem(item, object[path[0]], path[1:])
+    return (path[0], ) + new_path, object
+
+
+def _is_conflict_duplicated(conflict, possible_duplicates):
+    conflict_type, conflict_location, conflict_content = conflict
+    if conflict_type == "ADD_BACK_TO_HEAD" and conflict_location[0] == "authors" and conflict_content in possible_duplicates:
+        return True
+    return False
 
 
 def _process_author_manual_merge_conflict(conflict, merged):
-    """Process author `MANUAL_MERGE` conflict
+    """Process author `MANUAL_MERGE` conflict.
 
-    Conflict object is an tuple containing
+    Conflict object is an tuple containing:
     (conflict_type, conflict_location, conflict_data)
-    where `conflict_data` is a tuple of: (ROOT, HEAD, UPDATE)
+    where `conflict_data` is a tuple of: (ROOT, HEAD, UPDATE).
     """
     _, _, (root, head, update) = conflict
     if head not in merged["authors"]:
-        position, merged['authors'] = _insert_author(dict(head), merged['authors'])
-        new_conflict = Conflict("SET_FIELD", ("authors/{position}".format(position=position),), update)
+        position, merged['authors'] = _insert_to_list(head, merged['authors'])
+        new_conflict = Conflict("SET_FIELD", ("authors", position), update)
         return new_conflict, merged, head
     return None, merged, head
 
 
-def _insert_author(head, merged):
-    position = head[ORDER_KEY]
-    for idx, element in enumerate(merged):
-        if ORDER_KEY in element and element[ORDER_KEY] > position:
-            merged.insert(idx, head)
-            return idx, merged
-    merged.append(head)
-    return len(merged) - 1, merged
+def _insert_to_list(item, objects_list, position=None):
+    """Inserts value into list at proper position (as close to requested position as possible but not before it).
+
+    If no position provided element will be added at the end of the list.
+    Args:
+        item: Value to insert into objects_list with `ORDER_KEY` key
+        objects_list(list): List where value should be inserted
+        position(int): If set then use this position instead `ORDER_KEY` key
+
+    Returns(tuple): (position on which it was placed, merged objects_list).
+    """
+    item = thaw(item)
+    if not position and ORDER_KEY in item:
+        position = item[ORDER_KEY]
+    if position is not None:
+        for idx, element in enumerate(objects_list):
+            if isinstance(element, Iterable) and ORDER_KEY in element:
+                if element[ORDER_KEY] > position:
+                    objects_list.insert(idx, item)
+                    return idx, objects_list
+            elif idx > position:
+                objects_list.insert(idx, item)
+                return idx, objects_list
+    objects_list.append(item)
+    return len(objects_list) - 1, objects_list
