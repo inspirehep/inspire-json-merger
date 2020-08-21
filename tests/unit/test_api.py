@@ -22,7 +22,9 @@
 
 from __future__ import absolute_import, division, print_function
 
+import json
 import operator
+import os
 from operator import itemgetter
 
 import pytest
@@ -42,6 +44,16 @@ from inspire_json_merger.config import (
     PublisherOnPublisherOperations,
     ManualMergeOperations
 )
+
+
+def get_file(file_path):
+    path = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(path, file_path)
+    return open(path, 'r')
+
+
+def load_test_data(file_path):
+    return json.load(get_file(file_path))
 
 
 def test_get_acquisition_source_non_arxiv():
@@ -352,3 +364,18 @@ def test_merger_handles_authors_with_correct_ordering():
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
     assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(key=itemgetter('path'))
+
+
+def test_ordering_conflicts():
+
+    root = load_test_data("test_data/root.json")
+    head = load_test_data("test_data/head.json")
+    update = load_test_data("test_data/update.json")
+
+    expected_conflicts = load_test_data("test_data/conflicts.json")
+    expected_merged = load_test_data("test_data/merged.json")
+
+    merged, conflicts = merge(root, head, update)
+
+    assert sorted(merged) == sorted(expected_merged)
+    assert conflicts.sort(key=itemgetter('path')) == expected_conflicts.sort(key=itemgetter('path'))

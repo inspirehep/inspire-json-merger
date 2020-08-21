@@ -42,6 +42,7 @@ def postprocess_results(merged, conflicts):
         an list containing all generated conflicts.
 
     """
+
     conflicts, merged = postprocess_conflicts(conflicts, merged)
     conflicts_as_json = [json.loads(c.to_json()) for c in conflicts]
     flat_conflicts_as_json = remove_ordering_from_conflicts(
@@ -91,21 +92,56 @@ def postprocess_conflicts(conflicts, merged):
     """
     new_conflicts = []
     possible_duplicates = set()
-    for conflict in conflicts:
+    while conflicts:
+        conflict = conflicts.pop()
         conflict_type, conflict_location, conflict_content = conflict
         if conflict_type == "MANUAL_MERGE" and conflict_location[0] == "authors":
             new_conflict, merged, head = _process_author_manual_merge_conflict(conflict, merged)
             if new_conflict:
-                new_conflicts.append(new_conflict)
+                new_conflicts, conflicts = add_conflict(new_conflict, new_conflicts, conflicts)
                 possible_duplicates.add(head)
         elif not _is_conflict_duplicated(conflict, possible_duplicates):
             conflict_type, conflict_location, conflict_content = conflict
             if conflict_type == "ADD_BACK_TO_HEAD":
                 new_conflict, merged = _process_add_back_to_head(conflict, merged)
-                new_conflicts.append(new_conflict)
+                new_conflicts, conflicts = add_conflict(new_conflict, new_conflicts, conflicts)
             else:
                 new_conflicts.append(conflict)
     return new_conflicts, merged
+
+
+def add_conflict(conflict, processed_conflicts, unprocessed_conflicts):
+    """Adds conflict which added something to `merged` dict so positions for other conflicts should be updated
+
+    Args:
+        conflict(Conflict): curently added conflict
+        conflict_list(list): List of conflicts already added
+        unprocessed_conflicts(list): List of conflicts which will be added
+    """
+
+    processed_conflicts = update_conflicts_list(conflict, processed_conflicts)
+    unprocessed_conflicts = update_conflicts_list(conflict, unprocessed_conflicts)
+    processed_conflicts.append(conflict)
+
+    return processed_conflicts, unprocessed_conflicts
+
+
+def update_conflicts_list(conflict, conflict_list):
+    """Updates positions in provided conflict_list for conflict which will be added
+
+    Args:
+        conflict(Conflict): New conflict
+        conflict_list(list): List of conflicts where positions should be updated
+    """
+    new_type, new_path, new_content = conflict
+    for idx, processed_conflict in enumerate(conflict_list):
+        path = processed_conflict[1]
+        if path[0] == new_path[0] and len(path) > 1 and len(new_path) > 1 and path[1] >= new_path[1]:
+            path = list(path)
+            path[1] += 1
+            path = tuple(path)
+            conflict_list[idx] = Conflict(processed_conflict[0], path, processed_conflict[2])
+    return conflict_list
 
 
 def _process_add_back_to_head(conflict, merged):
@@ -152,7 +188,7 @@ def _additem(item, object, path):
                     new_path, object[idx] = _additem(item, object[idx], path[1:])
             except ValueError:
                 if len(path) == 1:
-                    object[path[0]] = item
+                    object[path[0]] = thaw(item)
                     return (path[0],), object
                 else:
                     new_path, object[path[0]] = _additem(item, object[path[0]], path[1:])
