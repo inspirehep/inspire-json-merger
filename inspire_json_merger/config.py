@@ -80,7 +80,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
     list_merge_ops = {
         '_collections': U.KEEP_ONLY_HEAD_ENTITIES,
         '_files': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_ONLY_HEAD_ENTITIES,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
         'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
@@ -147,7 +147,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'abstracts': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints.categories': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_ONLY_HEAD_ENTITIES,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_HEAD_ENTITIES,
         'core': D.FALLBACK_KEEP_HEAD,
@@ -190,6 +190,8 @@ class ManualMergeOperations(MergerConfigurationOperations):
 
 
 class PublisherOnArxivOperations(MergerConfigurationOperations):
+    default_list_merge_op = U.KEEP_ONLY_UPDATE_ENTITIES
+    default_dict_merge_op = D.FALLBACK_KEEP_UPDATE
     comparators = COMPARATORS
     pre_filters = [
         filter_documents_same_source,
@@ -264,7 +266,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
 
     list_merge_ops = {
         '_collections': U.KEEP_ONLY_HEAD_ENTITIES,
-        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors': U.KEEP_ONLY_HEAD_ENTITIES,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES,
         'collaborations': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
