@@ -29,12 +29,13 @@ from inspire_schemas.api import load_schema, validate
 
 
 def assert_ordered_conflicts(conflicts, expected):
-    # expected conflict is a Conflict class instance
     expected_conflicts = [
-        json.loads(c.to_json()) for c in expected
+        json.loads(c.to_json()) for c in expected if hasattr(c, 'to_json')
     ]
-    expected_conflicts_flat = list(itertools.chain.from_iterable(expected_conflicts))
-
+    if expected_conflicts:
+        expected_conflicts_flat = list(itertools.chain.from_iterable(expected_conflicts))
+    else:
+        expected_conflicts_flat = expected
     # order the lists to check if they match
     conflicts = sorted(conflicts, key=lambda c: c['path'])
     expected_conflicts_flat = sorted(expected_conflicts_flat, key=lambda c: c['path'])

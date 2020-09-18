@@ -46,7 +46,8 @@ def postprocess_results(merged, conflicts):
     conflicts, merged = postprocess_conflicts(conflicts, merged)
     conflicts_as_json = [json.loads(c.to_json()) for c in conflicts]
     flat_conflicts_as_json = remove_ordering_from_conflicts(
-        list(itertools.chain.from_iterable(conflicts_as_json)))
+        list(itertools.chain.from_iterable(conflicts_as_json))
+    )
     merged = remove_ordering_from_authors_merged(merged)
 
     return merged, flat_conflicts_as_json
@@ -55,7 +56,7 @@ def postprocess_results(merged, conflicts):
 def remove_ordering_from_conflicts(conflicts):
     """Cleans up ordering information in conflicts."""
     for conflict in conflicts:
-        if isinstance(conflict['value'], dict):
+        if isinstance(conflict["value"], dict):
             conflict["value"].pop(ORDER_KEY, None)
     return conflicts
 
@@ -63,12 +64,12 @@ def remove_ordering_from_conflicts(conflicts):
 def remove_ordering_from_authors_merged(merged):
     """Cleans up ordering information in merged record."""
     authors = []
-    if 'authors' in merged:
+    if "authors" in merged:
         for author in merged["authors"]:
             author = thaw(author)
             author.pop(ORDER_KEY, None)
             authors.append(author)
-        merged['authors'] = authors
+        merged["authors"] = authors
     return merged
 
 
@@ -92,19 +93,26 @@ def postprocess_conflicts(conflicts, merged):
     """
     new_conflicts = []
     possible_duplicates = set()
+    conflicts = sorted(conflicts, key=lambda conflict: conflict[0])
+    # Sort by conflict type so we could process "ADD_BACK_TO_HEAD" after "MANUAL_MERGE"
     while conflicts:
         conflict = conflicts.pop()
         conflict_type, conflict_location, conflict_content = conflict
         if conflict_type == "MANUAL_MERGE" and conflict_location[0] == "authors":
-            new_conflict, merged, head = _process_author_manual_merge_conflict(conflict, merged)
+            new_conflict, merged, head = _process_author_manual_merge_conflict(
+                conflict, merged
+            )
             if new_conflict:
-                new_conflicts, conflicts = add_conflict(new_conflict, new_conflicts, conflicts)
+                new_conflicts, conflicts = add_conflict(
+                    new_conflict, new_conflicts, conflicts
+                )
                 possible_duplicates.add(head)
         elif not _is_conflict_duplicated(conflict, possible_duplicates):
-            conflict_type, conflict_location, conflict_content = conflict
             if conflict_type == "ADD_BACK_TO_HEAD":
                 new_conflict, merged = _process_add_back_to_head(conflict, merged)
-                new_conflicts, conflicts = add_conflict(new_conflict, new_conflicts, conflicts)
+                new_conflicts, conflicts = add_conflict(
+                    new_conflict, new_conflicts, conflicts
+                )
             else:
                 new_conflicts.append(conflict)
     return new_conflicts, merged
@@ -115,10 +123,9 @@ def add_conflict(conflict, processed_conflicts, unprocessed_conflicts):
 
     Args:
         conflict(Conflict): curently added conflict
-        conflict_list(list): List of conflicts already added
+        processed_conflicts(list): List of conflicts already added
         unprocessed_conflicts(list): List of conflicts which will be added
     """
-
     processed_conflicts = update_conflicts_list(conflict, processed_conflicts)
     unprocessed_conflicts = update_conflicts_list(conflict, unprocessed_conflicts)
     processed_conflicts.append(conflict)
@@ -140,7 +147,9 @@ def update_conflicts_list(conflict, conflict_list):
             path = list(path)
             path[1] += 1
             path = tuple(path)
-            conflict_list[idx] = Conflict(processed_conflict[0], path, processed_conflict[2])
+            conflict_list[idx] = Conflict(
+                processed_conflict[0], path, processed_conflict[2]
+            )
     return conflict_list
 
 
@@ -152,9 +161,11 @@ def _process_add_back_to_head(conflict, merged):
     REMOVE_FIELD conflict now points to proper element on list.
     """
     conflict_type, conflict_location, conflict_content = conflict
-    if conflict_location[0] == 'authors':
-        position, merged['authors'] = _insert_to_list(conflict_content, merged['authors'])
-        insert_path = ('authors', position)
+    if conflict_location[0] == "authors":
+        position, merged["authors"] = _insert_to_list(
+            conflict_content, merged["authors"]
+        )
+        insert_path = ("authors", position)
         new_conflict = Conflict("REMOVE_FIELD", insert_path, None)
         return new_conflict, merged
     else:
@@ -175,15 +186,15 @@ def _additem(item, object, path):
     Returns(tuple): Tuple containing path and item merged with item under proper path.
     """
     if path[0]:
-        if path[0] == '-':
+        if path[0] == "-":
             position, object = _insert_to_list(item, object)
-            return (position, ), object
+            return (position,), object
         else:
             try:
                 idx = int(path[0])
                 if len(path) == 1:
                     idx, object = _insert_to_list(item, object, idx)
-                    return (idx, ), object
+                    return (idx,), object
                 else:
                     new_path, object[idx] = _additem(item, object[idx], path[1:])
             except ValueError:
@@ -191,8 +202,10 @@ def _additem(item, object, path):
                     object[path[0]] = thaw(item)
                     return (path[0],), object
                 else:
-                    new_path, object[path[0]] = _additem(item, object[path[0]], path[1:])
-    return (path[0], ) + new_path, object
+                    new_path, object[path[0]] = _additem(
+                        item, object[path[0]], path[1:]
+                    )
+    return (path[0],) + new_path, object
 
 
 def _is_conflict_duplicated(conflict, possible_duplicates):
@@ -211,7 +224,7 @@ def _process_author_manual_merge_conflict(conflict, merged):
     """
     _, _, (root, head, update) = conflict
     if head not in merged["authors"]:
-        position, merged['authors'] = _insert_to_list(head, merged['authors'])
+        position, merged["authors"] = _insert_to_list(head, merged["authors"])
         new_conflict = Conflict("SET_FIELD", ("authors", position), update)
         return new_conflict, merged, head
     return None, merged, head

@@ -61,7 +61,13 @@ def keep_only_update_source_in_field(field, root, head, update):
         tuple: ``(root, head, update)`` with some elements filtered out from
             ``root`` and ``head``.
     """
-    update_sources = {source.lower() for source in get_value(thaw(update), '.'.join([field, 'source']), [])}
+    update_thawed = thaw(update)
+    update_sources = {source.lower() for source in get_value(update_thawed, '.'.join([field, 'source']), [])}
+    if not update_sources:
+        # If there is no field or source then fallback for source to `aquisition_source.source`
+        source = get_value(update_thawed, "acquisition_source.source")
+        if source:
+            update_sources = {source.lower()}
     if len(update_sources) != 1:
         return root, head, update
     source = update_sources.pop()
