@@ -305,7 +305,7 @@ def test_merger_handles_list_deletions():
     ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
-    assert sorted(merged.items()) == sorted(expected_merged.items())
+    assert merged == expected_merged
     assert sorted(conflict, key=operator.itemgetter("path")) == sorted(expected_conflict, key=operator.itemgetter("path"))
 
 
@@ -362,7 +362,7 @@ def test_merger_handles_authors_with_correct_ordering():
     ]}
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
-    assert sorted(merged.items()) == sorted(expected_merged.items())
+    assert merged == expected_merged
     assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(key=itemgetter('path'))
 
 

@@ -25,7 +25,7 @@ from __future__ import absolute_import, division, print_function
 from inspire_json_merger.utils import filter_records
 from inspire_json_merger.pre_filters import (filter_documents_same_source,
                                              filter_curated_references,
-                                             filter_publisher_references)
+                                             filter_publisher_references, filter_figures_same_source)
 
 
 def test_filter_documents_same_source():
@@ -503,3 +503,52 @@ def test_filter_publisher_references_keeps_update_if_no_refs_in_head():
     expected = root, head, expected_update
 
     assert result == expected
+
+
+def test_filter_missing_figures_on_update_are_properly_handled():
+    fig_1 = {
+        'caption': 'CC',
+        'key': 'w0_bflow.png',
+        'label': 'fig:bflow',
+        'material': 'preprint',
+        'source': 'arxiv',
+        'url': '/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png'
+    }
+    fig_2 = {
+        'caption': 'CC2',
+        'key': 'w1_bflow.png',
+        'label': 'fig2:bflow',
+        'material': 'preprint',
+        'source': 'other',
+        'url': '/api/files/8e2b4d59-6870-4517-8888-35822bf12edb/w1_bflow.png'
+    }
+    fig_3 = {
+        'caption': 'CC',
+        'key': '627d2caea8059d8875281ebed455a714',
+        'label': 'fig:bflow',
+        'material': 'preprint',
+        'source': 'arxiv',
+        'url': '/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png'
+    }
+    root = {
+        "figures": [
+            fig_1, fig_2
+
+        ]
+    }
+    head = {
+        "figures": [
+            fig_2, fig_3
+        ]
+    }
+
+    update = {'acquisition_source': {'source': 'arXiv'}}
+
+    expected_root = {"figures": [fig_2]}
+    expected_head = {"figures": [fig_2]}
+    expected_update = update
+
+    new_root, new_head, new_update = filter_records(root, head, update, filters=[filter_figures_same_source])
+    assert new_root == expected_root
+    assert new_head == expected_head
+    assert new_update == expected_update
