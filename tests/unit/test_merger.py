@@ -28,13 +28,13 @@ def test_merging_same_documents_publisher_on_publisher(fake_get_config):
                 "description": "paper",
                 "source": "arXiv",
                 "fulltext": True,
-                "url": "/files/1234-1234-1234-1234/pdf1.pdf",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf1.pdf",
             },
             {
                 "key": "pdf.tex",
                 "description": "latex version",
                 "source": "arXiv",
-                "url": "/files/1234-1234-1234-1234/pdf.tex",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf.tex",
             },
         ]
     }
@@ -59,13 +59,13 @@ def test_merging_same_documents_publisher_on_arxiv(fake_get_config):
                 "description": "paper",
                 "source": "arXiv",
                 "fulltext": True,
-                "url": "/files/1234-1234-1234-1234/pdf1.pdf",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf1.pdf",
             },
             {
                 "key": "pdf.tex",
                 "description": "latex version",
                 "source": "arXiv",
-                "url": "/files/1234-1234-1234-1234/pdf.tex",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf.tex",
             },
         ]
     }
@@ -88,13 +88,13 @@ def test_merging_same_documents_arxiv_on_arxiv(fake_get_config):
                 "description": "paper",
                 "source": "arXiv",
                 "fulltext": True,
-                "url": "/files/1234-1234-1234-1234/pdf1.pdf",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf1.pdf",
             },
             {
                 "key": "pdf.tex",
                 "description": "latex version",
                 "source": "arXiv",
-                "url": "/files/1234-1234-1234-1234/pdf.tex",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf.tex",
             },
         ]
     }
@@ -119,13 +119,13 @@ def test_merging_same_documents_arxiv_on_publisher(fake_get_config):
                 "description": "paper",
                 "source": "arXiv",
                 "fulltext": True,
-                "url": "/files/1234-1234-1234-1234/pdf1.pdf",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf1.pdf",
             },
             {
                 "key": "pdf.tex",
                 "description": "latex version",
                 "source": "arXiv",
-                "url": "/files/1234-1234-1234-1234/pdf.tex",
+                "url": "http://example.com/files/1234-1234-1234-1234/pdf.tex",
             },
         ]
     }
