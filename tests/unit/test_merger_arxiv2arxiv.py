@@ -427,16 +427,18 @@ def test_merging_titles_field():
     expected_merged = {'titles': [
         {
             'source': 'arXiv',
-            'title': 'ANTARES: Un osservatorio foo bar'
-        },
-        {
-            'source': 'arXiv',
             'subtitle': 'this subtitle has been added by a curator',
             'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
         },
     ]}
-    expected_conflict = []
+    expected_conflict = [
+        {
+            'path': '/titles/0', 'op': 'add', 'value': {
+                'source': 'arXiv', 'title': 'ANTARES: Un osservatorio foo bar'
+            }, '$type': 'INSERT'
+        }
+    ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged

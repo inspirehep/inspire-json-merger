@@ -222,3 +222,83 @@ def test_add_item_on_position_in_dictionary():
 
     assert new_path == expected_path
     assert merged_object == expected_merged
+
+
+def test_add_item_process_single_item_without_index_when_adding_to_list():
+    whole_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key': ['a', 'b', 'c']
+    }
+    item = 'd'
+    path = ("key",)
+
+    expected_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key': ['a', 'b', 'c', 'd']
+    }
+    expected_new_path = ("key", 3)
+
+    new_path, new_object = _additem(item, whole_object, path)
+
+    assert new_path == expected_new_path
+    assert new_object == expected_object
+
+
+def test_add_item_overwrites_whole_key_when_needed():
+    whole_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key': ['a', 'b', 'c']
+    }
+    item = ['d']
+    path = ("key",)
+
+    expected_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key': ['d']
+    }
+    expected_new_path = ("key",)
+
+    new_path, new_object = _additem(item, whole_object, path)
+
+    assert new_path == expected_new_path
+    assert new_object == expected_object
+
+
+def test_add_item_process_deep_item_without_index_when_adding_to_list():
+    whole_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key1': {'key2': ['a', 'b', 'c']}
+    }
+    item = 'd'
+    path = ("key1", "key2", )
+
+    expected_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key1': {'key2': ['a', 'b', 'c', 'd']}
+    }
+    expected_new_path = ("key1", "key2", 3)
+
+    new_path, new_object = _additem(item, whole_object, path)
+
+    assert new_path == expected_new_path
+    assert new_object == expected_object
+
+
+def test_add_deep_item_overwrites_whole_key_when_needed():
+    whole_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key1': {'key2': ['a', 'b', 'c']}
+    }
+    item = ['d']
+    path = ("key1", "key2", )
+
+    expected_object = {
+        'something': {'not_important': ['should', 'be', 'unchanged']},
+        'key1': {'key2': ['d']}
+    }
+    expected_new_path = ("key1", "key2", )
+
+    new_path, new_object = _additem(item, whole_object, path)
+
+    assert new_path == expected_new_path
+    assert new_object == expected_object
