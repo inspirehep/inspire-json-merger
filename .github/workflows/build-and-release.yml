@@ -40,17 +40,19 @@ jobs:
           ./run-tests.sh
 
       - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          flag-name: run-${{ matrix.test_number }}
-          parallel: true
+          uses: AndreMiras/coveralls-python-action@develop
+          with:
+            parallel: true
+            github-token: ${{ secrets.github_token }}
+            flag-name: run-${{ matrix.test_number }}
+            parallel: true
+
   Finish:
     needs: Test
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
+        uses: AndreMiras/coveralls-python-action@develop
         with:
           github-token: ${{ secrets.github_token }}
           parallel-finished: true

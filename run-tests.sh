@@ -23,4 +23,4 @@
 set -e
 
 flake8 inspire_json_merger tests
-py.test tests
+pytest tests/
