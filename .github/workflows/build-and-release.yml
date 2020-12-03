@@ -40,12 +40,11 @@ jobs:
           ./run-tests.sh
 
       - name: Coveralls
-          uses: AndreMiras/coveralls-python-action@develop
-          with:
-            parallel: true
-            github-token: ${{ secrets.github_token }}
-            flag-name: run-${{ matrix.test_number }}
-            parallel: true
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.test_number }}
 
   Finish:
     needs: Test
@@ -72,4 +71,3 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
-
