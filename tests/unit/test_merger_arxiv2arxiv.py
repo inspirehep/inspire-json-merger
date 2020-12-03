@@ -452,13 +452,13 @@ def test_figures():
                 'key': 'figure1.png',
                 'caption': 'Figure 1',
                 'source': 'arXiv',
-                'url': '/files/1234-1234-1234-1234/figure1.png',
+                'url': 'http://example.comfiles/1234-1234-1234-1234/figure1.png',
             },
             {
                 'key': 'figure2.png',
                 'caption': 'Figure 2',
                 'source': 'arXiv',
-                'url': '/files/1234-1234-1234-1234/figure2.png',
+                'url': 'http://example.com/files/1234-1234-1234-1234/figure2.png',
             }
         ]
     }
@@ -468,13 +468,13 @@ def test_figures():
                 'key': 'new_figure1.png',
                 'caption': 'Figure 1',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure1.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure1.png',
             },
             {
                 'key': 'new_figure2.png',
                 'caption': 'Figure 2',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure2.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure2.png',
             }
         ]
     }
@@ -497,19 +497,19 @@ def test_figures_dont_duplicate_keys_even_from_different_sources():
                 'key': 'figure1.png',
                 'caption': 'Figure 1',
                 'source': 'arXiv',
-                'url': '/files/1234-1234-1234-1234/figure1.png',
+                'url': 'http://example.com/files/1234-1234-1234-1234/figure1.png',
             },
             {
                 'key': 'figure2.png',
                 'caption': 'Figure 2',
                 'source': 'APS',
-                'url': '/files/1234-1234-1234-1234/figure2.png',
+                'url': 'http://example.com/files/1234-1234-1234-1234/figure2.png',
             },
             {
                 'key': 'figure3.png',
                 'caption': 'Figure 3',
                 'source': 'APS',
-                'url': '/files/1234-1234-1234-1234/figure3.png',
+                'url': 'http://example.com/files/1234-1234-1234-1234/figure3.png',
             },
         ],
     }
@@ -519,13 +519,13 @@ def test_figures_dont_duplicate_keys_even_from_different_sources():
                 'key': 'new_figure1.png',
                 'caption': 'Figure 1',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure1.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure1.png',
             },
             {
                 'key': 'figure2.png',
                 'caption': 'Figure 2',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure2.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure2.png',
             },
         ],
     }
@@ -536,19 +536,19 @@ def test_figures_dont_duplicate_keys_even_from_different_sources():
                 'key': 'new_figure1.png',
                 'caption': 'Figure 1',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure1.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure1.png',
             },
             {
                 'key': 'figure2.png',
                 'caption': 'Figure 2',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/figure2.png',
+                'url': 'http://example.com/files/5678-5678-5678-5678/figure2.png',
             },
             {
                 'key': 'figure3.png',
                 'caption': 'Figure 3',
                 'source': 'APS',
-                'url': '/files/1234-1234-1234-1234/figure3.png',
+                'url': 'http://example.com/files/1234-1234-1234-1234/figure3.png',
             },
         ],
     }
@@ -571,13 +571,13 @@ def test_documents():
                 'description': 'paper',
                 'source': 'arXiv',
                 'fulltext': True,
-                'url': '/files/1234-1234-1234-1234/pdf1.pdf',
+                'url': 'http://example.com/files/1234-1234-1234-1234/pdf1.pdf',
             },
             {
                 'key': 'pdf.tex',
                 'description': 'latex version',
                 'source': 'arXiv',
-                'url': '/files/1234-1234-1234-1234/pdf.tex',
+                'url': 'http://example.com/files/1234-1234-1234-1234/pdf.tex',
             },
         ]
     }
@@ -587,13 +587,13 @@ def test_documents():
                 'key': 'pdf.pdf',
                 'description': 'paper',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/pdf.pdf',
+                'url': 'http://example.com/files/5678-5678-5678-5678/pdf.pdf',
             },
             {
                 'key': 'foo.xml',
                 'description': 'some xml files',
                 'source': 'arXiv',
-                'url': '/files/5678-5678-5678-5678/foo.xml',
+                'url': 'http://example.com/files/5678-5678-5678-5678/foo.xml',
             }
         ]
     }
