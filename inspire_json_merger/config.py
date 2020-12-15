@@ -87,6 +87,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_ONLY_HEAD_ENTITIES,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
+        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
 
     # these rules are meaningless for fields which are arrays and have no comparator
@@ -159,7 +160,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'public_notes': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'publication_info': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'report_numbers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
     list_dict_ops = {
         'abstracts': D.FALLBACK_KEEP_UPDATE,
@@ -225,6 +226,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
+        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
 
     list_dict_ops = {
@@ -273,6 +275,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
+        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
 
     list_dict_ops = {

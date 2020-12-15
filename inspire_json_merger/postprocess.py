@@ -199,8 +199,12 @@ def _additem(item, object, path):
                     new_path, object[idx] = _additem(item, object[idx], path[1:])
             except ValueError:
                 if len(path) == 1:
-                    object[path[0]] = thaw(item)
-                    return (path[0],), object
+                    if isinstance(item, list) or not isinstance(object[path[0]], list):
+                        object[path[0]] = thaw(item)
+                        return (path[0],), object
+                    elif item not in object[path[0]]:
+                        object[path[0]].append(thaw(item))
+                        return (path[0], (len(object[path[0]]) - 1)), object
                 else:
                     new_path, object[path[0]] = _additem(
                         item, object[path[0]], path[1:]
