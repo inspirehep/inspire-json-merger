@@ -154,4 +154,5 @@ COMPARATORS = {
     'references.reference.authors': AuthorComparator,
     'report_numbers': SourceValueComparator,
     'title_translations': LanguageComparator,
+    'titles': TitleComparator,
 }

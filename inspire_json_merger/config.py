@@ -75,6 +75,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'preprint_date',
         'public_notes',
         'publication_info',
+        'titles.source'
     ]
 
     list_merge_ops = {
@@ -143,6 +144,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'preprint_date',
         'public_notes',
         'publication_info',
+        'titles.source'
     ]
     list_merge_ops = {
         'abstracts': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
@@ -182,6 +184,7 @@ class ManualMergeOperations(MergerConfigurationOperations):
         'acquisition_source',
         'control_number',
         'self',
+        'titles.source'
     ]
     list_merge_ops = {}
     list_dict_ops = {
@@ -213,6 +216,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'license',
         'number_of_pages',
         'preprint_date',
+        'titles.source'
     ]
 
     list_merge_ops = {
@@ -262,6 +266,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'license',
         'number_of_pages',
         'preprint_date',
+        'titles.source'
     ]
 
     list_merge_ops = {
