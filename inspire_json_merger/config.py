@@ -28,7 +28,7 @@ from inspire_json_merger.pre_filters import (
     filter_documents_same_source,
     filter_figures_same_source,
     filter_curated_references,
-    filter_publisher_references, update_authors_with_ordering_info,
+    filter_publisher_references, update_authors_with_ordering_info, remove_duplicated_titles
 )
 from .comparators import COMPARATORS
 
@@ -53,7 +53,8 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
-        update_authors_with_ordering_info
+        update_authors_with_ordering_info,
+        remove_duplicated_titles
     ]
     conflict_filters = [
         '_collections',
@@ -113,6 +114,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'number_of_pages': D.FALLBACK_KEEP_UPDATE,
         'public_notes': D.FALLBACK_KEEP_UPDATE,
 
+
     }
 
 
@@ -122,7 +124,8 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_publisher_references,
-        update_authors_with_ordering_info
+        update_authors_with_ordering_info,
+        remove_duplicated_titles
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
@@ -176,7 +179,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
 class ManualMergeOperations(MergerConfigurationOperations):
     default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
-    pre_filters = [update_authors_with_ordering_info]  # don't delete files with the same source
+    pre_filters = [update_authors_with_ordering_info, remove_duplicated_titles]  # don't delete files with the same source
     conflict_filters = [
         '_collections',
         '_desy_bookkeeping',
@@ -200,6 +203,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
+        remove_duplicated_titles
     ]
     conflict_filters = [
         '_collections',
@@ -216,7 +220,6 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'license',
         'number_of_pages',
         'preprint_date',
-        'titles.source'
     ]
 
     list_merge_ops = {
@@ -250,6 +253,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
+        remove_duplicated_titles
     ]
     conflict_filters = [
         '_collections',
