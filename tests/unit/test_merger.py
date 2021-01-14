@@ -312,8 +312,82 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
             {"titles": [{"source": 1, "title": "Title 21"}]},
             [{'path': '/titles/0', 'op': 'add', 'value': {'title': 'Title 21', 'source': 1}, '$type': 'INSERT'}],
             {'titles': [{'source': 1, 'title': 'Title 2'}]}
+        ),
+        (
+            {"titles": [{"source": 1, "title": "Title 1"}]},
+            {"titles": [{"source": 1, "title": "Title 2"}]},
+            {"titles": [{"source": 1, "title": "Title 3"}]},
+            [{'path': '/titles/0', 'op': 'add', 'value': {'title': 'Title 3', 'source': 1}, '$type': 'INSERT'}],
+            {'titles': [{'source': 1, 'title': 'Title 2'}]}
+        ),
+        (
+            {"titles": [{"source": 1, "title": "Title 1"}]},
+            {"titles": [{"source": 1, "title": "Title 2"}]},
+            {"titles": [{"source": 2, "title": "Title 3"}]},
+            [{'path': '/titles/0', 'op': 'add', 'value': {'title': 'Title 3', 'source': 2}, '$type': 'INSERT'}],
+            {'titles': [{'source': 1, 'title': 'Title 2'}]}
+        ),
+        (
+            {},
+            {"titles": [{"source": 1, "title": "Title 2"}]},
+            {"titles": [{"source": 1, "title": "Title 2"}, {"source": 2, "title": "Title 3"}]},
+            [{'path': '/titles/1', 'op': 'add', 'value': {'title': 'Title 3', 'source': 2}, '$type': 'INSERT'}],
+            {'titles': [{'source': 1, 'title': 'Title 2'}]}
+        ),
+        (
+            {},
+            {"titles": [{"source": 1, "title": "Title 1"}]},
+            {"titles": [{"source": 2, "title": "Title 1"}]},
+            [],
+            {'titles': [{'source': 1, 'title': 'Title 1'}]},
+        ),
+        (
+            {},
+            {"titles": [
+                {"source": 'arxiv', "title": "Title 1"},
+                {"source": 'arxiv', "title": "Title 1"},
+                {"source": 'other', "title": "Title 1"},
+                {"source": 'other', "title": "Title 1"}
+            ]},
+            {"titles": [{"source": 'other', "title": "Title 1"}]},
+            [],
+            {'titles': [{'source': 'other', 'title': 'Title 1'}]},
+        ),
+        (
+            {},
+            {"titles": [
+                {"source": 'arxiv', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'arxiv', 'title': 'title 1', 'subtitle': "subtitle 2"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
+            {"titles": [
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'arxiv', 'title': 'title 1', 'subtitle': "subtitle 2"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
+            [],
+            {"titles": [
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
+        ),
+        (
+            {},
+            {"titles": [
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
+            {"titles": [
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
+            [],
+            {"titles": [
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
+                {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
+            ]},
         )
-
     ]
 )
 def test_titles_change(root, update, head, expected_conflicts, expected_merge):

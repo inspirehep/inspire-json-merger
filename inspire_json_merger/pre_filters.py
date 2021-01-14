@@ -188,5 +188,31 @@ def _remove_if_falsy(pmap, key):
         return pmap
 
 
+def remove_duplicated_titles(root, head, update):
+    new_elements = []
+    for data in (root, head, update):
+        titles = data.get('titles')
+        if not titles:
+            new_elements.append(data)
+            continue
+        titles_dict = dict()
+        to_delete = []
+        for title in titles:
+            title_data = (title['title'], title.get('subtitle'))
+            if title_data not in titles_dict:
+                titles_dict[title_data] = title
+            else:
+                if title['source'].lower() != 'arxiv':
+                    to_delete.append(titles_dict[title_data])
+                    titles_dict[title_data] = title
+                else:
+                    to_delete.append(title)
+        for object_to_remove in to_delete:
+            titles = titles.remove(object_to_remove)
+        new_elements.append(data.update({'titles': titles}))
+    print(new_elements)
+    return new_elements
+
+
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
 filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
