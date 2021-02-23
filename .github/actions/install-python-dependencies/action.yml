@@ -8,7 +8,7 @@ runs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools wheel coveralls
+        pip install --upgrade setuptools wheel coveralls
 
     - name: Install requirements
       shell: bash
