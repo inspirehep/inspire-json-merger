@@ -21,7 +21,7 @@
 # or submit itself to any jurisdiction.
 from __future__ import absolute_import, division, print_function
 
-from inspire_json_merger.postprocess import _insert_to_list, _additem
+from inspire_json_merger.postprocess import _insert_to_list, _additem, _process_author_manual_merge_conflict
 from inspire_json_merger.utils import ORDER_KEY
 
 
@@ -302,3 +302,13 @@ def test_add_deep_item_overwrites_whole_key_when_needed():
 
     assert new_path == expected_new_path
     assert new_object == expected_object
+
+
+def test_process_author_manual_merge_conflict_when_head_in_conflict_is_none():
+    conflict = (None, None, ({"conflict": "root value"}, None, {"conflict": "update value"}))
+    merged = {"authors": []}
+
+    expected_output = (None, merged, None)
+    output = _process_author_manual_merge_conflict(conflict, merged)
+
+    assert output == expected_output
