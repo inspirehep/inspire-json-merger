@@ -227,7 +227,7 @@ def _process_author_manual_merge_conflict(conflict, merged):
     where `conflict_data` is a tuple of: (ROOT, HEAD, UPDATE).
     """
     _, _, (root, head, update) = conflict
-    if head not in merged["authors"]:
+    if head and head not in merged["authors"]:
         position, merged["authors"] = _insert_to_list(head, merged["authors"])
         new_conflict = Conflict("SET_FIELD", ("authors", position), update)
         return new_conflict, merged, head
