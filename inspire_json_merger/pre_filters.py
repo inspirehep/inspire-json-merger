@@ -30,7 +30,6 @@ import pyrsistent
 from inspire_utils.record import get_value
 from pyrsistent import freeze, thaw
 from six.moves import zip
-
 from inspire_json_merger.utils import ORDER_KEY
 
 
