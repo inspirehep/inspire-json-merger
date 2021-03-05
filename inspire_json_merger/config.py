@@ -89,7 +89,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_ONLY_HEAD_ENTITIES,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
+        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     }
 
     # these rules are meaningless for fields which are arrays and have no comparator
@@ -112,7 +112,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'figures': D.FALLBACK_KEEP_UPDATE,
         'license': D.FALLBACK_KEEP_UPDATE,
         'number_of_pages': D.FALLBACK_KEEP_UPDATE,
-        'public_notes': D.FALLBACK_KEEP_UPDATE,
+        'public_notes': D.FALLBACK_KEEP_UPDATE
 
 
     }

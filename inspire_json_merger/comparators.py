@@ -21,6 +21,7 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, division, print_function
+from six import text_type
 
 from json_merger.comparator import PrimaryKeyComparator
 from json_merger.contrib.inspirehep.author_util import (
@@ -31,6 +32,7 @@ from json_merger.contrib.inspirehep.author_util import (
 )
 from json_merger.contrib.inspirehep.comparators import \
     DistanceFunctionComparator
+import unidecode
 
 from inspire_json_merger.utils import scan_author_string_for_phrases
 from json_merger.utils import get_obj_at_key_path
@@ -50,6 +52,14 @@ def author_tokenize(name):
             else:
                 lst.append(NameToken(token))
     return res
+
+
+def normalize_title(data):
+    data = data.lower()
+    if not isinstance(data, text_type):
+        data = data.decode('utf-8')
+    data = unidecode.unidecode(data)
+    return data
 
 
 class IDNormalizer(object):
@@ -129,7 +139,10 @@ RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
 SourceComparator = get_pk_comparator(['source'])
 SourceValueComparator = get_pk_comparator([['source', 'value']])
-TitleComparator = get_pk_comparator_ignore_if_both_empty([['title', 'subtitle']])
+TitleComparator = get_pk_comparator_ignore_if_both_empty(
+    [['title', 'subtitle']],
+    normalization_functions={'title': normalize_title, 'subtitle': normalize_title}
+)
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 

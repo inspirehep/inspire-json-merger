@@ -427,22 +427,55 @@ def test_merging_titles_field():
     expected_merged = {'titles': [
         {
             'source': 'arXiv',
+            'title': 'ANTARES: Un osservatorio foo bar'
+        },
+        {
+            'source': 'arXiv',
             'subtitle': 'this subtitle has been added by a curator',
             'title': 'ANTARES: An observatory at the seabed '
                         'to the confines of the Universe'
         },
     ]}
-    expected_conflict = [
-        {
-            'path': '/titles/0', 'op': 'add', 'value': {
-                'source': 'arXiv', 'title': 'ANTARES: Un osservatorio foo bar'
-            }, '$type': 'INSERT'
-        }
-    ]
+    expected_conflict = []
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
+def test_merging_titles_with_normalization():
+    root = {'titles': [
+        {
+            'source': 'arXiv',
+            'title': 'ANTARES: An observatory at the seabed '
+                      'to the confines of the Universe'
+        }  # record: 1519935
+    ]}
+    head = {'titles': [
+        {
+            'source': 'arXiv',
+            'title': '"ANTARES": An observatory at the seabed '
+                     'to the confines of the Universe–-review'
+        }
+    ]}
+    update = {'titles': [
+        {
+            'source': 'arXiv',
+            'title': '”ANTARES”: An observatory at the seabed '
+                     'to the confines of the Universe--review'
+        },
+    ]}
+
+    expected_merged = {'titles': [
+        {
+            'source': 'arXiv',
+            'title': '"ANTARES": An observatory at the seabed to the confines of the Universe–-review'
+        },
+    ]}
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
     validate_subschema(merged)
 
 
