@@ -387,6 +387,29 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
                 {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 1"},
                 {"source": 'other', 'title': 'title 1', 'subtitle': "subtitle 2"}
             ]},
+        ),
+        (
+            {},
+            {"titles": [
+                {"source": "arxiv", "title": "title 1"},
+                {"source": "other", "title": "title 1"},
+                {"title": "title 1"},
+                {"title": "title 1", "subtitle": "subtitle"}
+            ]},
+            {"titles": [
+                {"source": "other", "title": "title 1"},
+                {"title": "title 1", "subtitle": "subtitle"},
+                {"title": "title 1"},
+                {"source": "arxiv", "title": "title 1"},
+
+            ]},
+            [],
+            {"titles": [
+                {"source": "other", "title": "title 1"},
+                {"title": "title 1", "subtitle": "subtitle"}
+
+            ]},
+
         )
     ]
 )
