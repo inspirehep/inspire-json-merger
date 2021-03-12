@@ -188,6 +188,14 @@ def _remove_if_falsy(pmap, key):
 
 
 def remove_duplicated_titles(root, head, update):
+    """Remove all duplicated titles. (not comparing source)
+    Title with subtitle id different that title without subtitle.
+    Non arxiv source is more important that arxiv source.
+    No souce is les important and will be always removed on duplicate.
+
+    Note: root head and update are expected to be Pmap not dicts!
+
+    """
     new_elements = []
     for data in (root, head, update):
         titles = data.get('titles')
@@ -201,7 +209,7 @@ def remove_duplicated_titles(root, head, update):
             if title_data not in titles_dict:
                 titles_dict[title_data] = title
             else:
-                if title['source'].lower() != 'arxiv':
+                if "source" in title and title['source'].lower() != 'arxiv':
                     to_delete.append(titles_dict[title_data])
                     titles_dict[title_data] = title
                 else:
@@ -209,7 +217,6 @@ def remove_duplicated_titles(root, head, update):
         for object_to_remove in to_delete:
             titles = titles.remove(object_to_remove)
         new_elements.append(data.update({'titles': titles}))
-    print(new_elements)
     return new_elements
 
 
