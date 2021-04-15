@@ -674,7 +674,6 @@ def test_head_curates_author_no_duplicate():
 
     expected_merged = {
         'authors': [
-            {'full_name': 'Li, Zhengxiang'},
             {
                 'full_name': 'Li, Zheng-Xiang', 'affiliations': [
                     {'value': 'Beijing Normal U.'}
@@ -684,10 +683,10 @@ def test_head_curates_author_no_duplicate():
     }
 
     expected_conflict = [{
-        'path': '/authors/1',
-        'op': 'remove',
-        'value': None,
-        '$type': 'REMOVE_FIELD'
+        "path": "/authors/0",
+        "op": "remove",
+        "value": None,
+        "$type": "REMOVE_FIELD"
     }]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')

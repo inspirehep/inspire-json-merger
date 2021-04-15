@@ -40,6 +40,12 @@ def remove_elements_with_source(source, field):
     )
 
 
+def filter_root_from_title(root, head, update):
+    if 'titles' in root:
+        root = root.remove("titles")
+    return root, head, update
+
+
 def keep_only_update_source_in_field(field, root, head, update):
     """Remove elements from root and head where ``source`` matches the update.
 
