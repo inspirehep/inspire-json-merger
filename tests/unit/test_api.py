@@ -30,6 +30,7 @@ from operator import itemgetter
 import pytest
 
 from utils import validate_subschema, assert_ordered_conflicts
+from inspire_json_merger.config import GrobidOnArxivAuthorsOperations
 
 from inspire_json_merger.api import (
     get_acquisition_source,
@@ -383,3 +384,187 @@ def test_ordering_conflicts():
 
     assert sorted(merged['authors'], key=itemgetter('uuid')) == sorted(expected_merged['authors'], key=itemgetter('uuid'))
     assert_ordered_conflicts(conflicts, expected_conflicts)
+
+
+def test_grobid_on_arxiv_operations_without_conflict():
+    root = {}
+    authors_arxiv = {
+        "authors": [
+            {
+                "full_name": "Sułkowski, Piotr",
+                "raw_affiliations": [{
+                    "value": "Warsaw U."
+                }],
+                "emails": [
+                    "sulkowski.p@fuw.edu.pl"
+                ],
+            }
+        ]
+    }
+
+    authors_grobid = {
+        "authors": [
+            {
+                "full_name": "Sułkowski, Piotr",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "sulkowski.piotr@fuw.edu.pl"
+                ],
+            }
+        ]
+    }
+
+    expected_merged = {
+        "authors": [
+            {
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "sulkowski.p@fuw.edu.pl"
+                ],
+                "full_name": "Sułkowski, Piotr"
+            }
+        ]
+    }
+
+    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    assert not conflicts
+    assert merged == expected_merged
+
+
+def test_grobid_on_arxiv_operations_with_conflict():
+    root = {}
+    authors_arxiv = {
+        "authors": [
+            {
+                "full_name": "Kowal, Michal",
+                "raw_affiliations": [{
+                    "value": "Warsaw U."
+                }],
+                "emails": [
+                    "kowal.m@fuw.edu.pl"
+                ],
+            },
+            {
+                "full_name": "Sułkowski, Piotr",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics"
+                }],
+            }
+        ]
+    }
+    authors_grobid = {
+        "authors": [
+            {
+                "full_name": "Kowal, Michal",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "kowal.m@uw.edu.pl"
+                ],
+            },
+            {
+                "full_name": "Sułkowski, Piotr Andrzej",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "sulkowski.p@fuw.edu.pl"
+                ],
+            }
+        ]
+    }
+
+    expected_merged = {
+        "authors": [
+            {
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "kowal.m@fuw.edu.pl"
+                ],
+                "full_name": "Kowal, Michal"
+            },
+            {
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "sulkowski.p@fuw.edu.pl"
+                ],
+                "full_name":"Sułkowski, Piotr"
+            }
+        ]
+    }
+
+    expected_conflicts = [{
+        u'path': u'/authors/1/full_name',
+        u'op': u'replace', u'value': u'Sułkowski, Piotr Andrzej',
+        u'$type': u'SET_FIELD'
+    }]
+
+    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    assert conflicts == expected_conflicts
+    assert merged == expected_merged
+
+
+def test_grobid_on_arxiv_operations_keeps_authors_from_head():
+    root = {}
+    authors_arxiv = {
+        "authors": [
+            {
+                "full_name": "Kowal, Michal",
+                "raw_affiliations": [{
+                    "value": "Warsaw U."
+                }],
+                "emails": [
+                    "kowal.m@fuw.edu.pl"
+                ],
+            }
+        ]
+    }
+    authors_grobid = {
+        "authors": [
+            {
+                "full_name": "Kowal, Michal",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "kowal.m@uw.edu.pl"
+                ],
+            },
+            {
+                "full_name": "Sułkowski, Piotr Andrzej",
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "sulkowski.p@fuw.edu.pl"
+                ],
+            }
+        ]
+    }
+
+    expected_merged = {
+        "authors": [
+            {
+                "raw_affiliations": [{
+                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                }],
+                "emails": [
+                    "kowal.m@fuw.edu.pl"
+                ],
+                "full_name": "Kowal, Michal"
+            }
+        ]
+    }
+
+    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    assert not conflicts
+    assert merged == expected_merged

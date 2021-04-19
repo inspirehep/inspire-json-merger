@@ -30,7 +30,7 @@ from inspire_json_merger.pre_filters import (
     filter_curated_references,
     filter_publisher_references, update_authors_with_ordering_info, remove_duplicated_titles, filter_root_from_title
 )
-from .comparators import COMPARATORS
+from .comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
 
 """
 This module provides different sets of rules that `inspire_json_merge`
@@ -40,9 +40,9 @@ This module provides different sets of rules that `inspire_json_merge`
 class MergerConfigurationOperations(object):
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
-    conflict_filters = None
+    conflict_filters = []
     comparators = None
-    pre_filters = None
+    pre_filters = []
     list_dict_ops = None
     list_merge_ops = None
 
@@ -309,3 +309,15 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'license': D.FALLBACK_KEEP_UPDATE,
         'number_of_pages': D.FALLBACK_KEEP_UPDATE,
     }
+
+
+class GrobidOnArxivAuthorsOperations(MergerConfigurationOperations):
+    default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
+    default_dict_merge_op = D.FALLBACK_KEEP_HEAD
+    list_dict_ops = {
+        'authors.raw_affiliations': D.FALLBACK_KEEP_UPDATE
+    }
+    list_merge_ops = {
+        'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES
+    }
+    comparators = GROBID_ON_ARXIV_COMPARATORS
