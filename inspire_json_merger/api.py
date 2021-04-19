@@ -38,7 +38,7 @@ from inspire_json_merger.postprocess import postprocess_results
 from inspire_json_merger.utils import filter_conflicts, filter_records
 
 
-def merge(root, head, update, head_source=None):
+def merge(root, head, update, head_source=None, configuration=None):
     """
     This function instantiate a ``Merger`` object using a configuration in
     according to the ``source`` value of head and update params.
@@ -57,7 +57,8 @@ def merge(root, head, update, head_source=None):
         A tuple containing the resulted merged record in json format and a
         an object containing all generated conflicts.
     """
-    configuration = get_configuration(head, update, head_source)
+    if not configuration:
+        configuration = get_configuration(head, update, head_source)
     conflicts = []
     root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
     merger = Merger(

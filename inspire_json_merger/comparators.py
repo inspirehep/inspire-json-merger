@@ -192,3 +192,8 @@ COMPARATORS = {
     'title_translations': LanguageComparator,
     'titles': TitleComparator,
 }
+
+GROBID_ON_ARXIV_COMPARATORS = {
+    'authors': AuthorComparator,
+    'authors.affiliations': AffiliationComparator,
+}
