@@ -29,7 +29,7 @@ from inspire_json_merger.pre_filters import (filter_documents_same_source,
                                              filter_publisher_references,
                                              filter_figures_same_source,
                                              remove_duplicated_titles,
-                                             filter_root_from_title)
+                                             remove_titles_from_root)
 
 
 def test_filter_documents_same_source():
@@ -623,11 +623,11 @@ def test_pre_filter_remove_root_from_title():
         ]
     }
 
-    new_root, new_head, new_update = filter_root_from_title(freeze(root), freeze(head), freeze(update))
+    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
     assert not new_root
 
 
-def test_pre_filter_remove_root_from_title_doesnt_change_root_when_no_titles():
+def test_pre_filter_remove_titles_from_root_doesnt_change_root_when_no_titles():
     root = {
         "authors": [
             {"full_name": "Test Test"}
@@ -651,11 +651,11 @@ def test_pre_filter_remove_root_from_title_doesnt_change_root_when_no_titles():
         ]
     }
 
-    new_root, new_head, new_update = filter_root_from_title(freeze(root), freeze(head), freeze(update))
+    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
     assert new_root == root
 
 
-def test_pre_filter_removes_only_titles():
+def test_pre_filter_remove_titles_from_root_removes_only_titles():
     root = {
         "authors": [
             {"full_name": "Test Test"}
@@ -691,5 +691,5 @@ def test_pre_filter_removes_only_titles():
         ]
     }
 
-    new_root, new_head, new_update = filter_root_from_title(freeze(root), freeze(head), freeze(update))
+    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
     assert "authors" in new_root

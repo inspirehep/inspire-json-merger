@@ -97,7 +97,7 @@ def get_configuration(head, update, head_source=None):
     head_source = (head_source or get_head_source(head))
     update_source = get_acquisition_source(update)
 
-    if not is_arxiv_and_publisher(head_source, update_source) and is_manual_merge(head, update):
+    if is_manual_merge(head, update):
         return ManualMergeOperations
 
     if head_source == 'arxiv':
@@ -138,8 +138,3 @@ def get_acquisition_source(json_obj):
 
 def is_manual_merge(head, update):
     return ('control_number' in update and 'control_number' in head and update['control_number'] != head['control_number'])
-
-
-def is_arxiv_and_publisher(head_source, update_source):
-    sources = {head_source, update_source} - {None}
-    return len(sources) == 2 and 'arxiv' in sources
