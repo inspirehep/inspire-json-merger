@@ -321,3 +321,4 @@ class GrobidOnArxivAuthorsOperations(MergerConfigurationOperations):
         'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES
     }
     comparators = GROBID_ON_ARXIV_COMPARATORS
+    conflict_filters = ["authors.full_name"]

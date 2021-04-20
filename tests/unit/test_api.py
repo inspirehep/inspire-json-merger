@@ -435,7 +435,7 @@ def test_grobid_on_arxiv_operations_without_conflict():
     assert merged == expected_merged
 
 
-def test_grobid_on_arxiv_operations_with_conflict():
+def test_grobid_on_arxiv_operations_doesnt_conflict_on_author_full_name():
     root = {}
     authors_arxiv = {
         "authors": [
@@ -502,14 +502,8 @@ def test_grobid_on_arxiv_operations_with_conflict():
         ]
     }
 
-    expected_conflicts = [{
-        u'path': u'/authors/1/full_name',
-        u'op': u'replace', u'value': u'Sułkowski, Piotr Andrzej',
-        u'$type': u'SET_FIELD'
-    }]
-
     merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
-    assert conflicts == expected_conflicts
+    assert not conflicts
     assert merged == expected_merged
 
 
