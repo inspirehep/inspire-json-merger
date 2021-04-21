@@ -240,11 +240,8 @@ def test_get_configuration(arxiv_record, publisher_record):
 
     assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
     assert get_configuration(pub1, pub2) == ManualMergeOperations
-
-    # even if both have a ``control_number`` arxiv-publisher
-    # will give always the configuration ArxivOnPublisherOperations
-    assert get_configuration(arxiv1, pub1) == PublisherOnArxivOperations
-    assert get_configuration(pub1, arxiv1) == ArxivOnPublisherOperations
+    assert get_configuration(arxiv1, pub1) == ManualMergeOperations
+    assert get_configuration(pub1, arxiv1) == ManualMergeOperations
 
     arxiv2['control_number'] = 1  # same of the other arxiv record
     assert get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations

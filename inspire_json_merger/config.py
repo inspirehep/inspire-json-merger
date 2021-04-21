@@ -28,7 +28,11 @@ from inspire_json_merger.pre_filters import (
     filter_documents_same_source,
     filter_figures_same_source,
     filter_curated_references,
-    filter_publisher_references, update_authors_with_ordering_info, remove_duplicated_titles, filter_root_from_title
+    filter_publisher_references,
+    update_authors_with_ordering_info,
+    remove_duplicated_titles,
+    remove_titles_from_root,
+    remove_references_from_update,
 )
 from .comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
 
@@ -54,7 +58,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        filter_root_from_title,
+        remove_titles_from_root,
         remove_duplicated_titles
     ]
     conflict_filters = [
@@ -126,7 +130,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_publisher_references,
         update_authors_with_ordering_info,
-        filter_root_from_title,
+        remove_titles_from_root,
         remove_duplicated_titles
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
@@ -181,7 +185,11 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
 class ManualMergeOperations(MergerConfigurationOperations):
     default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     comparators = COMPARATORS
-    pre_filters = [update_authors_with_ordering_info, remove_duplicated_titles]  # don't delete files with the same source
+    pre_filters = [
+        update_authors_with_ordering_info,
+        remove_duplicated_titles,
+        remove_references_from_update,
+    ]  # don't delete files with the same source
     conflict_filters = [
         '_collections',
         '_desy_bookkeeping',
@@ -191,9 +199,11 @@ class ManualMergeOperations(MergerConfigurationOperations):
         'self',
         'titles.source'
     ]
-    list_merge_ops = {}
+    list_merge_ops = {
+        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
+        'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
+    }
     list_dict_ops = {
-        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'authors.full_name': D.keep_longest,
     }
 
@@ -205,7 +215,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        filter_root_from_title,
+        remove_titles_from_root,
         remove_duplicated_titles
     ]
     conflict_filters = [
@@ -256,7 +266,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        filter_root_from_title,
+        remove_titles_from_root,
         remove_duplicated_titles
     ]
     conflict_filters = [

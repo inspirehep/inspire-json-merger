@@ -40,7 +40,7 @@ def remove_elements_with_source(source, field):
     )
 
 
-def filter_root_from_title(root, head, update):
+def remove_titles_from_root(root, head, update):
     if 'titles' in root:
         root = root.remove("titles")
     return root, head, update
@@ -224,6 +224,11 @@ def remove_duplicated_titles(root, head, update):
             titles = titles.remove(object_to_remove)
         new_elements.append(data.update({'titles': titles}))
     return new_elements
+
+
+def remove_references_from_update(root, head, update):
+    update = _remove_if_present(update, "references")
+    return root, head, update
 
 
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
