@@ -418,3 +418,39 @@ def test_titles_change(root, update, head, expected_conflicts, expected_merge):
 
     assert conflict == expected_conflicts
     assert merged == expected_merge
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration", return_value=PublisherOnArxivOperations
+)
+def test_merging_acquisition_source_publisher_on_arxiv(fake_get_config):
+    root = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "arXiv",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    head = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "arXiv",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    update = {
+        "acquisition_source": {
+            "datetime": "2021-05-12T02:35:43.387350",
+            "method": "beard",
+            "source": "other source",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c1"
+        }
+    }
+    expected_merged = update
+    expected_conflict = []
+    merged, conflict = merge(root, head, update)
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
