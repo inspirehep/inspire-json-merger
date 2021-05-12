@@ -250,6 +250,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
     }
 
     list_dict_ops = {
+        'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'arxiv_eprints': D.FALLBACK_KEEP_HEAD,
         'authors.full_name': D.keep_longest,
         'core': D.FALLBACK_KEEP_HEAD,
