@@ -21,7 +21,6 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, division, print_function
-from six import text_type
 
 from json_merger.comparator import PrimaryKeyComparator
 from json_merger.contrib.inspirehep.author_util import (
@@ -32,10 +31,8 @@ from json_merger.contrib.inspirehep.author_util import (
 )
 from json_merger.contrib.inspirehep.comparators import \
     DistanceFunctionComparator
-import unidecode
 
 from inspire_json_merger.utils import scan_author_string_for_phrases
-from json_merger.utils import get_obj_at_key_path
 
 
 def author_tokenize(name):
@@ -52,14 +49,6 @@ def author_tokenize(name):
             else:
                 lst.append(NameToken(token))
     return res
-
-
-def normalize_title(data):
-    data = data.lower()
-    if not isinstance(data, text_type):
-        data = data.decode('utf-8')
-    data = unidecode.unidecode(data)
-    return data
 
 
 class IDNormalizer(object):
@@ -104,28 +93,6 @@ def get_pk_comparator(primary_key_fields, normalization_functions=None):
     return Ret
 
 
-def get_pk_comparator_ignore_if_both_empty(primary_key_fields, normalization_functions=None):
-    class Ret(PrimaryKeyComparator):
-        __doc__ = (
-            'primary_key_fields:%s, normalization_functions:%s' % (
-                primary_key_fields,
-                normalization_functions,
-            )
-        )
-
-        def _have_field_equal(self, obj1, obj2, field):
-            key_path = tuple(k for k in field.split('.') if k)
-            o1 = get_obj_at_key_path(obj1, key_path, "")
-            o2 = get_obj_at_key_path(obj2, key_path, "")
-
-            fn = self.normalization_functions.get(field, lambda x: x)
-            return fn(o1) == fn(o2)
-
-    Ret.primary_key_fields = primary_key_fields
-    Ret.normalization_functions = normalization_functions or {}
-    return Ret
-
-
 AffiliationComparator = get_pk_comparator([['record.$ref'], ['value']])
 CollectionsComparator = get_pk_comparator(['primary'])
 CreationDatetimeComparator = get_pk_comparator(['creation_datetime'])
@@ -139,10 +106,7 @@ RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
 SourceComparator = get_pk_comparator(['source'])
 SourceValueComparator = get_pk_comparator([['source', 'value']])
-TitleComparator = get_pk_comparator_ignore_if_both_empty(
-    [['title', 'subtitle']],
-    normalization_functions={'title': normalize_title, 'subtitle': normalize_title}
-)
+TitleComparator = get_pk_comparator(['title'])
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
 
@@ -190,7 +154,6 @@ COMPARATORS = {
     'references.reference.authors': AuthorComparator,
     'report_numbers': SourceValueComparator,
     'title_translations': LanguageComparator,
-    'titles': TitleComparator,
 }
 
 GROBID_ON_ARXIV_COMPARATORS = {

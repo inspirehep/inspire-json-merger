@@ -21,15 +21,11 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, division, print_function
-from pyrsistent import freeze, thaw
 
 from inspire_json_merger.utils import filter_records
 from inspire_json_merger.pre_filters import (filter_documents_same_source,
                                              filter_curated_references,
-                                             filter_publisher_references,
-                                             filter_figures_same_source,
-                                             remove_duplicated_titles,
-                                             remove_titles_from_root)
+                                             filter_publisher_references, filter_figures_same_source)
 
 
 def test_filter_documents_same_source():
@@ -556,140 +552,3 @@ def test_filter_missing_figures_on_update_are_properly_handled():
     assert new_root == expected_root
     assert new_head == expected_head
     assert new_update == expected_update
-
-
-def test_pre_filter_not_fail_when_title_source_is_missing():
-    root = {
-        "titles": [
-            {"title": "Title 1", "source": "source 1"},
-            {"title": "Title 1"}
-        ]
-    }
-
-    head = {
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1", "source": "source 1"}
-        ]
-    }
-
-    update = {
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1"}
-        ]
-    }
-
-    expected_root = {
-        "titles": [
-            {"title": "Title 1", "source": "source 1"}
-        ]
-    }
-    expected_head = {
-        "titles": [
-            {"title": "Title 1", "source": "source 1"}
-        ]
-    }
-    expected_update = {
-        "titles": [
-            {"title": "Title 1"}
-        ]
-    }
-
-    new_root, new_head, new_update = remove_duplicated_titles(freeze(root), freeze(head), freeze(update))
-
-    assert (thaw(new_root), thaw(new_head), thaw(new_update)) == (expected_root, expected_head, expected_update)
-
-
-def test_pre_filter_remove_root_from_title():
-    root = {
-        "titles": [
-            {"title": "Title 1", "source": "source 1"},
-            {"title": "Title 1"}
-        ]
-    }
-
-    head = {
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1", "source": "source 1"}
-        ]
-    }
-
-    update = {
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1"}
-        ]
-    }
-
-    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
-    assert not new_root
-
-
-def test_pre_filter_remove_titles_from_root_doesnt_change_root_when_no_titles():
-    root = {
-        "authors": [
-            {"full_name": "Test Test"}
-        ]
-    }
-
-    head = {
-        "authors": [
-            {"full_name": "Test Test",
-             "affiliations": [
-                 {
-                     "value": "Beijing Normal U."
-                 }
-             ]},
-        ]
-    }
-
-    update = {
-        "authors": [
-            {"full_name": "Test Test"}
-        ]
-    }
-
-    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
-    assert new_root == root
-
-
-def test_pre_filter_remove_titles_from_root_removes_only_titles():
-    root = {
-        "authors": [
-            {"full_name": "Test Test"}
-        ],
-        "titles": [
-            {"title": "Title 1", "source": "source 1"},
-            {"title": "Title 1"}
-        ]
-    }
-
-    head = {
-        "authors": [
-            {"full_name": "Test Test",
-             "affiliations": [
-                 {
-                     "value": "Beijing Normal U."
-                 }
-             ]}
-        ],
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1", "source": "source 1"}
-        ]
-    }
-
-    update = {
-        "authors": [
-            {"full_name": "Test Test"}
-        ],
-        "titles": [
-            {"title": "Title 1"},
-            {"title": "Title 1", "source": "source 3"}
-        ]
-    }
-
-    new_root, new_head, new_update = remove_titles_from_root(freeze(root), freeze(head), freeze(update))
-    assert "authors" in new_root

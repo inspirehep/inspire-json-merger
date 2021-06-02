@@ -444,41 +444,6 @@ def test_merging_titles_field():
     validate_subschema(merged)
 
 
-def test_merging_titles_with_normalization():
-    root = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': 'ANTARES: An observatory at the seabed '
-                      'to the confines of the Universe'
-        }  # record: 1519935
-    ]}
-    head = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': '"ANTARES": An observatory at the seabed '
-                     'to the confines of the Universe–-review'
-        }
-    ]}
-    update = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': '”ANTARES”: An observatory at the seabed '
-                     'to the confines of the Universe--review'
-        },
-    ]}
-
-    expected_merged = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': '"ANTARES": An observatory at the seabed to the confines of the Universe–-review'
-        },
-    ]}
-
-    merged, conflict = merge(root, head, update, head_source='arxiv')
-    assert merged == expected_merged
-    validate_subschema(merged)
-
-
 def test_figures():
     root = {}
     head = {
@@ -674,6 +639,7 @@ def test_head_curates_author_no_duplicate():
 
     expected_merged = {
         'authors': [
+            {'full_name': 'Li, Zhengxiang'},
             {
                 'full_name': 'Li, Zheng-Xiang', 'affiliations': [
                     {'value': 'Beijing Normal U.'}
@@ -683,10 +649,10 @@ def test_head_curates_author_no_duplicate():
     }
 
     expected_conflict = [{
-        "path": "/authors/0",
-        "op": "remove",
-        "value": None,
-        "$type": "REMOVE_FIELD"
+        'path': '/authors/1',
+        'op': 'remove',
+        'value': None,
+        '$type': 'REMOVE_FIELD'
     }]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
