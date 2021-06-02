@@ -30,8 +30,6 @@ from inspire_json_merger.pre_filters import (
     filter_curated_references,
     filter_publisher_references,
     update_authors_with_ordering_info,
-    remove_duplicated_titles,
-    remove_titles_from_root,
     remove_references_from_update,
 )
 from .comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
@@ -57,9 +55,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
-        update_authors_with_ordering_info,
-        remove_titles_from_root,
-        remove_duplicated_titles
+        update_authors_with_ordering_info
     ]
     conflict_filters = [
         '_collections',
@@ -81,7 +77,6 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'preprint_date',
         'public_notes',
         'publication_info',
-        'titles.source'
     ]
 
     list_merge_ops = {
@@ -94,7 +89,6 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_ONLY_HEAD_ENTITIES,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST
     }
 
     # these rules are meaningless for fields which are arrays and have no comparator
@@ -117,8 +111,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'figures': D.FALLBACK_KEEP_UPDATE,
         'license': D.FALLBACK_KEEP_UPDATE,
         'number_of_pages': D.FALLBACK_KEEP_UPDATE,
-        'public_notes': D.FALLBACK_KEEP_UPDATE
-
+        'public_notes': D.FALLBACK_KEEP_UPDATE,
 
     }
 
@@ -129,9 +122,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_publisher_references,
-        update_authors_with_ordering_info,
-        remove_titles_from_root,
-        remove_duplicated_titles
+        update_authors_with_ordering_info
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
@@ -153,7 +144,6 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'preprint_date',
         'public_notes',
         'publication_info',
-        'titles.source'
     ]
     list_merge_ops = {
         'abstracts': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
@@ -171,7 +161,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'public_notes': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'publication_info': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'report_numbers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
+        'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
     }
     list_dict_ops = {
         'abstracts': D.FALLBACK_KEEP_UPDATE,
@@ -187,7 +177,6 @@ class ManualMergeOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
     pre_filters = [
         update_authors_with_ordering_info,
-        remove_duplicated_titles,
         remove_references_from_update,
     ]  # don't delete files with the same source
     conflict_filters = [
@@ -197,7 +186,6 @@ class ManualMergeOperations(MergerConfigurationOperations):
         'acquisition_source',
         'control_number',
         'self',
-        'titles.source'
     ]
     list_merge_ops = {
         'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
@@ -215,8 +203,6 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        remove_titles_from_root,
-        remove_duplicated_titles
     ]
     conflict_filters = [
         '_collections',
@@ -246,7 +232,6 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
 
     list_dict_ops = {
@@ -267,8 +252,6 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        remove_titles_from_root,
-        remove_duplicated_titles
     ]
     conflict_filters = [
         '_collections',
@@ -285,7 +268,6 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'license',
         'number_of_pages',
         'preprint_date',
-        'titles.source'
     ]
 
     list_merge_ops = {
@@ -299,7 +281,6 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'document_type': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'inspire_categories': U.KEEP_ONLY_HEAD_ENTITIES,
-        'titles': U.KEEP_HEAD_ENTITIES_CONFLICT_ON_NEW_UPDATE
     }
 
     list_dict_ops = {

@@ -30,6 +30,7 @@ import pyrsistent
 from inspire_utils.record import get_value
 from pyrsistent import freeze, thaw
 from six.moves import zip
+
 from inspire_json_merger.utils import ORDER_KEY
 
 
@@ -38,12 +39,6 @@ def remove_elements_with_source(source, field):
     return freeze(
         [element for element in field if element.get('source', '').lower() != source]
     )
-
-
-def remove_titles_from_root(root, head, update):
-    if 'titles' in root:
-        root = root.remove("titles")
-    return root, head, update
 
 
 def keep_only_update_source_in_field(field, root, head, update):
@@ -191,39 +186,6 @@ def _remove_if_falsy(pmap, key):
         return pmap
     except KeyError:
         return pmap
-
-
-def remove_duplicated_titles(root, head, update):
-    """Remove all duplicated titles. (not comparing source)
-    Title with subtitle id different that title without subtitle.
-    Non arxiv source is more important that arxiv source.
-    No souce is les important and will be always removed on duplicate.
-
-    Note: root head and update are expected to be Pmap not dicts!
-
-    """
-    new_elements = []
-    for data in (root, head, update):
-        titles = data.get('titles')
-        if not titles:
-            new_elements.append(data)
-            continue
-        titles_dict = dict()
-        to_delete = []
-        for title in titles:
-            title_data = (title['title'], title.get('subtitle'))
-            if title_data not in titles_dict:
-                titles_dict[title_data] = title
-            else:
-                if "source" in title and title['source'].lower() != 'arxiv':
-                    to_delete.append(titles_dict[title_data])
-                    titles_dict[title_data] = title
-                else:
-                    to_delete.append(title)
-        for object_to_remove in to_delete:
-            titles = titles.remove(object_to_remove)
-        new_elements.append(data.update({'titles': titles}))
-    return new_elements
 
 
 def remove_references_from_update(root, head, update):
