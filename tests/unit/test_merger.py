@@ -308,3 +308,102 @@ def test_merging_acquisition_source_publisher_on_arxiv(fake_get_config):
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration", return_value=PublisherOnArxivOperations
+)
+def test_merging_cleans_acquisition_source_for_publisher_on_arxiv(fake_get_config):
+    root = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "desy",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    head = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "arXiv",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    update = {
+        "acquisition_source": {
+            "datetime": "2021-05-12T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "desy",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c1"
+        }
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert merged['acquisition_source']['source'] == 'desy'
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration", return_value=PublisherOnPublisherOperations
+)
+def test_merging_cleans_acquisition_source_for_publisher_on_publisher(fake_get_config):
+    root = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "desy",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    head = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "elsevier",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    update = {
+        "acquisition_source": {
+            "datetime": "2021-05-12T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "desy",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c1"
+        }
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert merged['acquisition_source']['source'] == 'desy'
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration", return_value=ArxivOnPublisherOperations
+)
+def test_merging_cleans_acquisition_source_for_arxiv_on_publisher(fake_get_config):
+    root = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "arXiv",
+            "source": "arXiv",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    head = {
+        "acquisition_source": {
+            "datetime": "2021-05-11T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "desy",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0"
+        }
+    }
+    update = {
+        "acquisition_source": {
+            "datetime": "2021-05-12T02:35:43.387350",
+            "method": "hepcrawl",
+            "source": "arXiv",
+            "submission_number": "c8a0e3e0b20011eb8d930a580a6402c1"
+        }
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert merged['acquisition_source']['source'] == 'arXiv'
