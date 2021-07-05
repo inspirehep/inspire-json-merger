@@ -31,6 +31,7 @@ from inspire_json_merger.pre_filters import (
     filter_publisher_references,
     update_authors_with_ordering_info,
     remove_references_from_update,
+    clean_root_for_acquisition_source
 )
 from .comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
 
@@ -122,7 +123,8 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_publisher_references,
-        update_authors_with_ordering_info
+        update_authors_with_ordering_info,
+        clean_root_for_acquisition_source
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
@@ -203,6 +205,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
+        clean_root_for_acquisition_source
     ]
     conflict_filters = [
         '_collections',
@@ -252,6 +255,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
+        clean_root_for_acquisition_source
     ]
     conflict_filters = [
         '_collections',

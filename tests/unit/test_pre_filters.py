@@ -23,9 +23,13 @@
 from __future__ import absolute_import, division, print_function
 
 from inspire_json_merger.utils import filter_records
-from inspire_json_merger.pre_filters import (filter_documents_same_source,
-                                             filter_curated_references,
-                                             filter_publisher_references, filter_figures_same_source)
+from inspire_json_merger.pre_filters import (
+    filter_documents_same_source,
+    filter_curated_references,
+    filter_publisher_references,
+    filter_figures_same_source,
+    clean_root_for_acquisition_source
+)
 
 
 def test_filter_documents_same_source():
@@ -552,3 +556,44 @@ def test_filter_missing_figures_on_update_are_properly_handled():
     assert new_root == expected_root
     assert new_head == expected_head
     assert new_update == expected_update
+
+
+def test_acquisition_source_is_removed_from_root():
+    root = {
+        "acquisition_source": {"source": "desy"},
+        "references": [
+            {
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                },
+            },
+        ],
+    }
+
+    head = {
+        "acquisition_source": {"source": "desy"},
+        "references": [
+            {
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                },
+            },
+        ],
+    }
+
+    update = {
+        "acquisition_source": {"source": "desy"},
+        "references": [
+            {
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                },
+            },
+        ],
+    }
+
+    new_root, new_head, new_update = filter_records(
+        root, head, update, filters=[clean_root_for_acquisition_source]
+    )
+
+    assert not new_root.get("acquisition_source")

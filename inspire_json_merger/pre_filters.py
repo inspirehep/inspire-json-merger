@@ -193,5 +193,11 @@ def remove_references_from_update(root, head, update):
     return root, head, update
 
 
+def clean_root_for_acquisition_source(root, head, update):
+    if root.get("acquisition_source"):
+        root = root.remove("acquisition_source")
+    return root, head, update
+
+
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
 filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
