@@ -40,7 +40,7 @@ install_requires = [
     'munkres==1.0.12',
     'inspire-schemas~=61.0',
     'inspire-utils~=3.0,>=3.0.0',
-    'json-merger[contrib]@git+https://github.com/inveniosoftware-contrib/json-merger#8f4a8c2bf117208998bbdb153d5a525239b4747e',
+    'json-merger[contrib]~=0.0,==0.7.6',
     'pyrsistent~=0.0,>=0.14.0',
 ]
 
