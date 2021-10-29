@@ -407,3 +407,58 @@ def test_merging_cleans_acquisition_source_for_arxiv_on_publisher(fake_get_confi
 
     merged, conflict = merge(root, head, update)
     assert merged['acquisition_source']['source'] == 'arXiv'
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration", return_value=ArxivOnPublisherOperations
+)
+def test_merging_publication_info_for_arxiv_on_publisher(fake_get_config):
+    root = {
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "root title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ]
+    }
+    head = {
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "head title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ]
+    }
+    update = {
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "update title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ]
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert len(merged['publication_info']) == 1
+    assert merged['publication_info'][0]['journal_title'] == 'head title'
