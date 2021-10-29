@@ -161,7 +161,6 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'figures': U.KEEP_UPDATE_AND_HEAD_ENTITIES_UPDATE_FIRST,
         'license': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'public_notes': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
-        'publication_info': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'report_numbers': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'titles': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
     }
