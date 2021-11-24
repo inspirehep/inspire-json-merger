@@ -100,7 +100,7 @@ DateComparator = get_pk_comparator(['date'])
 FundingInfoComparator = get_pk_comparator(['project_number'])
 ImprintsComparator = get_pk_comparator(['publisher'])
 LanguageComparator = get_pk_comparator(['language'])
-LicenseComparator = get_pk_comparator(['imposing'])
+LicenseComparator = get_pk_comparator(['imposing', 'material'])
 MaterialComparator = get_pk_comparator(['material'])
 RefComparator = get_pk_comparator(['$ref'])
 SchemaComparator = get_pk_comparator(['schema'])
@@ -112,18 +112,20 @@ ValueComparator = get_pk_comparator(['value'])
 
 
 PublicationInfoComparator = get_pk_comparator([
-    ['journal_title', 'journal_volume']
+    ['journal_title', 'journal_volume', 'material']
 ])
 
 FigureComparator = get_pk_comparator([
-    ['key']
+    ['key', 'material']
 ])
 
 DocumentComparator = get_pk_comparator([
-    ['source', 'description'],
-    ['source', 'fulltext'],
-    ['source', 'original_url'],
+    ['source', 'description', 'material'],
+    ['source', 'fulltext', 'material'],
+    ['source', 'original_url', 'material'],
 ])
+
+PersistentIdentifierComparator = get_pk_comparator(['value', 'material'])
 
 COMPARATORS = {
     '_desy_bookkeeping': DateComparator,
@@ -139,7 +141,6 @@ COMPARATORS = {
     'copyright': MaterialComparator,
     'deleted_records': RefComparator,
     'documents': DocumentComparator,
-    'dois': SourceValueComparator,
     'external_system_identifiers': SchemaComparator,
     'figures': FigureComparator,
     'funding_info': FundingInfoComparator,
@@ -148,7 +149,7 @@ COMPARATORS = {
     'keywords': ValueComparator,
     'license': LicenseComparator,
     'new_record': RefComparator,
-    'persistent_identifiers': ValueComparator,
+    'persistent_identifiers': PersistentIdentifierComparator,
     'public_notes': SourceComparator,
     'publication_info': PublicationInfoComparator,
     'references.reference.authors': AuthorComparator,

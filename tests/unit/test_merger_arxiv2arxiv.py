@@ -157,8 +157,7 @@ def test_merging_dois_field_handles_repeated_values():
     head = {
         'dois': [
             {
-                'material': 'preprint',
-                'source': 'nowhere',
+                'material': 'publication',
                 'value': '10.1023/A:1026654312961'
             },
             {
@@ -170,7 +169,7 @@ def test_merging_dois_field_handles_repeated_values():
     update = {
         'dois': [
             {
-                'material': 'publication',
+                'material': 'erratum',
                 'value': '10.1023/A:1026654312961'
             },
             {
@@ -188,8 +187,11 @@ def test_merging_dois_field_handles_repeated_values():
                 'value': '10.1023/A:1026654312961'
             },
             {
-                'material': 'preprint',
                 'source': 'nowhere',
+                'value': '10.1023/B:1026654312961'
+            },
+            {
+                'material': 'erratum',
                 'value': '10.1023/A:1026654312961'
             },
             {
@@ -342,22 +344,30 @@ def test_merging_publication_info_field():
     expected_merged = {
         'publication_info': [
             {
-                'artid': '948-979',
-                'cnum': 'C12-03-10',
-                'curated_relation': True,
-                'journal_title': 'Adv.Theor.Math.Phys.',
-                "journal_volume": "12",
-                'journal_issue': '1',
+                "hidden": True,
+                "journal_title": "Adv.Theor.Math.Phys.",
                 "journal_record": {
                     "$ref": "http://labs.inspirehep.net/api/journals/1212914"
                 },
+                "journal_volume": "12",
+                "page_end": "979",
+                "page_start": "948",
+                "year": 2008
+            },
+            {
+                'artid': '948-979',
+                'curated_relation': True,
+                'journal_issue': '1',
+                'journal_title': 'Adv.Theor.Math.Phys.',
+                'journal_volume': '12',
+                'year': 2008,
+                'cnum': 'C12-03-10',
                 'material': 'erratum',
                 'page_end': '042',
                 'page_start': '032',
                 'parent_isbn': '9780521467025',
                 'parent_report_number': 'CERN-PH-TH-2012-115',
-                "year": 2008,
-            }
+            },
         ]
     }
     expected_conflict = []
@@ -557,6 +567,7 @@ def test_figures_dont_duplicate_keys_even_from_different_sources():
 
     merged, conflict = merge(root, head, update,
                              head_source='arxiv')
+
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)

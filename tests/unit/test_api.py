@@ -30,7 +30,6 @@ from operator import itemgetter
 import pytest
 
 from utils import validate_subschema, assert_ordered_conflicts
-from inspire_json_merger.config import GrobidOnArxivAuthorsOperations
 
 from inspire_json_merger.api import (
     get_acquisition_source,
@@ -39,11 +38,13 @@ from inspire_json_merger.api import (
     merge,
 )
 from inspire_json_merger.config import (
+    ErratumOnPublisherOperations,
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
-    ManualMergeOperations
+    ManualMergeOperations,
+    GrobidOnArxivAuthorsOperations
 )
 
 
@@ -140,6 +141,39 @@ def publisher_record():
     }
 
 
+@pytest.fixture
+def erratum_1():
+    return {
+        '_collections': ['literature'],
+        'document_type': ['article'],
+        'titles': [{'title': 'Erratum: that was a wrong title'}],
+        'dois': [{'value': '10.1023/A:1026654312961'}],
+        'acquisition_source': {'source': 'ejl'}
+    }
+
+
+@pytest.fixture
+def erratum_2():
+    return {
+        '_collections': ['literature'],
+        'document_type': ['article'],
+        'titles': [{'title': 'Correction to: an article'}],
+        'dois': [{'value': '10.1023/A:1026654312961'}],
+        'acquisition_source': {'source': 'ejl'}
+    }
+
+
+@pytest.fixture
+def erratum_3():
+    return {
+        '_collections': ['literature'],
+        'document_type': ['article'],
+        'titles': [{'title': 'A title'}],
+        'dois': [{'value': '10.1023/A:1026654312961', 'material': 'erratum'}],
+        'acquisition_source': {'source': 'ejl'}
+    }
+
+
 def test_get_head_source_freetext_pub_info_with_eprint(rec_publication_info):
     # record has pubinfo_freetext and arxiv_eprints, no dois
     validate_subschema(rec_publication_info)
@@ -220,11 +254,14 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, r
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_configuration(arxiv_record, publisher_record):
+def test_get_configuration(arxiv_record, publisher_record, erratum_1, erratum_2, erratum_3):
     assert get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
     assert get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
     assert get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
     assert get_configuration(publisher_record, publisher_record) == PublisherOnPublisherOperations
+    assert get_configuration(publisher_record, erratum_1) == ErratumOnPublisherOperations
+    assert get_configuration(publisher_record, erratum_2) == ErratumOnPublisherOperations
+    assert get_configuration(publisher_record, erratum_3) == ErratumOnPublisherOperations
 
     arxiv1 = arxiv_record
     arxiv1['control_number'] = 1

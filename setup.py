@@ -40,7 +40,7 @@ install_requires = [
     'munkres==1.0.12',
     'inspire-schemas~=61.0',
     'inspire-utils~=3.0,>=3.0.0',
-    'json-merger[contrib]~=0.0,==0.7.6',
+    'json-merger[contrib]~=0.0,==0.7.11',
     'pyrsistent~=0.0,>=0.14.0',
 ]
 
