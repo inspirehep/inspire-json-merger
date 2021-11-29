@@ -29,6 +29,7 @@ from json_merger.merger import MergeError, Merger
 from inspire_json_merger.config import (
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
+    ErratumOnPublisherOperations,
     ManualMergeOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
@@ -100,6 +101,9 @@ def get_configuration(head, update, head_source=None):
     if is_manual_merge(head, update):
         return ManualMergeOperations
 
+    if is_erratum(update):
+        return ErratumOnPublisherOperations
+
     if head_source == 'arxiv':
         if update_source == 'arxiv':
             return ArxivOnArxivOperations
@@ -138,3 +142,14 @@ def get_acquisition_source(json_obj):
 
 def is_manual_merge(head, update):
     return ('control_number' in update and 'control_number' in head and update['control_number'] != head['control_number'])
+
+
+def is_erratum(update):
+    erratum_keywords = {"erratum", "corrigendum", "publisher's note"}
+    journal_titles_list = get_value(update, "titles.title", [])
+    journal_titles_string = " ".join(journal_titles_list).lower()
+    title_contains_erratum_keyword = any([keyword in journal_titles_string for keyword in erratum_keywords])
+    title_starts_with_correction_to = any(journal_title.lower().startswith('correction to:') for journal_title in journal_titles_list)
+    erratum_in_dois_material = 'erratum' in get_value(update, "dois.material", [])
+    if title_contains_erratum_keyword or title_starts_with_correction_to or erratum_in_dois_material:
+        return True

@@ -28,10 +28,14 @@ from functools import partial
 
 import pyrsistent
 from inspire_utils.record import get_value
-from pyrsistent import freeze, thaw
+from pyrsistent import freeze, thaw, ny, pmap
 from six.moves import zip
 
 from inspire_json_merger.utils import ORDER_KEY
+
+FIELDS_WITH_MATERIAL_KEY = [
+    'dois', 'publication_info', 'copyright', 'documents', 'license', 'figures', 'persistent_identifiers'
+]
 
 
 def remove_elements_with_source(source, field):
@@ -201,3 +205,15 @@ def clean_root_for_acquisition_source(root, head, update):
 
 filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
 filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
+
+
+def update_material(root, head, update):
+    if "erratum" in get_value(thaw(update), 'dois.material'):
+        return root, head, update
+    for field in FIELDS_WITH_MATERIAL_KEY:
+        update = update.transform([field, ny], lambda element: element.set("material", "erratum"))
+    return root, head, update
+
+
+def remove_root(root, head, update):
+    return pmap({}), head, update

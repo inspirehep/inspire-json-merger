@@ -28,7 +28,9 @@ from inspire_json_merger.pre_filters import (
     filter_curated_references,
     filter_publisher_references,
     filter_figures_same_source,
-    clean_root_for_acquisition_source
+    clean_root_for_acquisition_source,
+    remove_root,
+    update_material
 )
 
 
@@ -597,3 +599,156 @@ def test_acquisition_source_is_removed_from_root():
     )
 
     assert not new_root.get("acquisition_source")
+
+
+def test_update_material():
+    update = {
+        "dois": [{"value": "10.2172/1827837"}],
+        "documents": [
+            {
+                "key": "999",
+                "url": "https://test.net/999",
+                "filename": "fermilab-slides-21-053-td.pdf",
+                "fulltext": True,
+            },
+        ],
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+        "license": [
+            {
+                "url": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+                "license": "arXiv nonexclusive-distrib 1.0",
+            }
+        ],
+        "copyright": [
+            {
+                "year": 2021,
+                "holder": "Elsevier B.V.",
+                "material": "publication",
+                "statement": "© 2021 Elsevier B.V. All rights reserved.",
+            }
+        ],
+        "figures": [
+            {
+                "key": "999",
+                "url": "https://inspirehep.net/999",
+                "label": "fig1",
+                "source": "arxiv",
+            }
+        ],
+    }
+
+    root, head, update = filter_records({}, {}, update, filters=[update_material])
+
+    assert 'material' in update['dois'][0]
+    assert 'material' in update['documents'][0]
+    assert 'material' in update['publication_info'][0]
+    assert 'material' in update['publication_info'][1]
+    assert 'material' in update['license'][0]
+    assert 'material' in update['copyright'][0]
+    assert 'material' in update['figures'][0]
+
+
+def test_update_material_when_erratum_in_dois_material():
+    update = {
+        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+    }
+
+    root, head, update = filter_records({}, {}, update, filters=[update_material])
+
+    assert root == {}
+    assert head == {}
+
+    assert 'material' in update['dois'][0]
+    assert 'material' not in update['publication_info'][0]
+    assert 'material' not in update['publication_info'][1]
+
+
+def test_remove_root():
+    root = {
+        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+    }
+    head = {
+        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+    }
+    update = {
+        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+    }
+    root, head, update = filter_records(root, head, update, filters=[remove_root])
+
+    assert root == {}
+    assert head == head
+    assert root == root

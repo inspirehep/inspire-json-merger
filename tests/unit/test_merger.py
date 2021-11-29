@@ -13,6 +13,7 @@ from inspire_json_merger.config import (
     PublisherOnArxivOperations,
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
+    ErratumOnPublisherOperations
 )
 
 
@@ -462,3 +463,218 @@ def test_merging_publication_info_for_arxiv_on_publisher(fake_get_config):
     merged, conflict = merge(root, head, update)
     assert len(merged['publication_info']) == 1
     assert merged['publication_info'][0]['journal_title'] == 'head title'
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration",
+    return_value=ErratumOnPublisherOperations,
+)
+def test_merging_erratum(fake_get_config):
+    root = {
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "root title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ]
+    }
+    head = {
+        "authors": [{"full_name": "Test, Chris"}],
+        "dois": [
+            {
+                "value": "10.1016/j.newast.2021.101676",
+                "source": "Elsevier B.V.",
+                "material": "publication",
+            }
+        ],
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "head title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ],
+        "references": [
+            {
+                "reference": {
+                    "label": "Capozziello and Laurentis, 2011",
+                    "authors": [
+                        {"full_name": "Laurentis, M.D.", "inspire_role": "author"}
+                    ],
+                    "publication_info": {
+                        "year": 2011,
+                        "page_start": "167",
+                        "journal_title": "Phys.Rept.",
+                        "journal_volume": "509"
+                    },
+                },
+            }
+        ],
+    }
+    update = {
+        "authors": [{"full_name": "Elliott, Chris"}, {"full_name": "Gwilliam, Owen"}],
+        "dois": [
+            {
+                "value": "10.1016/j.newast.2021.101678",
+                "source": "Elsevier B.V.",
+                "material": "publication",
+            }
+        ],
+        "publication_info": [
+            {
+                "year": 2022,
+                "artid": "051703",
+                "material": "publication",
+                "journal_issue": "10",
+                "journal_title": "head title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "105",
+            }
+        ],
+        "references": [
+            {
+                "record": {"$ref": "https://inspirehep.net/api/literature/581605"},
+                "reference": {
+                    "curated": True,
+                    "label": "Capozziello, 2002",
+                    "authors": [
+                        {"full_name": "Capozziello, S.", "inspire_role": "author"}
+                    ],
+                    "publication_info": {
+                        "year": 2002,
+                        "page_start": "483",
+                        "journal_title": "Int.J.Mod.Phys.D",
+                        "journal_record": {
+                            "$ref": "https://inspirehep.net/api/journals/1613976"
+                        },
+                        "journal_volume": "11",
+                    },
+                },
+            }
+        ],
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert len(merged["publication_info"]) == 2
+    assert len(merged["dois"]) == 2
+    assert len(merged['references']) == 1
+    assert len(conflict) == 1  # author delete
+
+
+@patch(
+    "inspire_json_merger.api.get_configuration",
+    return_value=ErratumOnPublisherOperations,
+)
+def test_merging_erratum_doesnt_remove_fields(fake_get_config):
+    root = {
+        "authors": [{"full_name": "Test, Chris"}],
+        "dois": [
+            {
+                "value": "10.1016/j.newast.2021.101676",
+                "source": "Elsevier B.V.",
+                "material": "publication",
+            }
+        ],
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "head title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ],
+        "references": [
+            {
+                "reference": {
+                    "label": "Capozziello and Laurentis, 2011",
+                    "authors": [
+                        {"full_name": "Laurentis, M.D.", "inspire_role": "author"}
+                    ],
+                    "publication_info": {
+                        "year": 2011,
+                        "page_start": "167",
+                        "journal_title": "Phys.Rept.",
+                        "journal_volume": "509"
+                    },
+                },
+            }
+        ],
+        'inspire_categories': [{'term': 'Lattice'}]
+    }
+    head = {
+        "authors": [{"full_name": "Test, Chris"}],
+        "dois": [
+            {
+                "value": "10.1016/j.newast.2021.101676",
+                "source": "Elsevier B.V.",
+                "material": "publication",
+            }
+        ],
+        "publication_info": [
+            {
+                "year": 2021,
+                "artid": "051701",
+                "material": "publication",
+                "journal_issue": "5",
+                "journal_title": "head title",
+                "journal_record": {
+                    "$ref": "https://inspirehep.net/api/journals/1613970"
+                },
+                "journal_volume": "104",
+            }
+        ],
+        "references": [
+            {
+                "reference": {
+                    "label": "Capozziello and Laurentis, 2011",
+                    "authors": [
+                        {"full_name": "Laurentis, M.D.", "inspire_role": "author"}
+                    ],
+                    "publication_info": {
+                        "year": 2011,
+                        "page_start": "167",
+                        "journal_title": "Phys.Rept.",
+                        "journal_volume": "509"
+                    },
+                },
+            }
+        ],
+        'inspire_categories': [{'term': 'Lattice'}]
+    }
+    update = {
+        "authors": [{"full_name": "Elliott, Chris"}, {"full_name": "Gwilliam, Owen"}],
+        "dois": [
+            {
+                "value": "10.1016/j.newast.2021.101678",
+                "source": "Elsevier B.V.",
+                "material": "publication",
+            }
+        ]
+    }
+
+    merged, conflict = merge(root, head, update)
+    assert 'publication_info' in merged
+    assert 'authors' in merged
+    assert 'references' in merged
+    assert 'inspire_categories' in merged
+    assert len(merged["dois"]) == 2
