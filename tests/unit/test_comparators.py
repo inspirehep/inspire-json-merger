@@ -131,3 +131,55 @@ def test_comparing_publication_info():
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
+
+
+def test_comparing_keywords():
+    root = {}
+    head = {
+        'keywords': [
+            {
+                'value': 'shielding',
+                'schema': 'JACOW',
+            },
+            {
+                'value': 'test',
+                'schema': 'JACOW',
+            }
+        ]
+    }
+    update = {
+        'keywords': [
+            {
+                'value': 'shielding',
+                'schema': 'INSPIRE',
+            },
+            {
+                'value': 'shielding',
+                'schema': 'JACOW',
+            }
+        ]
+    }
+
+    expected_conflict = []
+    expected_merged = {
+        'keywords': [
+            {
+                'value': 'shielding',
+                'schema': 'INSPIRE',
+            },
+            {
+                'value': 'shielding',
+                'schema': 'JACOW',
+            },
+            {
+                'value': 'test',
+                'schema': 'JACOW',
+            },
+        ]
+    }
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)

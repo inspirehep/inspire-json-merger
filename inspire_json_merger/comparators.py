@@ -109,6 +109,7 @@ SourceValueComparator = get_pk_comparator([['source', 'value']])
 TitleComparator = get_pk_comparator(['title'])
 URLComparator = get_pk_comparator(['url'])
 ValueComparator = get_pk_comparator(['value'])
+SchemaValueComparator = get_pk_comparator([['schema', 'value']])
 
 
 PublicationInfoComparator = get_pk_comparator([
@@ -146,7 +147,7 @@ COMPARATORS = {
     'funding_info': FundingInfoComparator,
     'imprints': ImprintsComparator,
     'isbns': ValueComparator,
-    'keywords': ValueComparator,
+    'keywords': SchemaValueComparator,
     'license': LicenseComparator,
     'new_record': RefComparator,
     'persistent_identifiers': PersistentIdentifierComparator,
