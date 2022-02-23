@@ -113,7 +113,7 @@ SchemaValueComparator = get_pk_comparator([['schema', 'value']])
 
 
 PublicationInfoComparator = get_pk_comparator([
-    ['journal_title', 'journal_volume', 'material']
+    ['journal_title', 'journal_volume', 'material', 'cnum']
 ])
 
 FigureComparator = get_pk_comparator([

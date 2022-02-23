@@ -133,6 +133,44 @@ def test_comparing_publication_info():
     validate_subschema(merged)
 
 
+def test_comparing_publication_info_with_cnum():
+    root = {}
+    head = {
+        'publication_info': [
+            {
+                "artid": "WEPAB127",
+                "cnum": "C21-05-24.3",
+                "conf_acronym": "IPAC2021",
+                "year": 2021
+            }
+        ]
+    }
+    update = {
+        'publication_info': [
+            {
+                "artid": "WEPAB127",
+                "cnum": "C21-05-24.3",
+                "conf_acronym": "IPAC2021",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1853162"
+                },
+                "year": 2021
+            }
+        ]
+    }
+
+    expected_conflict = []
+    expected_merged = update
+
+    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+
+    merged = add_arxiv_source(merged)
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)
+
+
 def test_comparing_keywords():
     root = {}
     head = {
