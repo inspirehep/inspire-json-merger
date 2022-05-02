@@ -145,7 +145,7 @@ def is_manual_merge(head, update):
 
 
 def is_erratum(update):
-    erratum_keywords = {"erratum", "corrigendum", "publisher's note"}
+    erratum_keywords = {"erratum", "corrigendum", "publisher's note", "publisher correction"}
     journal_titles_list = get_value(update, "titles.title", [])
     journal_titles_string = " ".join(journal_titles_list).lower()
     title_contains_erratum_keyword = any([keyword in journal_titles_string for keyword in erratum_keywords])
