@@ -211,7 +211,8 @@ def update_material(root, head, update):
     if "erratum" in get_value(thaw(update), 'dois.material'):
         return root, head, update
     for field in FIELDS_WITH_MATERIAL_KEY:
-        update = update.transform([field, ny], lambda element: element.set("material", "erratum"))
+        if field in update:
+            update = update.transform([field, ny], lambda element: element.set("material", "erratum"))
     return root, head, update
 
 
