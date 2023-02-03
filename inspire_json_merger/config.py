@@ -322,6 +322,7 @@ class GrobidOnArxivAuthorsOperations(MergerConfigurationOperations):
 
 
 class ErratumOnPublisherOperations(MergerConfigurationOperations):
+    comparators = COMPARATORS
     pre_filters = [
         update_material,
         filter_curated_references,
