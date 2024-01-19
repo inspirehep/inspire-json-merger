@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: [2.7, 3.6]
+        include:
+          - python: python3
+            pip: pip3
+          - python: python2
+            pip: pip
 
     steps:
       - name: Checkout
@@ -19,23 +23,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
       - name: Cache Python
         uses: actions/cache@v2.1.3
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ github.sha }}
+          key: ${{ runner.os }}-pip-${{ matrix.python }}-${{ github.sha }}
 
       - name: Install python dependencies
-        uses: ./.github/actions/install-python-dependencies
+        run: |
+          ${{ matrix.pip }} install --user --upgrade pip
+          ${{ matrix.pip }} --no-cache-dir install --user setuptools wheel "urllib3==1.25.11"
+          ${{ matrix.pip }} --no-cache-dir install --user -r requirements.txt
 
       - name: Show python dependencies
-        run: pip freeze
+          ${{ matrix.python }} --version
+          ${{ matrix.pip }} freeze
 
       - name: Run tests
         uses: ./.github/actions/run-tests
