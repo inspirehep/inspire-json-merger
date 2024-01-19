@@ -153,7 +153,6 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         'abstracts': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'arxiv_eprints.categories': U.KEEP_ONLY_UPDATE_ENTITIES,
-        'authors': U.KEEP_UPDATE_ENTITIES_CONFLICT_ON_HEAD_DELETE,
         'authors.ids': U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST,
         'authors.raw_affiliations': U.KEEP_ONLY_HEAD_ENTITIES,
         'core': D.FALLBACK_KEEP_HEAD,
