@@ -543,7 +543,7 @@ def test_grobid_on_arxiv_operations_doesnt_conflict_on_author_full_name():
                 "emails": [
                     "sulkowski.p@fuw.edu.pl"
                 ],
-                "full_name":"Sułkowski, Piotr"
+                "full_name": "Sułkowski, Piotr"
             }
         ]
     }
