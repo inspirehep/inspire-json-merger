@@ -569,7 +569,7 @@ def test_merging_erratum(fake_get_config):
     merged, conflict = merge(root, head, update)
     assert len(merged["publication_info"]) == 2
     assert len(merged["dois"]) == 2
-    assert len(merged["references"]) == 1
+    assert len(merged["references"]) == 2
     assert len(conflict) == 1  # author delete
 
 

@@ -324,7 +324,6 @@ class ErratumOnPublisherOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
     pre_filters = [
         update_material,
-        filter_curated_references,
         update_authors_with_ordering_info,
         remove_root
     ]
