@@ -50,8 +50,9 @@ tests_require = [
     'decorator~=4.0,>=4.1.2',
     'flake8-future-import~=0.0,>=0.4.3',
     'mock~=2.0,>=2.0.0',
-    'pytest-cov~=2.0,>=2.6.1',
-    'pytest~=3.0,>=3.6.0',
+    'pytest-cov~=2.0,>=2.5.1',
+    'pytest~=4.0,>=4.6.0;python_version <= "2.7"',
+    'pytest~=8.0,>=8.0.2;python_version >= "3.6"',
 ]
 
 extras_require = {

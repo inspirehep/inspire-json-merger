@@ -23,7 +23,11 @@ from __future__ import absolute_import, division, print_function
 
 import itertools
 import json
-from collections import Iterable
+
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 from json_merger.conflict import Conflict
 from pyrsistent import thaw
