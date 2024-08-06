@@ -22,8 +22,8 @@
 
 from __future__ import absolute_import, division, print_function
 
-import json
 import itertools
+import json
 
 from inspire_schemas.api import load_schema, validate
 
@@ -33,7 +33,9 @@ def assert_ordered_conflicts(conflicts, expected):
         json.loads(c.to_json()) for c in expected if hasattr(c, 'to_json')
     ]
     if expected_conflicts:
-        expected_conflicts_flat = list(itertools.chain.from_iterable(expected_conflicts))
+        expected_conflicts_flat = list(
+            itertools.chain.from_iterable(expected_conflicts)
+        )
     else:
         expected_conflicts_flat = expected
     # order the lists to check if they match

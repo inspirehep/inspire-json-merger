@@ -26,10 +26,10 @@ from __future__ import absolute_import, division, print_function
 
 from setuptools import find_packages, setup
 
-
 URL = 'https://github.com/inspirehep/inspire-json-merger'
 
-readme = open('README.rst').read()
+with open("README.rst") as f:
+    readme = f.read()
 
 setup_requires = [
     'autosemver~=0.0,>=0.5.2',
@@ -48,16 +48,20 @@ docs_require = []
 
 tests_require = [
     'decorator~=4.0,>=4.1.2',
-    'flake8-future-import~=0.0,>=0.4.3',
     'mock~=2.0,>=2.0.0',
     'pytest-cov~=2.0,>=2.5.1',
     'pytest~=4.0,>=4.6.0;python_version <= "2.7"',
     'pytest~=8.0,>=8.0.2;python_version >= "3.6"',
 ]
 
+dev_require = [
+    "pre-commit==3.5.0",
+]
+
 extras_require = {
     'docs': docs_require,
     'tests': tests_require,
+    'dev': dev_require,
 }
 
 extras_require['all'] = []

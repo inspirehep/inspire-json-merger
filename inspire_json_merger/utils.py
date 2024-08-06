@@ -25,6 +25,7 @@
 from __future__ import absolute_import, division, print_function
 
 import re
+
 import six
 from pyrsistent import freeze, thaw
 from six.moves import zip
@@ -55,36 +56,31 @@ def scan_author_string_for_phrases(s):
         s = s.decode('utf-8')
 
     retval = {
-        'TOKEN_TAG_LIST': [
-            'lastnames',
-            'nonlastnames',
-            'titles',
-            'raw'],
+        'TOKEN_TAG_LIST': ['lastnames', 'nonlastnames', 'titles', 'raw'],
         'lastnames': [],
         'nonlastnames': [],
         'titles': [],
-        'raw': s}
+        'raw': s,
+    }
     l = s.split(',')  # noqa: E741
     if len(l) < 2:
         # No commas means a simple name
         new = s.strip()
         new = new.split(' ')
         if len(new) == 1:
-            retval['lastnames'] = new        # rare single-name case
+            retval['lastnames'] = new  # rare single-name case
         else:
             retval['lastnames'] = new[-1:]
             retval['nonlastnames'] = new[:-1]
             for tag in ['lastnames', 'nonlastnames']:
                 retval[tag] = [x.strip() for x in retval[tag]]
-                retval[tag] = [re.split(split_on_re, x)
-                               for x in retval[tag]]
+                retval[tag] = [re.split(split_on_re, x) for x in retval[tag]]
                 # flatten sublists
-                retval[tag] = [item for sublist in retval[tag]
-                               for item in sublist]
+                retval[tag] = [item for sublist in retval[tag] for item in sublist]
                 retval[tag] = [x for x in retval[tag] if x != '']
     else:
         # Handle lastname-first multiple-names case
-        retval['titles'] = l[2:]             # no titles? no problem
+        retval['titles'] = l[2:]  # no titles? no problem
         retval['nonlastnames'] = l[1]
         retval['lastnames'] = l[0]
         for tag in ['lastnames', 'nonlastnames']:

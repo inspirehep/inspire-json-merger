@@ -23,27 +23,25 @@
 from __future__ import absolute_import, division, print_function
 
 from inspire_schemas.api import load_schema, validate
-
 from json_merger.config import UnifierOps
-
-from inspire_json_merger.comparators import IDNormalizer
-from inspire_json_merger.api import merge
-from inspire_json_merger.config import ArxivOnArxivOperations
-
 from utils import assert_ordered_conflicts
 
-ArxivOnArxivOperations.list_merge_ops['references'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
-ArxivOnArxivOperations.list_merge_ops['publication_info'] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+from inspire_json_merger.api import merge
+from inspire_json_merger.comparators import IDNormalizer
+from inspire_json_merger.config import ArxivOnArxivOperations
+
+ArxivOnArxivOperations.list_merge_ops[
+    'references'
+] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
+ArxivOnArxivOperations.list_merge_ops[
+    'publication_info'
+] = UnifierOps.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
 
 
 def add_arxiv_source(*json_obj):
     # This function add a source object to the given json file list
     for obj in json_obj:
-        source = {
-            'acquisition_source': {
-                'source': 'arxiv'
-            }
-        }
+        source = {'acquisition_source': {'source': 'arxiv'}}
         obj.update(source)
     return json_obj if len(json_obj) > 1 else json_obj[0]
 
@@ -92,7 +90,9 @@ def test_comparing_authors_unicode_name():
     expected_conflict = []
     expected_merged = head
 
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    root, head, update, expected_merged = add_arxiv_source(
+        root, head, update, expected_merged
+    )
     merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
@@ -124,7 +124,9 @@ def test_comparing_publication_info():
     expected_conflict = []
     expected_merged = update
 
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    root, head, update, expected_merged = add_arxiv_source(
+        root, head, update, expected_merged
+    )
     merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
@@ -141,7 +143,7 @@ def test_comparing_publication_info_with_cnum():
                 "artid": "WEPAB127",
                 "cnum": "C21-05-24.3",
                 "conf_acronym": "IPAC2021",
-                "year": 2021
+                "year": 2021,
             }
         ]
     }
@@ -154,7 +156,7 @@ def test_comparing_publication_info_with_cnum():
                 "conference_record": {
                     "$ref": "https://inspirehep.net/api/conferences/1853162"
                 },
-                "year": 2021
+                "year": 2021,
             }
         ]
     }
@@ -162,7 +164,9 @@ def test_comparing_publication_info_with_cnum():
     expected_conflict = []
     expected_merged = update
 
-    root, head, update, expected_merged = add_arxiv_source(root, head, update, expected_merged)
+    root, head, update, expected_merged = add_arxiv_source(
+        root, head, update, expected_merged
+    )
     merged, conflict = merge(root, head, update, head_source='arxiv')
 
     merged = add_arxiv_source(merged)
@@ -182,7 +186,7 @@ def test_comparing_keywords():
             {
                 'value': 'test',
                 'schema': 'JACOW',
-            }
+            },
         ]
     }
     update = {
@@ -194,7 +198,7 @@ def test_comparing_keywords():
             {
                 'value': 'shielding',
                 'schema': 'JACOW',
-            }
+            },
         ]
     }
 

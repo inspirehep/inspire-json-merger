@@ -22,5 +22,4 @@
 
 set -e
 
-flake8 inspire_json_merger tests
 pytest tests/
