@@ -6,11 +6,13 @@ from mock import patch
 from utils import assert_ordered_conflicts, validate_subschema
 
 from inspire_json_merger.api import merge
-from inspire_json_merger.config import (ArxivOnArxivOperations,
-                                        ArxivOnPublisherOperations,
-                                        ErratumOnPublisherOperations,
-                                        PublisherOnArxivOperations,
-                                        PublisherOnPublisherOperations)
+from inspire_json_merger.config import (
+    ArxivOnArxivOperations,
+    ArxivOnPublisherOperations,
+    ErratumOnPublisherOperations,
+    PublisherOnArxivOperations,
+    PublisherOnPublisherOperations,
+)
 
 
 @patch(
@@ -149,8 +151,7 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
         "titles": [
             {
                 "source": "arXiv",
-                "title": "Spontaneous symmetry breaking: a view from derived "
-                "geometry",
+                "title": "Spontaneous symmetry breaking: a view from derived geometry",
             }
         ],
     }
@@ -217,8 +218,7 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
         "titles": [
             {
                 "source": "arXiv",
-                "title": "Spontaneous symmetry breaking: a view from derived "
-                "geometry",
+                "title": "Spontaneous symmetry breaking: a view from derived geometry",
             }
         ],
     }
@@ -230,8 +230,7 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
         "titles": [
             {
                 "source": "arXiv",
-                "title": "Spontaneous symmetry breaking: a view from derived "
-                "geometry",
+                "title": "Spontaneous symmetry breaking: a view from derived geometry",
             }
         ],
     }
@@ -688,7 +687,27 @@ def test_merging_copyright(fake_get_config):
         "abstracts": [
             {
                 "source": "arXiv",
-                "value": "Based on previously published multi-wavelength modelling of the GRB 170817A jet afterglow, that includes information from the VLBI centroid motion, we construct the posterior probability density distribution on the total energy in the bipolar jets launched by the GW170817 merger remnant. By applying a new numerical-relativity-informed fitting formula for the accretion disk mass, we construct the posterior probability density distribution of the GW170817 remnant disk mass. By combining the two, we estimate the accretion-to-jet energy conversion efficiency in this system, carefully accounting for uncertainties. The accretion-to-jet energy conversion efficiency in GW170817 is $\\eta\\sim 10^{-3}$ with an uncertainty of slightly less than two orders of magnitude. This low efficiency is in good agreement with expectations from the $\\nu\\bar\\nu$ mechanism, which therefore cannot be excluded by this measurement alone. Such an efficiency also agrees with that anticipated for the Blandford-Znajek mechanism, provided that the magnetic field in the disk right after the merger is predominantly toroidal (which is expected as a result of the merger dynamics).",
+                "value": (
+                    "Based on previously published multi-wavelength modelling of the"
+                    " GRB 170817A jet afterglow, that includes information from the"
+                    " VLBI centroid motion, we construct the posterior probability"
+                    " density distribution on the total energy in the bipolar jets"
+                    " launched by the GW170817 merger remnant. By applying a new"
+                    " numerical-relativity-informed fitting formula for the accretion"
+                    " disk mass, we construct the posterior probability density"
+                    " distribution of the GW170817 remnant disk mass. By combining the"
+                    " two, we estimate the accretion-to-jet energy conversion"
+                    " efficiency in this system, carefully accounting for"
+                    " uncertainties. The accretion-to-jet energy conversion efficiency"
+                    " in GW170817 is $\\eta\\sim 10^{-3}$ with an uncertainty of"
+                    " slightly less than two orders of magnitude. This low efficiency"
+                    " is in good agreement with expectations from the $\\nu\\bar\\nu$"
+                    " mechanism, which therefore cannot be excluded by this measurement"
+                    " alone. Such an efficiency also agrees with that anticipated for"
+                    " the Blandford-Znajek mechanism, provided that the magnetic field"
+                    " in the disk right after the merger is predominantly toroidal"
+                    " (which is expected as a result of the merger dynamics)."
+                ),
             }
         ],
         "acquisition_source": {
@@ -703,10 +722,16 @@ def test_merging_copyright(fake_get_config):
                 "full_name": "Salafia, Om S.",
                 "raw_affiliations": [
                     {
-                        "value": "INAF -Osservatorio Astronomico di Brera, via E. Bianchi 46, I-23807 Merate (LC), Italy"
+                        "value": (
+                            "INAF -Osservatorio Astronomico di Brera, via E. Bianchi"
+                            " 46, I-23807 Merate (LC), Italy"
+                        )
                     },
                     {
-                        "value": "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3, I-20126 Milano (MI), Italy"
+                        "value": (
+                            "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3,"
+                            " I-20126 Milano (MI), Italy"
+                        )
                     },
                 ],
             },
@@ -714,13 +739,23 @@ def test_merging_copyright(fake_get_config):
                 "full_name": "Giacomazzo, Bruno",
                 "raw_affiliations": [
                     {
-                        "value": "INAF -Osservatorio Astronomico di Brera, via E. Bianchi 46, I-23807 Merate (LC), Italy"
+                        "value": (
+                            "INAF -Osservatorio Astronomico di Brera, via E. Bianchi"
+                            " 46, I-23807 Merate (LC), Italy"
+                        )
                     },
                     {
-                        "value": "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3, I-20126 Milano (MI), Italy"
+                        "value": (
+                            "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3,"
+                            " I-20126 Milano (MI), Italy"
+                        )
                     },
                     {
-                        "value": 'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di Fisica "G. Occhialini", Piazza della Scienza 3, I-20126 Milano, Italy'
+                        "value": (
+                            'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di'
+                            ' Fisica "G. Occhialini", Piazza della Scienza 3, I-20126'
+                            ' Milano, Italy'
+                        )
                     },
                 ],
             },
@@ -748,7 +783,14 @@ def test_merging_copyright(fake_get_config):
         ],
         "figures": [
             {
-                "caption": "GW170817 accretion disc mass posterior distributions. The solid red line shows the posterior probability distribution of the logarithm of the accretion disc mass (in solar masses) for the low-spin LVC priors. The dashed blue line shows the corresponding result that would have been obtained using the disc mass fitting formula from \\citet{Radice2018}.",
+                "caption": (
+                    "GW170817 accretion disc mass posterior distributions. The solid"
+                    " red line shows the posterior probability distribution of the"
+                    " logarithm of the accretion disc mass (in solar masses) for the"
+                    " low-spin LVC priors. The dashed blue line shows the corresponding"
+                    " result that would have been obtained using the disc mass fitting"
+                    " formula from \\citet{Radice2018}."
+                ),
                 "key": "disk_mass.png",
                 "label": "fig:disc_mass_posterior",
                 "material": "preprint",
@@ -769,7 +811,11 @@ def test_merging_copyright(fake_get_config):
         "public_notes": [
             {
                 "source": "arXiv",
-                "value": "11 pages, 6 figures, reflects the A&A published version, with\n equation 1 corrected as described in the corrigendum published on A&A",
+                "value": (
+                    "11 pages, 6 figures, reflects the A&A published version, with\n"
+                    " equation 1 corrected as described in the corrigendum published"
+                    " on A&A"
+                ),
             }
         ],
         "publication_info": [
@@ -802,11 +848,76 @@ def test_merging_copyright(fake_get_config):
         "abstracts": [
             {
                 "source": "EDP Sciences",
-                "value": "Gamma-ray bursts (GRBs) are thought to be produced by short-lived, supercritical accretion onto a newborn compact object. Some process is believed to tap energy from the compact object, or the accretion disc, powering the launch of a relativistic jet. For the first time, we can construct independent estimates of the GRB jet energy and of the mass in the accretion disc in its central engine; this is thanks to gravitational wave observations of the GW170817 binary neutron star merger by the Laser Interferometer Gravitational wave Observatory (LIGO) and Virgo interferometers, as well as a global effort to monitor the afterglow of the associated short gamma-ray burst GRB 170817A on a long-term, high-cadence, multi-wavelength basis. In this work, we estimate the accretion-to-jet energy conversion efficiency in GW170817, that is, the ratio of the jet total energy to the accretion disc rest mass energy, and we compare this quantity with theoretical expectations from the Blandford-Znajek and neutrino-antineutrino annihilation (\u03bd\u03bd\u0304) jet-launching mechanisms in binary neutron star mergers. Based on previously published multi-wavelength modelling of the GRB 170817A jet afterglow, we construct the posterior probability density distribution of the total energy in the bipolar jets launched by the GW170817 merger remnant. By applying a new numerical-relativity-informed fitting formula for the accretion disc mass, we construct the posterior probability density distribution of the GW170817 remnant disc mass. Combining the two, we estimate the accretion-to-jet energy conversion efficiency in this system, carefully accounting for uncertainties. The accretion-to-jet energy conversion efficiency in GW170817 is \u03b7\u2004\u223c\u200410\u22123, with an uncertainty of slightly less than two orders of magnitude. This low efficiency is in agreement with expectations from the mechanism, which therefore cannot be excluded by this measurement alone. The low efficiency also agrees with that anticipated for the Blandford-Znajek mechanism, provided that the magnetic field in the disc right after the merger is predominantly toroidal (which is expected as a result of the merger dynamics). This is the first estimate of the accretion-to-jet energy conversion efficiency in a GRB that combines independent estimates of the jet energy and accretion disc mass. Future applications of this method to a larger number of systems will reduce the uncertainties in the efficiency and reveal whether or not it is universal. This, in turn, will provide new insights into the jet-launching conditions in neutron star mergers.Key words: relativistic processes / gamma-ray burst: individual: GRB 170817A / stars: neutron / gravitational waves",
+                "value": (
+                    "Gamma-ray bursts (GRBs) are thought to be produced by short-lived,"
+                    " supercritical accretion onto a newborn compact object. Some"
+                    " process is believed to tap energy from the compact object, or the"
+                    " accretion disc, powering the launch of a relativistic jet. For"
+                    " the first time, we can construct independent estimates of the GRB"
+                    " jet energy and of the mass in the accretion disc in its central"
+                    " engine; this is thanks to gravitational wave observations of the"
+                    " GW170817 binary neutron star merger by the Laser Interferometer"
+                    " Gravitational wave Observatory (LIGO) and Virgo interferometers,"
+                    " as well as a global effort to monitor the afterglow of the"
+                    " associated short gamma-ray burst GRB 170817A on a long-term,"
+                    " high-cadence, multi-wavelength basis. In this work, we estimate"
+                    " the accretion-to-jet energy conversion efficiency in GW170817,"
+                    " that is, the ratio of the jet total energy to the accretion disc"
+                    " rest mass energy, and we compare this quantity with theoretical"
+                    " expectations from the Blandford-Znajek and neutrino-antineutrino"
+                    " annihilation (\u03bd\u03bd\u0304) jet-launching mechanisms in"
+                    " binary neutron star mergers. Based on previously published"
+                    " multi-wavelength modelling of the GRB 170817A jet afterglow, we"
+                    " construct the posterior probability density distribution of the"
+                    " total energy in the bipolar jets launched by the GW170817 merger"
+                    " remnant. By applying a new numerical-relativity-informed fitting"
+                    " formula for the accretion disc mass, we construct the posterior"
+                    " probability density distribution of the GW170817 remnant disc"
+                    " mass. Combining the two, we estimate the accretion-to-jet energy"
+                    " conversion efficiency in this system, carefully accounting for"
+                    " uncertainties. The accretion-to-jet energy conversion efficiency"
+                    " in GW170817 is \u03b7\u2004\u223c\u200410\u22123, with an"
+                    " uncertainty of slightly less than two orders of magnitude. This"
+                    " low efficiency is in agreement with expectations from the"
+                    " mechanism, which therefore cannot be excluded by this measurement"
+                    " alone. The low efficiency also agrees with that anticipated for"
+                    " the Blandford-Znajek mechanism, provided that the magnetic field"
+                    " in the disc right after the merger is predominantly toroidal"
+                    " (which is expected as a result of the merger dynamics). This is"
+                    " the first estimate of the accretion-to-jet energy conversion"
+                    " efficiency in a GRB that combines independent estimates of the"
+                    " jet energy and accretion disc mass. Future applications of this"
+                    " method to a larger number of systems will reduce the"
+                    " uncertainties in the efficiency and reveal whether or not it is"
+                    " universal. This, in turn, will provide new insights into the"
+                    " jet-launching conditions in neutron star mergers.Key words:"
+                    " relativistic processes / gamma-ray burst: individual: GRB 170817A"
+                    " / stars: neutron / gravitational waves"
+                ),
             },
             {
                 "source": "arXiv",
-                "value": "Based on previously published multi-wavelength modelling of the GRB 170817A jet afterglow, that includes information from the VLBI centroid motion, we construct the posterior probability density distribution on the total energy in the bipolar jets launched by the GW170817 merger remnant. By applying a new numerical-relativity-informed fitting formula for the accretion disk mass, we construct the posterior probability density distribution of the GW170817 remnant disk mass. By combining the two, we estimate the accretion-to-jet energy conversion efficiency in this system, carefully accounting for uncertainties. The accretion-to-jet energy conversion efficiency in GW170817 is $\\eta\\sim 10^{-3}$ with an uncertainty of slightly less than two orders of magnitude. This low efficiency is in good agreement with expectations from the $\\nu\\bar\\nu$ mechanism, which therefore cannot be excluded by this measurement alone. Such an efficiency also agrees with that anticipated for the Blandford-Znajek mechanism, provided that the magnetic field in the disk right after the merger is predominantly toroidal (which is expected as a result of the merger dynamics).",
+                "value": (
+                    "Based on previously published multi-wavelength modelling of the"
+                    " GRB 170817A jet afterglow, that includes information from the"
+                    " VLBI centroid motion, we construct the posterior probability"
+                    " density distribution on the total energy in the bipolar jets"
+                    " launched by the GW170817 merger remnant. By applying a new"
+                    " numerical-relativity-informed fitting formula for the accretion"
+                    " disk mass, we construct the posterior probability density"
+                    " distribution of the GW170817 remnant disk mass. By combining the"
+                    " two, we estimate the accretion-to-jet energy conversion"
+                    " efficiency in this system, carefully accounting for"
+                    " uncertainties. The accretion-to-jet energy conversion efficiency"
+                    " in GW170817 is $\\eta\\sim 10^{-3}$ with an uncertainty of"
+                    " slightly less than two orders of magnitude. This low efficiency"
+                    " is in good agreement with expectations from the $\\nu\\bar\\nu$"
+                    " mechanism, which therefore cannot be excluded by this measurement"
+                    " alone. Such an efficiency also agrees with that anticipated for"
+                    " the Blandford-Znajek mechanism, provided that the magnetic field"
+                    " in the disk right after the merger is predominantly toroidal"
+                    " (which is expected as a result of the merger dynamics)."
+                ),
             },
         ],
         "acquisition_source": {
@@ -826,10 +937,16 @@ def test_merging_copyright(fake_get_config):
                 ],
                 "raw_affiliations": [
                     {
-                        "value": "INAF -Osservatorio Astronomico di Brera, via E. Bianchi 46, I-23807 Merate (LC), Italy"
+                        "value": (
+                            "INAF -Osservatorio Astronomico di Brera, via E. Bianchi"
+                            " 46, I-23807 Merate (LC), Italy"
+                        )
                     },
                     {
-                        "value": "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3, I-20126 Milano (MI), Italy"
+                        "value": (
+                            "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3,"
+                            " I-20126 Milano (MI), Italy"
+                        )
                     },
                 ],
                 "record": {"$ref": "https://inspirehep.net/api/authors/1598567"},
@@ -845,13 +962,23 @@ def test_merging_copyright(fake_get_config):
                 ],
                 "raw_affiliations": [
                     {
-                        "value": "INAF -Osservatorio Astronomico di Brera, via E. Bianchi 46, I-23807 Merate (LC), Italy"
+                        "value": (
+                            "INAF -Osservatorio Astronomico di Brera, via E. Bianchi"
+                            " 46, I-23807 Merate (LC), Italy"
+                        )
                     },
                     {
-                        "value": "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3, I-20126 Milano (MI), Italy"
+                        "value": (
+                            "INFN -Sezione di Milano-Bicocca, Piazza della Scienza 3,"
+                            " I-20126 Milano (MI), Italy"
+                        )
                     },
                     {
-                        "value": 'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di Fisica "G. Occhialini", Piazza della Scienza 3, I-20126 Milano, Italy'
+                        "value": (
+                            'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di'
+                            ' Fisica "G. Occhialini", Piazza della Scienza 3, I-20126'
+                            ' Milano, Italy'
+                        )
                     },
                 ],
                 "record": {"$ref": "https://inspirehep.net/api/authors/1056614"},
@@ -889,7 +1016,14 @@ def test_merging_copyright(fake_get_config):
         ],
         "figures": [
             {
-                "caption": "GW170817 accretion disc mass posterior distributions. The solid red line shows the posterior probability distribution of the logarithm of the accretion disc mass (in solar masses) for the low-spin LVC priors. The dashed blue line shows the corresponding result that would have been obtained using the disc mass fitting formula from \\citet{Radice2018}.",
+                "caption": (
+                    "GW170817 accretion disc mass posterior distributions. The solid"
+                    " red line shows the posterior probability distribution of the"
+                    " logarithm of the accretion disc mass (in solar masses) for the"
+                    " low-spin LVC priors. The dashed blue line shows the corresponding"
+                    " result that would have been obtained using the disc mass fitting"
+                    " formula from \\citet{Radice2018}."
+                ),
                 "filename": "disk_mass.png",
                 "key": "3a646ab3fbde76e1d6aa2489de70076d",
                 "label": "fig:disc_mass_posterior",
@@ -924,7 +1058,11 @@ def test_merging_copyright(fake_get_config):
         "public_notes": [
             {
                 "source": "arXiv",
-                "value": "11 pages, 6 figures, reflects the A&A published version, with\n equation 1 corrected as described in the corrigendum published on A&A",
+                "value": (
+                    "11 pages, 6 figures, reflects the A&A published version, with\n"
+                    " equation 1 corrected as described in the corrigendum published"
+                    " on A&A"
+                ),
             }
         ],
         "publication_info": [
@@ -958,7 +1096,10 @@ def test_merging_copyright(fake_get_config):
         "titles": [
             {
                 "source": "EDP Sciences",
-                "title": "Accretion-to-jet energy conversion efficiency in GW170817 (Corrigendum)",
+                "title": (
+                    "Accretion-to-jet energy conversion efficiency in GW170817"
+                    " (Corrigendum)"
+                ),
             },
             {
                 "source": "arXiv",
@@ -983,7 +1124,10 @@ def test_merging_copyright(fake_get_config):
         "_private_notes": [
             {"value": "Erratum"},
             {
-                "value": "1 combined refs (0 IDs differ, 1 IDs coincide, 0 DOIs/0 bulls added from SISSA, 0 IDs missing in SISSA)"
+                "value": (
+                    "1 combined refs (0 IDs differ, 1 IDs coincide, 0 DOIs/0 bulls"
+                    " added from SISSA, 0 IDs missing in SISSA)"
+                )
             },
             {"value": "DOKIFILE:jhep2205.140-2130"},
         ],
@@ -1003,7 +1147,10 @@ def test_merging_copyright(fake_get_config):
                 "full_name": "Arnold, Peter",
                 "raw_affiliations": [
                     {
-                        "value": "Department of Physics, University of Virginia, 22904-4714 Charlottesville, Virginia, USA"
+                        "value": (
+                            "Department of Physics, University of Virginia, 22904-4714"
+                            " Charlottesville, Virginia, USA"
+                        )
                     }
                 ],
             },
@@ -1016,10 +1163,16 @@ def test_merging_copyright(fake_get_config):
                 "ids": [{"schema": "ORCID", "value": "0000-0003-3469-7574"}],
                 "raw_affiliations": [
                     {
-                        "value": "Department of Physics, University of Virginia, 22904-4714 Charlottesville, Virginia, USA"
+                        "value": (
+                            "Department of Physics, University of Virginia, 22904-4714"
+                            " Charlottesville, Virginia, USA"
+                        )
                     },
                     {
-                        "value": "Technische Universit\xe4t Darmstadt, Department of Physics, 64289 Darmstadt, Germany"
+                        "value": (
+                            "Technische Universit\xe4t Darmstadt, Department of"
+                            " Physics, 64289 Darmstadt, Germany"
+                        )
                     },
                 ],
             },
@@ -1031,7 +1184,10 @@ def test_merging_copyright(fake_get_config):
                 "ids": [{"schema": "ORCID", "value": "0000-0001-8640-9963"}],
                 "raw_affiliations": [
                     {
-                        "value": "Institute of Particle Physics, Central China Normal University, 430079 Wuhan, China"
+                        "value": (
+                            "Institute of Particle Physics, Central China Normal"
+                            " University, 430079 Wuhan, China"
+                        )
                     }
                 ],
             },
@@ -1071,7 +1227,10 @@ def test_merging_copyright(fake_get_config):
         "titles": [
             {
                 "source": "Springer",
-                "title": "Erratum to: The LPM effect in sequential bremsstrahlung: nearly complete results for QCD [doi: 10.1007/JHEP11(2020)053]",
+                "title": (
+                    "Erratum to: The LPM effect in sequential bremsstrahlung: nearly"
+                    " complete results for QCD [doi: 10.1007/JHEP11(2020)053]"
+                ),
             }
         ],
     }

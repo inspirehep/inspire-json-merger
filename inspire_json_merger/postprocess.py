@@ -123,7 +123,8 @@ def postprocess_conflicts(conflicts, merged):
 
 
 def add_conflict(conflict, processed_conflicts, unprocessed_conflicts):
-    """Adds conflict which added something to `merged` dict so positions for other conflicts should be updated
+    """Adds conflict which added something to `merged` dict so positions
+        for other conflicts should be updated
 
     Args:
         conflict(Conflict): curently added conflict
@@ -147,7 +148,12 @@ def update_conflicts_list(conflict, conflict_list):
     new_type, new_path, new_content = conflict
     for idx, processed_conflict in enumerate(conflict_list):
         path = processed_conflict[1]
-        if path[0] == new_path[0] and len(path) > 1 and len(new_path) > 1 and path[1] >= new_path[1]:
+        if (
+            path[0] == new_path[0]
+            and len(path) > 1
+            and len(new_path) > 1
+            and path[1] >= new_path[1]
+        ):
             path = list(path)
             path[1] += 1
             path = tuple(path)
@@ -184,7 +190,8 @@ def _additem(item, object, path):
     Args:
         item: Item to add
         object: List or Dictionary to which item should be added
-        path(tuple): Path on which item should be added, every element of path is a separate element.
+        path(tuple): Path on which item should be added, every element of
+        path is a separate element.
         Path represents place after which item should be added.
 
     Returns(tuple): Tuple containing path and item merged with item under proper path.
@@ -218,9 +225,11 @@ def _additem(item, object, path):
 
 def _is_conflict_duplicated(conflict, possible_duplicates):
     conflict_type, conflict_location, conflict_content = conflict
-    if conflict_type == "ADD_BACK_TO_HEAD" and conflict_location[0] == "authors" and conflict_content in possible_duplicates:
-        return True
-    return False
+    return bool(
+        conflict_type == "ADD_BACK_TO_HEAD"
+        and conflict_location[0] == "authors"
+        and conflict_content in possible_duplicates
+    )
 
 
 def _process_author_manual_merge_conflict(conflict, merged):
@@ -239,7 +248,8 @@ def _process_author_manual_merge_conflict(conflict, merged):
 
 
 def _insert_to_list(item, objects_list, position=None):
-    """Inserts value into list at proper position (as close to requested position as possible but not before it).
+    """Inserts value into list at proper position (as close to requested
+        position as possible but not before it).
 
     If no position provided element will be added at the end of the list.
     Args:

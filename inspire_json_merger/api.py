@@ -22,8 +22,8 @@
 
 from __future__ import absolute_import, division, print_function
 
-from inspire_utils.record import get_value
 from inspire_utils.helpers import force_list
+from inspire_utils.record import get_value
 from json_merger.merger import MergeError, Merger
 
 from inspire_json_merger.config import (
@@ -35,7 +35,6 @@ from inspire_json_merger.config import (
     PublisherOnPublisherOperations,
 )
 from inspire_json_merger.postprocess import postprocess_results
-
 from inspire_json_merger.utils import filter_conflicts, filter_records
 
 
@@ -61,9 +60,13 @@ def merge(root, head, update, head_source=None, configuration=None):
     if not configuration:
         configuration = get_configuration(head, update, head_source)
     conflicts = []
-    root, head, update = filter_records(root, head, update, filters=configuration.pre_filters)
+    root, head, update = filter_records(
+        root, head, update, filters=configuration.pre_filters
+    )
     merger = Merger(
-        root=root, head=head, update=update,
+        root=root,
+        head=head,
+        update=update,
         default_dict_merge_op=configuration.default_dict_merge_op,
         default_list_merge_op=configuration.default_list_merge_op,
         list_dict_ops=configuration.list_dict_ops,
@@ -95,7 +98,7 @@ def get_configuration(head, update, head_source=None):
         MergerConfigurationOperations: an object containing
         the rules needed to merge HEAD and UPDATE
     """
-    head_source = (head_source or get_head_source(head))
+    head_source = head_source or get_head_source(head)
     update_source = get_acquisition_source(update)
 
     if is_manual_merge(head, update):
@@ -118,12 +121,15 @@ def get_configuration(head, update, head_source=None):
 
 def get_head_source(json_obj):
     def no_freetext_in_publication_info(obj):
-        return 'publication_info' in obj and \
-            any('pubinfo_freetext' not in pubinfo for pubinfo in obj.get('publication_info'))
+        return 'publication_info' in obj and any(
+            'pubinfo_freetext' not in pubinfo for pubinfo in obj.get('publication_info')
+        )
 
     def no_arxiv_in_dois(obj):
-        return 'dois' in obj and \
-            any(source.lower() != 'arxiv' for source in force_list(get_value(obj, 'dois.source')))
+        return 'dois' in obj and any(
+            source.lower() != 'arxiv'
+            for source in force_list(get_value(obj, 'dois.source'))
+        )
 
     if no_freetext_in_publication_info(json_obj) or no_arxiv_in_dois(json_obj):
         return 'publisher'
@@ -141,15 +147,33 @@ def get_acquisition_source(json_obj):
 
 
 def is_manual_merge(head, update):
-    return ('control_number' in update and 'control_number' in head and update['control_number'] != head['control_number'])
+    return (
+        'control_number' in update
+        and 'control_number' in head
+        and update['control_number'] != head['control_number']
+    )
 
 
 def is_erratum(update):
-    erratum_keywords = {"erratum", "corrigendum", "publisher's note", "publisher correction"}
+    erratum_keywords = {
+        "erratum",
+        "corrigendum",
+        "publisher's note",
+        "publisher correction",
+    }
     journal_titles_list = get_value(update, "titles.title", [])
     journal_titles_string = " ".join(journal_titles_list).lower()
-    title_contains_erratum_keyword = any([keyword in journal_titles_string for keyword in erratum_keywords])
-    title_starts_with_correction_to = any(journal_title.lower().startswith('correction to:') for journal_title in journal_titles_list)
+    title_contains_erratum_keyword = any(
+        [keyword in journal_titles_string for keyword in erratum_keywords]
+    )
+    title_starts_with_correction_to = any(
+        journal_title.lower().startswith('correction to:')
+        for journal_title in journal_titles_list
+    )
     erratum_in_dois_material = 'erratum' in get_value(update, "dois.material", [])
-    if title_contains_erratum_keyword or title_starts_with_correction_to or erratum_in_dois_material:
+    if (
+        title_contains_erratum_keyword
+        or title_starts_with_correction_to
+        or erratum_in_dois_material
+    ):
         return True

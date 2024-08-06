@@ -22,20 +22,21 @@
 
 from __future__ import absolute_import, division, print_function
 
-from json_merger.config import DictMergerOps as D, UnifierOps as U
+from json_merger.config import DictMergerOps as D
+from json_merger.config import UnifierOps as U
 
+from inspire_json_merger.comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
 from inspire_json_merger.pre_filters import (
+    clean_root_for_acquisition_source,
+    filter_curated_references,
     filter_documents_same_source,
     filter_figures_same_source,
-    filter_curated_references,
     filter_publisher_references,
-    update_authors_with_ordering_info,
     remove_references_from_update,
-    clean_root_for_acquisition_source,
+    remove_root,
+    update_authors_with_ordering_info,
     update_material,
-    remove_root
 )
-from .comparators import COMPARATORS, GROBID_ON_ARXIV_COMPARATORS
 
 """
 This module provides different sets of rules that `inspire_json_merge`
@@ -58,7 +59,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_documents_same_source,
         filter_figures_same_source,
         filter_curated_references,
-        update_authors_with_ordering_info
+        update_authors_with_ordering_info,
     ]
     conflict_filters = [
         '_collections',
@@ -104,7 +105,8 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'persistent_identifiers': D.FALLBACK_KEEP_HEAD,
         'preprint_date': D.FALLBACK_KEEP_HEAD,
         'publication_info': D.FALLBACK_KEEP_HEAD,
-        # Fields bellow are merged and conflicts are ignored, so for those fields we stay with previous merge behaviour.
+        # Fields bellow are merged and conflicts are ignored,
+        # so for those fields we stay with previous merge behaviour.
         'abstracts': D.FALLBACK_KEEP_UPDATE,
         'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'arxiv_eprints': D.FALLBACK_KEEP_UPDATE,
@@ -115,7 +117,6 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         'license': D.FALLBACK_KEEP_UPDATE,
         'number_of_pages': D.FALLBACK_KEEP_UPDATE,
         'public_notes': D.FALLBACK_KEEP_UPDATE,
-
     }
 
 
@@ -126,7 +127,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_publisher_references,
         update_authors_with_ordering_info,
-        clean_root_for_acquisition_source
+        clean_root_for_acquisition_source,
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
@@ -205,7 +206,7 @@ class PublisherOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        clean_root_for_acquisition_source
+        clean_root_for_acquisition_source,
     ]
     conflict_filters = [
         '_collections',
@@ -255,7 +256,7 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
-        clean_root_for_acquisition_source
+        clean_root_for_acquisition_source,
     ]
     conflict_filters = [
         '_collections',
@@ -294,7 +295,8 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
         'curated': D.FALLBACK_KEEP_HEAD,
         'preprint_date': D.FALLBACK_KEEP_HEAD,
         'report_numbers': D.FALLBACK_KEEP_HEAD,
-        # Fields bellow are merged and conflicts are ignored, so for those fields we stay with previous merge behaviour.
+        # Fields bellow are merged and conflicts are ignored,
+        # so for those fields we stay with previous merge behaviour.
         '_files': D.FALLBACK_KEEP_UPDATE,
         'acquisition_source': D.FALLBACK_KEEP_UPDATE,
         'authors.raw_affiliations': D.FALLBACK_KEEP_UPDATE,
@@ -310,23 +312,15 @@ class PublisherOnPublisherOperations(MergerConfigurationOperations):
 class GrobidOnArxivAuthorsOperations(MergerConfigurationOperations):
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
-    list_dict_ops = {
-        'authors.raw_affiliations': D.FALLBACK_KEEP_UPDATE
-    }
-    list_merge_ops = {
-        'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES
-    }
+    list_dict_ops = {'authors.raw_affiliations': D.FALLBACK_KEEP_UPDATE}
+    list_merge_ops = {'authors.raw_affiliations': U.KEEP_ONLY_UPDATE_ENTITIES}
     comparators = GROBID_ON_ARXIV_COMPARATORS
     conflict_filters = ["authors.full_name"]
 
 
 class ErratumOnPublisherOperations(MergerConfigurationOperations):
     comparators = COMPARATORS
-    pre_filters = [
-        update_material,
-        update_authors_with_ordering_info,
-        remove_root
-    ]
+    pre_filters = [update_material, update_authors_with_ordering_info, remove_root]
     default_list_merge_op = U.KEEP_UPDATE_AND_HEAD_ENTITIES_HEAD_FIRST
     default_dict_merge_op = D.FALLBACK_KEEP_HEAD
     list_merge_ops = {

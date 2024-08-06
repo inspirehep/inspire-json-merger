@@ -28,17 +28,16 @@ decorator to each test, referring to the schema's key under test.
 
 from __future__ import absolute_import, division, print_function
 
-from mock import MagicMock
 import pytest
+from mock import MagicMock
+from utils import assert_ordered_conflicts, validate_subschema
 
 from inspire_json_merger import api
 from inspire_json_merger.api import merge
 
-from utils import assert_ordered_conflicts, validate_subschema
-
 
 @pytest.fixture(autouse=True, scope='module')
-def mock_get_acquisition_source():
+def _mock_get_acquisition_source():
     original_func = api.get_acquisition_source
     api.get_acquisition_source = MagicMock(return_value='arxiv')
     yield
@@ -48,18 +47,8 @@ def mock_get_acquisition_source():
 def test_merging_acquisition_source_field():
     root = {}
     # record_id: 1517095
-    head = {
-        'acquisition_source': {
-            'method': 'submitter',
-            'source': 'arxiv'
-        }
-    }
-    update = {
-        'acquisition_source': {
-            'method': 'batchuploader',
-            'source': 'arxiv'
-        }
-    }
+    head = {'acquisition_source': {'method': 'submitter', 'source': 'arxiv'}}
+    update = {'acquisition_source': {'method': 'batchuploader', 'source': 'arxiv'}}
 
     expected_merged = update
     expected_conflict = []
@@ -112,9 +101,12 @@ def test_merging_raw_affiliations_field():
                 'raw_affiliations': [
                     {
                         'source': 'arxiv',
-                        'value': 'Department of Physics, Indiana University, Bloomington, IN 47405, USA'
+                        'value': (
+                            'Department of Physics, Indiana University, Bloomington, IN'
+                            ' 47405, USA'
+                        ),
                     }
-                ]
+                ],
             }
         ]
     }
@@ -125,13 +117,16 @@ def test_merging_raw_affiliations_field():
                 'raw_affiliations': [
                     {
                         'source': 'arxiv',
-                        'value': 'Department of Physics, Indiana University, Bloomington, IN 47405, US'
+                        'value': (
+                            'Department of Physics, Indiana University, Bloomington, IN'
+                            ' 47405, US'
+                        ),
                     },
                     {
                         'source': 'arxiv',
                         'value': 'Padua U',
-                    }
-                ]
+                    },
+                ],
             }
         ]
     }
@@ -146,58 +141,33 @@ def test_merging_raw_affiliations_field():
 
 
 def test_merging_dois_field_handles_repeated_values():
-    root = {
-        'dois': [
-            {
-                'material': 'preprint',
-                'value': '10.1023/A:1026654312961'
-            }
-        ]
-    }
+    root = {'dois': [{'material': 'preprint', 'value': '10.1023/A:1026654312961'}]}
     head = {
         'dois': [
-            {
-                'material': 'publication',
-                'value': '10.1023/A:1026654312961'
-            },
-            {
-                'source': 'nowhere',
-                'value': '10.1023/B:1026654312961'
-            },
+            {'material': 'publication', 'value': '10.1023/A:1026654312961'},
+            {'source': 'nowhere', 'value': '10.1023/B:1026654312961'},
         ]
     }
     update = {
         'dois': [
-            {
-                'material': 'erratum',
-                'value': '10.1023/A:1026654312961'
-            },
+            {'material': 'erratum', 'value': '10.1023/A:1026654312961'},
             {
                 'material': 'erratum',
                 'source': 'nowhere',
-                'value': '10.1023/B:1026654312961'
+                'value': '10.1023/B:1026654312961',
             },
         ]
     }
 
     expected_merged = {
         'dois': [
-            {
-                'material': 'publication',
-                'value': '10.1023/A:1026654312961'
-            },
-            {
-                'source': 'nowhere',
-                'value': '10.1023/B:1026654312961'
-            },
-            {
-                'material': 'erratum',
-                'value': '10.1023/A:1026654312961'
-            },
+            {'material': 'publication', 'value': '10.1023/A:1026654312961'},
+            {'source': 'nowhere', 'value': '10.1023/B:1026654312961'},
+            {'material': 'erratum', 'value': '10.1023/A:1026654312961'},
             {
                 'material': 'erratum',
                 'source': 'nowhere',
-                'value': '10.1023/B:1026654312961'
+                'value': '10.1023/B:1026654312961',
             },
         ]
     }
@@ -210,30 +180,19 @@ def test_merging_dois_field_handles_repeated_values():
 
 
 def test_merging_inspire_categories_field():
-    root = {'inspire_categories': [
-        {
-            'source': 'INSPIRE',
-            'term': 'Theory-HEP'
-        }
-    ]}
-    head = {'inspire_categories': [
-        {
-            'source': 'curator',
-            'term': 'Theory-HEP'
-        }, {
-            'source': 'curator',
-            'term': 'Theory-Nucl'
-        }
-    ]}
-    update = {'inspire_categories': [
-        {
-            'source': 'arxiv',
-            'term': 'Computing'
-        }, {
-            'source': 'arxiv',
-            'term': 'Other'
-        }
-    ]}
+    root = {'inspire_categories': [{'source': 'INSPIRE', 'term': 'Theory-HEP'}]}
+    head = {
+        'inspire_categories': [
+            {'source': 'curator', 'term': 'Theory-HEP'},
+            {'source': 'curator', 'term': 'Theory-Nucl'},
+        ]
+    }
+    update = {
+        'inspire_categories': [
+            {'source': 'arxiv', 'term': 'Computing'},
+            {'source': 'arxiv', 'term': 'Other'},
+        ]
+    }
 
     expected_merged = head
     expected_conflict = []
@@ -250,42 +209,48 @@ def test_merging_license_field():
             {
                 'imposing': 'Elsevier',
                 'url': 'http://creativecommons.org/licenses/by/4.0/',
-                'license': 'elsevier foo bar'
+                'license': 'elsevier foo bar',
             }
         ]
     }
-    head = {'license': [
-        {
-            'imposing': 'Elsevier',
-            'url': 'http://creativecommons.org/licenses/by/4.0/',
-            'license': 'elsevier foo bar'
-        },
-        {
-            'imposing': 'arXiv',
-            'url': 'http://creativecommons.org/licenses/by/4.0/',
-            'license': 'arxiv foo bar'
-        }
-    ]}
-    update = {'license': [
-        {
-            'imposing': 'Elsevier',
-            'url': 'http://creativecommons.org/licenses/by/4.0/',
-            'license': 'elsevier foo bar updated!'
-        }
-    ]}
+    head = {
+        'license': [
+            {
+                'imposing': 'Elsevier',
+                'url': 'http://creativecommons.org/licenses/by/4.0/',
+                'license': 'elsevier foo bar',
+            },
+            {
+                'imposing': 'arXiv',
+                'url': 'http://creativecommons.org/licenses/by/4.0/',
+                'license': 'arxiv foo bar',
+            },
+        ]
+    }
+    update = {
+        'license': [
+            {
+                'imposing': 'Elsevier',
+                'url': 'http://creativecommons.org/licenses/by/4.0/',
+                'license': 'elsevier foo bar updated!',
+            }
+        ]
+    }
 
-    expected_merged = {'license': [
-        {
-            'imposing': 'Elsevier',
-            'url': 'http://creativecommons.org/licenses/by/4.0/',
-            'license': 'elsevier foo bar updated!'
-        },
-        {
-            'imposing': 'arXiv',
-            'url': 'http://creativecommons.org/licenses/by/4.0/',
-            'license': 'arxiv foo bar'
-        }
-    ]}
+    expected_merged = {
+        'license': [
+            {
+                'imposing': 'Elsevier',
+                'url': 'http://creativecommons.org/licenses/by/4.0/',
+                'license': 'elsevier foo bar updated!',
+            },
+            {
+                'imposing': 'arXiv',
+                'url': 'http://creativecommons.org/licenses/by/4.0/',
+                'license': 'arxiv foo bar',
+            },
+        ]
+    }
     expected_conflict = []
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
@@ -303,7 +268,7 @@ def test_merging_publication_info_field():
                 "journal_volume": "12",
                 "page_end": "979",
                 "page_start": "948",
-                "year": 2008
+                "year": 2008,
             }
         ]
     }  # record 697133
@@ -318,7 +283,7 @@ def test_merging_publication_info_field():
                 "journal_volume": "12",
                 "page_end": "979",
                 "page_start": "948",
-                "year": 2008
+                "year": 2008,
             }
         ]
     }
@@ -352,7 +317,7 @@ def test_merging_publication_info_field():
                 "journal_volume": "12",
                 "page_end": "979",
                 "page_start": "948",
-                "year": 2008
+                "year": 2008,
             },
             {
                 'artid': '948-979',
@@ -379,28 +344,34 @@ def test_merging_publication_info_field():
 
 
 def test_merging_report_numbers_field_repeated_values():
-    root = {'report_numbers': [
-        {
-            'source': 'arXiv',
-            'value': 'CERN-CMS-2018-001',
-        },
-    ]}  # record: 1598022
-    head = {'report_numbers': [
-        {
-            'hidden': True,
-            'source': 'arXiv',
-            'value': 'CERN-CMS-2018-001',
-        },
-        {
-            'value': 'CERN-CMS-2018-001',
-        },
-    ]}
-    update = {'report_numbers': [
-        {
-            'source': 'arXiv',
-            'value': 'CERN-CMS-2018-001',
-        },
-    ]}
+    root = {
+        'report_numbers': [
+            {
+                'source': 'arXiv',
+                'value': 'CERN-CMS-2018-001',
+            },
+        ]
+    }  # record: 1598022
+    head = {
+        'report_numbers': [
+            {
+                'hidden': True,
+                'source': 'arXiv',
+                'value': 'CERN-CMS-2018-001',
+            },
+            {
+                'value': 'CERN-CMS-2018-001',
+            },
+        ]
+    }
+    update = {
+        'report_numbers': [
+            {
+                'source': 'arXiv',
+                'value': 'CERN-CMS-2018-001',
+            },
+        ]
+    }
 
     expected_merged = head
     expected_conflict = []
@@ -412,40 +383,48 @@ def test_merging_report_numbers_field_repeated_values():
 
 
 def test_merging_titles_field():
-    root = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': 'ANTARES: An observatory at the seabed '
-                      'to the confines of the Universe'
-        }  # record: 1519935
-    ]}
-    head = {'titles': [
-        {
-            'source': 'arXiv',
-            'subtitle': 'this subtitle has been added by a curator',
-            'title': 'ANTARES: An observatory at the seabed '
-                        'to the confines of the Universe'
-        }
-    ]}
-    update = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': 'ANTARES: Un osservatorio foo bar'
-        },
-    ]}
+    root = {
+        'titles': [
+            {
+                'source': 'arXiv',
+                'title': (
+                    'ANTARES: An observatory at the seabed '
+                    'to the confines of the Universe'
+                ),
+            }  # record: 1519935
+        ]
+    }
+    head = {
+        'titles': [
+            {
+                'source': 'arXiv',
+                'subtitle': 'this subtitle has been added by a curator',
+                'title': (
+                    'ANTARES: An observatory at the seabed '
+                    'to the confines of the Universe'
+                ),
+            }
+        ]
+    }
+    update = {
+        'titles': [
+            {'source': 'arXiv', 'title': 'ANTARES: Un osservatorio foo bar'},
+        ]
+    }
 
-    expected_merged = {'titles': [
-        {
-            'source': 'arXiv',
-            'title': 'ANTARES: Un osservatorio foo bar'
-        },
-        {
-            'source': 'arXiv',
-            'subtitle': 'this subtitle has been added by a curator',
-            'title': 'ANTARES: An observatory at the seabed '
-                        'to the confines of the Universe'
-        },
-    ]}
+    expected_merged = {
+        'titles': [
+            {'source': 'arXiv', 'title': 'ANTARES: Un osservatorio foo bar'},
+            {
+                'source': 'arXiv',
+                'subtitle': 'this subtitle has been added by a curator',
+                'title': (
+                    'ANTARES: An observatory at the seabed '
+                    'to the confines of the Universe'
+                ),
+            },
+        ]
+    }
     expected_conflict = []
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
@@ -469,7 +448,7 @@ def test_figures():
                 'caption': 'Figure 2',
                 'source': 'arXiv',
                 'url': 'http://example.com/files/1234-1234-1234-1234/figure2.png',
-            }
+            },
         ]
     }
     update = {
@@ -485,15 +464,14 @@ def test_figures():
                 'caption': 'Figure 2',
                 'source': 'arXiv',
                 'url': 'http://example.com/files/5678-5678-5678-5678/figure2.png',
-            }
+            },
         ]
     }
 
     expected_merged = update
     expected_conflict = []
 
-    merged, conflict = merge(root, head, update,
-                             head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
@@ -565,8 +543,7 @@ def test_figures_dont_duplicate_keys_even_from_different_sources():
 
     expected_conflict = []
 
-    merged, conflict = merge(root, head, update,
-                             head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
 
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
@@ -605,15 +582,14 @@ def test_documents():
                 'description': 'some xml files',
                 'source': 'arXiv',
                 'url': 'http://example.com/files/5678-5678-5678-5678/foo.xml',
-            }
+            },
         ]
     }
 
     expected_merged = update
     expected_conflict = []
 
-    merged, conflict = merge(root, head, update,
-                             head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)
@@ -623,28 +599,20 @@ def test_head_curates_author_no_duplicate():
     # https://labs.inspirehep.net/api/holdingpen/1268973
     root = {
         'authors': [
-            {
-                "full_name": "Li, Zhengxiang"
-            },
+            {"full_name": "Li, Zhengxiang"},
         ]
     }
     head = {
         "authors": [
             {
-                "affiliations": [
-                    {
-                        "value": "Beijing Normal U."
-                    }
-                ],
+                "affiliations": [{"value": "Beijing Normal U."}],
                 "full_name": "Li, Zheng-Xiang",
             }
         ]
     }
     update = {
         'authors': [
-            {
-                "full_name": "Li, Zhengxiang"
-            },
+            {"full_name": "Li, Zhengxiang"},
         ]
     }
 
@@ -652,19 +620,15 @@ def test_head_curates_author_no_duplicate():
         'authors': [
             {'full_name': 'Li, Zhengxiang'},
             {
-                'full_name': 'Li, Zheng-Xiang', 'affiliations': [
-                    {'value': 'Beijing Normal U.'}
-                ]
-            }
+                'full_name': 'Li, Zheng-Xiang',
+                'affiliations': [{'value': 'Beijing Normal U.'}],
+            },
         ]
     }
 
-    expected_conflict = [{
-        'path': '/authors/1',
-        'op': 'remove',
-        'value': None,
-        '$type': 'REMOVE_FIELD'
-    }]
+    expected_conflict = [
+        {'path': '/authors/1', 'op': 'remove', 'value': None, '$type': 'REMOVE_FIELD'}
+    ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged

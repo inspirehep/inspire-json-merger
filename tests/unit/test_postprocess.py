@@ -21,15 +21,16 @@
 # or submit itself to any jurisdiction.
 from __future__ import absolute_import, division, print_function
 
-from inspire_json_merger.postprocess import _insert_to_list, _additem, _process_author_manual_merge_conflict
+from inspire_json_merger.postprocess import (
+    _additem,
+    _insert_to_list,
+    _process_author_manual_merge_conflict,
+)
 from inspire_json_merger.utils import ORDER_KEY
 
 
 def test_insert_to_list_when_position_provided_insode_item():
-    item_to_insert = {
-        "full_name": "INSERTED",
-        ORDER_KEY: 1
-    }
+    item_to_insert = {"full_name": "INSERTED", ORDER_KEY: 1}
 
     objects_list = [
         {"full_name": "First", ORDER_KEY: 0},
@@ -42,7 +43,7 @@ def test_insert_to_list_when_position_provided_insode_item():
         {'full_name': 'First', ORDER_KEY: 0},
         {'full_name': 'Second', ORDER_KEY: 1},
         {'full_name': 'INSERTED', ORDER_KEY: 1},
-        {'full_name': 'Third', ORDER_KEY: 2}
+        {'full_name': 'Third', ORDER_KEY: 2},
     ]
     insert_position, merged_objects_list = _insert_to_list(item_to_insert, objects_list)
 
@@ -66,19 +67,18 @@ def test_insert_to_list_when_position_provided_as_parameter():
         {'full_name': 'First', ORDER_KEY: 0},
         {'full_name': 'Second', ORDER_KEY: 1},
         {'full_name': 'INSERTED'},
-        {'full_name': 'Third', ORDER_KEY: 2}
+        {'full_name': 'Third', ORDER_KEY: 2},
     ]
-    insert_position, merged_objects_list = _insert_to_list(item_to_insert, objects_list, 1)
+    insert_position, merged_objects_list = _insert_to_list(
+        item_to_insert, objects_list, 1
+    )
 
     assert insert_position == expected_insert_position
     assert merged_objects_list == expected_merged
 
 
 def test_insert_to_list_when_list_without_order_key_but_item_has_it():
-    item_to_insert = {
-        "full_name": "INSERTED",
-        ORDER_KEY: 1
-    }
+    item_to_insert = {"full_name": "INSERTED", ORDER_KEY: 1}
 
     objects_list = [
         {"full_name": "First"},
@@ -91,7 +91,7 @@ def test_insert_to_list_when_list_without_order_key_but_item_has_it():
         {'full_name': 'First'},
         {'full_name': 'Second'},
         {'full_name': 'INSERTED', ORDER_KEY: 1},
-        {'full_name': 'Third'}
+        {'full_name': 'Third'},
     ]
     insert_position, merged_objects_list = _insert_to_list(item_to_insert, objects_list)
 
@@ -123,10 +123,7 @@ def test_insert_to_list_when_item_is_withour_order_key():
 
 
 def test_insert_to_list_when_position_exceeds_lists_elements_count():
-    item_to_insert = {
-        "full_name": "INSERTED",
-        ORDER_KEY: 10
-    }
+    item_to_insert = {"full_name": "INSERTED", ORDER_KEY: 10}
 
     objects_list = [
         {"full_name": "First", ORDER_KEY: 0},
@@ -149,23 +146,12 @@ def test_insert_to_list_when_position_exceeds_lists_elements_count():
 
 def test_add_item_on_position():
     item = {"path": "new"}
-    object = {
-        "some": [
-            {"path": "1"},
-            {"path": "2"},
-            {"path": "3"}
-        ]
-    }
+    object = {"some": [{"path": "1"}, {"path": "2"}, {"path": "3"}]}
     path = ("some", 1)
 
     expected_path = ('some', 2)
     expected_merged = {
-        'some': [
-            {'path': '1'},
-            {'path': '2'},
-            {'path': 'new'},
-            {'path': '3'}
-        ]
+        'some': [{'path': '1'}, {'path': '2'}, {'path': 'new'}, {'path': '3'}]
     }
     new_path, merged_object = _additem(item, object, path)
 
@@ -175,13 +161,7 @@ def test_add_item_on_position():
 
 def test_add_item_at_the_end():
     item = {"path": "new"}
-    object = {
-        "some": [
-            {"path": "1"},
-            {"path": "2"},
-            {"path": "3"}
-        ]
-    }
+    object = {"some": [{"path": "1"}, {"path": "2"}, {"path": "3"}]}
     path = ("some", "-")
 
     expected_path = ('some', 3)
@@ -201,22 +181,12 @@ def test_add_item_at_the_end():
 
 def test_add_item_on_position_in_dictionary():
     item = {"inside": "new"}
-    object = {
-        "some": [
-            {"path": "1"},
-            {"path": "2"},
-            {"path": "3"}
-        ]
-    }
+    object = {"some": [{"path": "1"}, {"path": "2"}, {"path": "3"}]}
     path = ("some", 1, "path")
 
     expected_path = ('some', 1, 'path')
     expected_merged = {
-        'some': [
-            {'path': '1'},
-            {'path': {"inside": "new"}},
-            {'path': '3'}
-        ]
+        'some': [{'path': '1'}, {'path': {"inside": "new"}}, {'path': '3'}]
     }
     new_path, merged_object = _additem(item, object, path)
 
@@ -227,14 +197,14 @@ def test_add_item_on_position_in_dictionary():
 def test_add_item_process_single_item_without_index_when_adding_to_list():
     whole_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key': ['a', 'b', 'c']
+        'key': ['a', 'b', 'c'],
     }
     item = 'd'
     path = ("key",)
 
     expected_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key': ['a', 'b', 'c', 'd']
+        'key': ['a', 'b', 'c', 'd'],
     }
     expected_new_path = ("key", 3)
 
@@ -247,14 +217,14 @@ def test_add_item_process_single_item_without_index_when_adding_to_list():
 def test_add_item_overwrites_whole_key_when_needed():
     whole_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key': ['a', 'b', 'c']
+        'key': ['a', 'b', 'c'],
     }
     item = ['d']
     path = ("key",)
 
     expected_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key': ['d']
+        'key': ['d'],
     }
     expected_new_path = ("key",)
 
@@ -267,14 +237,17 @@ def test_add_item_overwrites_whole_key_when_needed():
 def test_add_item_process_deep_item_without_index_when_adding_to_list():
     whole_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key1': {'key2': ['a', 'b', 'c']}
+        'key1': {'key2': ['a', 'b', 'c']},
     }
     item = 'd'
-    path = ("key1", "key2", )
+    path = (
+        "key1",
+        "key2",
+    )
 
     expected_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key1': {'key2': ['a', 'b', 'c', 'd']}
+        'key1': {'key2': ['a', 'b', 'c', 'd']},
     }
     expected_new_path = ("key1", "key2", 3)
 
@@ -287,16 +260,22 @@ def test_add_item_process_deep_item_without_index_when_adding_to_list():
 def test_add_deep_item_overwrites_whole_key_when_needed():
     whole_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key1': {'key2': ['a', 'b', 'c']}
+        'key1': {'key2': ['a', 'b', 'c']},
     }
     item = ['d']
-    path = ("key1", "key2", )
+    path = (
+        "key1",
+        "key2",
+    )
 
     expected_object = {
         'something': {'not_important': ['should', 'be', 'unchanged']},
-        'key1': {'key2': ['d']}
+        'key1': {'key2': ['d']},
     }
-    expected_new_path = ("key1", "key2", )
+    expected_new_path = (
+        "key1",
+        "key2",
+    )
 
     new_path, new_object = _additem(item, whole_object, path)
 
@@ -305,7 +284,11 @@ def test_add_deep_item_overwrites_whole_key_when_needed():
 
 
 def test_process_author_manual_merge_conflict_when_head_in_conflict_is_none():
-    conflict = (None, None, ({"conflict": "root value"}, None, {"conflict": "update value"}))
+    conflict = (
+        None,
+        None,
+        ({"conflict": "root value"}, None, {"conflict": "update value"}),
+    )
     merged = {"authors": []}
 
     expected_output = (None, merged, None)

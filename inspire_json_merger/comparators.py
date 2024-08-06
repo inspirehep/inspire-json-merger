@@ -29,8 +29,7 @@ from json_merger.contrib.inspirehep.author_util import (
     NameInitial,
     NameToken,
 )
-from json_merger.contrib.inspirehep.comparators import \
-    DistanceFunctionComparator
+from json_merger.contrib.inspirehep.comparators import DistanceFunctionComparator
 
 from inspire_json_merger.utils import scan_author_string_for_phrases
 
@@ -53,6 +52,7 @@ def author_tokenize(name):
 
 class IDNormalizer(object):
     """Callable that can be used to normalize by a given id for authors."""
+
     def __init__(self, id_type):
         self.id_type = id_type
 
@@ -75,19 +75,25 @@ class AuthorComparator(DistanceFunctionComparator):
         AuthorNameNormalizer(author_tokenize, asciify=True),
         AuthorNameNormalizer(author_tokenize, first_names_number=1),
         AuthorNameNormalizer(author_tokenize, first_names_number=1, asciify=True),
-        AuthorNameNormalizer(author_tokenize, first_names_number=1, first_name_to_initial=True),
-        AuthorNameNormalizer(author_tokenize, first_names_number=1, first_name_to_initial=True, asciify=True),
+        AuthorNameNormalizer(
+            author_tokenize, first_names_number=1, first_name_to_initial=True
+        ),
+        AuthorNameNormalizer(
+            author_tokenize,
+            first_names_number=1,
+            first_name_to_initial=True,
+            asciify=True,
+        ),
     ]
 
 
 def get_pk_comparator(primary_key_fields, normalization_functions=None):
     class Ret(PrimaryKeyComparator):
-        __doc__ = (
-            'primary_key_fields:%s, normalization_functions:%s' % (
-                primary_key_fields,
-                normalization_functions,
-            )
+        __doc__ = 'primary_key_fields:%s, normalization_functions:%s' % (
+            primary_key_fields,
+            normalization_functions,
         )
+
     Ret.primary_key_fields = primary_key_fields
     Ret.normalization_functions = normalization_functions or {}
     return Ret
@@ -112,19 +118,19 @@ ValueComparator = get_pk_comparator(['value'])
 SchemaValueComparator = get_pk_comparator([['schema', 'value']])
 
 
-PublicationInfoComparator = get_pk_comparator([
-    ['journal_title', 'journal_volume', 'material', 'cnum']
-])
+PublicationInfoComparator = get_pk_comparator(
+    [['journal_title', 'journal_volume', 'material', 'cnum']]
+)
 
-FigureComparator = get_pk_comparator([
-    ['key', 'material']
-])
+FigureComparator = get_pk_comparator([['key', 'material']])
 
-DocumentComparator = get_pk_comparator([
-    ['source', 'description', 'material'],
-    ['source', 'fulltext', 'material'],
-    ['source', 'original_url', 'material'],
-])
+DocumentComparator = get_pk_comparator(
+    [
+        ['source', 'description', 'material'],
+        ['source', 'fulltext', 'material'],
+        ['source', 'original_url', 'material'],
+    ]
+)
 
 PersistentIdentifierComparator = get_pk_comparator(['value', 'material'])
 
