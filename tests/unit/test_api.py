@@ -28,8 +28,7 @@ import os
 from operator import itemgetter
 
 import pytest
-
-from utils import validate_subschema, assert_ordered_conflicts
+from utils import assert_ordered_conflicts, validate_subschema
 
 from inspire_json_merger.api import (
     get_acquisition_source,
@@ -38,150 +37,130 @@ from inspire_json_merger.api import (
     merge,
 )
 from inspire_json_merger.config import (
-    ErratumOnPublisherOperations,
     ArxivOnArxivOperations,
     ArxivOnPublisherOperations,
+    ErratumOnPublisherOperations,
+    GrobidOnArxivAuthorsOperations,
+    ManualMergeOperations,
     PublisherOnArxivOperations,
     PublisherOnPublisherOperations,
-    ManualMergeOperations,
-    GrobidOnArxivAuthorsOperations
 )
 
 
-def get_file(file_path):
-    path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, file_path)
-    return open(path, 'r')
-
-
 def load_test_data(file_path):
-    return json.load(get_file(file_path))
+    path = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(path, file_path)
+
+    with open(full_path, 'r') as file:
+        return json.load(file)
 
 
 def test_get_acquisition_source_non_arxiv():
-    rec = {
-        'acquisition_source': {
-            'source': 'foo'
-        }
-    }
+    rec = {'acquisition_source': {'source': 'foo'}}
     assert get_acquisition_source(rec) == 'foo'
     validate_subschema(rec)
 
 
-@pytest.fixture
+@pytest.fixture()
 def rec_dois():
-    return \
-        {
-            'dois': [
-                {
-                    'material': 'publication',
-                    'source': 'elsevier',
-                    'value': '10.3847/2041-8213/aa9110'
-                }
-            ],
-            'arxiv_eprints': [
-                {
-                    'categories': [
-                        'gr-qc',
-                        'astro-ph.HE'
-                    ],
-                    'value': '1710.05832'
-                }
-            ]
-        }
+    return {
+        'dois': [
+            {
+                'material': 'publication',
+                'source': 'elsevier',
+                'value': '10.3847/2041-8213/aa9110',
+            }
+        ],
+        'arxiv_eprints': [
+            {'categories': ['gr-qc', 'astro-ph.HE'], 'value': '1710.05832'}
+        ],
+    }
 
 
-@pytest.fixture
+@pytest.fixture()
 def rec_publication_info():
-    return \
-        {
-            'publication_info': [
-                {
-                    'artid': '161101',
-                    'journal_record': {
-                        '$ref': 'http://labs.inspirehep.net/api/journals/1214495'
-                    },
-                    'journal_title': 'Phys.Rev.Lett.',
-                    'journal_volume': '119',
-                    'pubinfo_freetext': 'Phys. Rev. Lett. 119 161101 (2017)',
-                    'year': 2017
-                }
-            ],
-            'arxiv_eprints': [
-                {
-                    'categories': [
-                        'gr-qc',
-                        'astro-ph.HE'
-                    ],
-                    'value': '1710.05832'
-                }
-            ]
-        }
+    return {
+        'publication_info': [
+            {
+                'artid': '161101',
+                'journal_record': {
+                    '$ref': 'http://labs.inspirehep.net/api/journals/1214495'
+                },
+                'journal_title': 'Phys.Rev.Lett.',
+                'journal_volume': '119',
+                'pubinfo_freetext': 'Phys. Rev. Lett. 119 161101 (2017)',
+                'year': 2017,
+            }
+        ],
+        'arxiv_eprints': [
+            {'categories': ['gr-qc', 'astro-ph.HE'], 'value': '1710.05832'}
+        ],
+    }
 
 
-@pytest.fixture
+@pytest.fixture()
 def arxiv_record():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': {'title': 'Superconductivity'},
         'arxiv_eprints': [{'value': '1710.05832'}],
-        'acquisition_source': {'source': 'arXiv'}
+        'acquisition_source': {'source': 'arXiv'},
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def publisher_record():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': {'title': 'Superconductivity'},
         'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'}
+        'acquisition_source': {'source': 'ejl'},
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def erratum_1():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': [{'title': 'Erratum: that was a wrong title'}],
         'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'}
+        'acquisition_source': {'source': 'ejl'},
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def erratum_2():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': [{'title': 'Correction to: an article'}],
         'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'}
+        'acquisition_source': {'source': 'ejl'},
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def erratum_3():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': [{'title': 'A title'}],
         'dois': [{'value': '10.1023/A:1026654312961', 'material': 'erratum'}],
-        'acquisition_source': {'source': 'ejl'}
+        'acquisition_source': {'source': 'ejl'},
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def erratum_4():
     return {
         '_collections': ['literature'],
         'document_type': ['article'],
         'titles': [{'title': 'Publisher correction A title'}],
         'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'}
+        'acquisition_source': {'source': 'ejl'},
     }
 
 
@@ -256,7 +235,9 @@ def test_get_head_source_no_arxiv_dois_and_no_freetext(rec_dois, rec_publication
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, rec_publication_info):
+def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(
+    rec_dois, rec_publication_info
+):
     rec = rec_dois
     rec.get('dois')[0]['source'] = 'arXiv'
     rec['publication_info'] = rec_publication_info['publication_info']
@@ -265,15 +246,32 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(rec_dois, r
     assert get_head_source(rec_dois) == 'publisher'
 
 
-def test_get_configuration(arxiv_record, publisher_record, erratum_1, erratum_2, erratum_3, erratum_4):
+def test_get_configuration(
+    arxiv_record, publisher_record, erratum_1, erratum_2, erratum_3, erratum_4
+):
     assert get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
-    assert get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
-    assert get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
-    assert get_configuration(publisher_record, publisher_record) == PublisherOnPublisherOperations
-    assert get_configuration(publisher_record, erratum_1) == ErratumOnPublisherOperations
-    assert get_configuration(publisher_record, erratum_2) == ErratumOnPublisherOperations
-    assert get_configuration(publisher_record, erratum_3) == ErratumOnPublisherOperations
-    assert get_configuration(publisher_record, erratum_4) == ErratumOnPublisherOperations
+    assert (
+        get_configuration(arxiv_record, publisher_record) == PublisherOnArxivOperations
+    )
+    assert (
+        get_configuration(publisher_record, arxiv_record) == ArxivOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, publisher_record)
+        == PublisherOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, erratum_1) == ErratumOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, erratum_2) == ErratumOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, erratum_3) == ErratumOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, erratum_4) == ErratumOnPublisherOperations
+    )
 
     arxiv1 = arxiv_record
     arxiv1['control_number'] = 1
@@ -319,14 +317,8 @@ def test_get_configuration_without_acquisition_source(arxiv_record, publisher_re
 def test_merger_handles_list_deletions():
     root = {
         'book_series': [
-            {
-                'title': 'IEEE Nucl.Sci.Symp.Conf.Rec.',
-                'volume': '1'
-            },
-            {
-                'title': 'CMS Web-Based Monitoring',
-                'volume': '2'
-            },
+            {'title': 'IEEE Nucl.Sci.Symp.Conf.Rec.', 'volume': '1'},
+            {'title': 'CMS Web-Based Monitoring', 'volume': '2'},
             {
                 'title': 'Lectures in Testing',
                 'volume': '3',
@@ -345,45 +337,57 @@ def test_merger_handles_list_deletions():
 
     expected_merged = head
     expected_conflict = [
-        {'path': '/book_series/0/volume', 'op': 'replace', 'value': '3', '$type': 'SET_FIELD'},
-        {'path': '/book_series/0/title', 'op': 'replace', 'value': 'Lectures in Testing', '$type': 'SET_FIELD'},
-        {'path': '/book_series/2', 'op': 'remove', 'value': None, '$type': 'REMOVE_FIELD'},
-        {'path': '/book_series/1', 'op': 'remove', 'value': None, '$type': 'REMOVE_FIELD'}
+        {
+            'path': '/book_series/0/volume',
+            'op': 'replace',
+            'value': '3',
+            '$type': 'SET_FIELD',
+        },
+        {
+            'path': '/book_series/0/title',
+            'op': 'replace',
+            'value': 'Lectures in Testing',
+            '$type': 'SET_FIELD',
+        },
+        {
+            'path': '/book_series/2',
+            'op': 'remove',
+            'value': None,
+            '$type': 'REMOVE_FIELD',
+        },
+        {
+            'path': '/book_series/1',
+            'op': 'remove',
+            'value': None,
+            '$type': 'REMOVE_FIELD',
+        },
     ]
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
-    assert sorted(conflict, key=operator.itemgetter("path")) == sorted(expected_conflict, key=operator.itemgetter("path"))
+    assert sorted(conflict, key=operator.itemgetter("path")) == sorted(
+        expected_conflict, key=operator.itemgetter("path")
+    )
 
 
 def test_merger_handles_authors_with_correct_ordering():
     root = {}
     head = {
         "authors": [
-            {
-                'full_name': 'Janeway, Kathryn',
-                'age': 44
-            },
-            {
-                'full_name': 'Picard, Jean-Luc',
-                'age': 55
-            },
+            {'full_name': 'Janeway, Kathryn', 'age': 44},
+            {'full_name': 'Picard, Jean-Luc', 'age': 55},
             {
                 "full_name": "Archer, Jonathan",
-            }
+            },
         ],
     }
     update = {
         "authors": [
-            {
-                "full_name": "Kirk, James"
-            },
-            {
-                'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66
-            },
+            {"full_name": "Kirk, James"},
+            {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
             {
                 "full_name": "Archer, Jonathan",
-            }
+            },
         ],
     }
 
@@ -392,29 +396,36 @@ def test_merger_handles_authors_with_correct_ordering():
             'path': '/authors/1',
             'op': 'replace',
             'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
-            '$type': 'SET_FIELD'
+            '$type': 'SET_FIELD',
         },
         {
             'path': '/authors/2',
             'op': 'replace',
             'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
-            '$type': 'SET_FIELD'
+            '$type': 'SET_FIELD',
         },
     ]
-    expected_merged = {'authors': [
-        {"full_name": "Kirk, James"},
-        {'age': 44, 'full_name': 'Janeway, Kathryn'},
-        {'age': 55, 'full_name': 'Picard, Jean-Luc'},
-        {"full_name": "Archer, Jonathan"}
-    ]}
+    expected_merged = {
+        'authors': [
+            {"full_name": "Kirk, James"},
+            {'age': 44, 'full_name': 'Janeway, Kathryn'},
+            {'age': 55, 'full_name': 'Picard, Jean-Luc'},
+            {"full_name": "Archer, Jonathan"},
+        ]
+    }
 
     merged, conflict = merge(root, head, update, head_source='arxiv')
     assert merged == expected_merged
-    assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(key=itemgetter('path'))
+    assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(
+        key=itemgetter('path')
+    )
 
 
 @pytest.mark.xfail(
-    reason="On python3 it fails as it's getting UUIDs of duplicated authors in different order than in python 2."
+    reason=(
+        "On python3 it fails as it's getting UUIDs of duplicated authors in different"
+        " order than in python 2."
+    )
 )
 def test_ordering_conflicts():
     # This test is actually for broken input.
@@ -428,7 +439,9 @@ def test_ordering_conflicts():
     expected_merged = load_test_data("test_data/merged.json")
     merged, conflicts = merge(root, head, update)
 
-    assert sorted(merged['authors'], key=itemgetter('uuid')) == sorted(expected_merged['authors'], key=itemgetter('uuid'))
+    assert sorted(merged['authors'], key=itemgetter('uuid')) == sorted(
+        expected_merged['authors'], key=itemgetter('uuid')
+    )
     assert_ordered_conflicts(conflicts, expected_conflicts)
 
 
@@ -438,12 +451,8 @@ def test_grobid_on_arxiv_operations_without_conflict():
         "authors": [
             {
                 "full_name": "Sułkowski, Piotr",
-                "raw_affiliations": [{
-                    "value": "Warsaw U."
-                }],
-                "emails": [
-                    "sulkowski.p@fuw.edu.pl"
-                ],
+                "raw_affiliations": [{"value": "Warsaw U."}],
+                "emails": ["sulkowski.p@fuw.edu.pl"],
             }
         ]
     }
@@ -452,12 +461,14 @@ def test_grobid_on_arxiv_operations_without_conflict():
         "authors": [
             {
                 "full_name": "Sułkowski, Piotr",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "sulkowski.piotr@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
+                "emails": ["sulkowski.piotr@fuw.edu.pl"],
             }
         ]
     }
@@ -465,18 +476,25 @@ def test_grobid_on_arxiv_operations_without_conflict():
     expected_merged = {
         "authors": [
             {
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "sulkowski.p@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-                "full_name": "Sułkowski, Piotr"
+                "emails": ["sulkowski.p@fuw.edu.pl"],
+                "full_name": "Sułkowski, Piotr",
             }
         ]
     }
 
-    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    merged, conflicts = merge(
+        root,
+        authors_arxiv,
+        authors_grobid,
+        configuration=GrobidOnArxivAuthorsOperations,
+    )
     assert not conflicts
     assert merged == expected_merged
 
@@ -487,68 +505,75 @@ def test_grobid_on_arxiv_operations_doesnt_conflict_on_author_full_name():
         "authors": [
             {
                 "full_name": "Kowal, Michal",
-                "raw_affiliations": [{
-                    "value": "Warsaw U."
-                }],
-                "emails": [
-                    "kowal.m@fuw.edu.pl"
-                ],
+                "raw_affiliations": [{"value": "Warsaw U."}],
+                "emails": ["kowal.m@fuw.edu.pl"],
             },
             {
                 "full_name": "Sułkowski, Piotr",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics"
-                }],
-            }
+                "raw_affiliations": [{"value": "Warsaw U., Faculty of Physics"}],
+            },
         ]
     }
     authors_grobid = {
         "authors": [
             {
                 "full_name": "Kowal, Michal",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "kowal.m@uw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
+                "emails": ["kowal.m@uw.edu.pl"],
             },
             {
                 "full_name": "Sułkowski, Piotr Andrzej",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "sulkowski.p@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-            }
+                "emails": ["sulkowski.p@fuw.edu.pl"],
+            },
         ]
     }
 
     expected_merged = {
         "authors": [
             {
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "kowal.m@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-                "full_name": "Kowal, Michal"
+                "emails": ["kowal.m@fuw.edu.pl"],
+                "full_name": "Kowal, Michal",
             },
             {
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "sulkowski.p@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-                "full_name": "Sułkowski, Piotr"
-            }
+                "emails": ["sulkowski.p@fuw.edu.pl"],
+                "full_name": "Sułkowski, Piotr",
+            },
         ]
     }
 
-    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    merged, conflicts = merge(
+        root,
+        authors_arxiv,
+        authors_grobid,
+        configuration=GrobidOnArxivAuthorsOperations,
+    )
     assert not conflicts
     assert merged == expected_merged
 
@@ -559,12 +584,8 @@ def test_grobid_on_arxiv_operations_keeps_authors_from_head():
         "authors": [
             {
                 "full_name": "Kowal, Michal",
-                "raw_affiliations": [{
-                    "value": "Warsaw U."
-                }],
-                "emails": [
-                    "kowal.m@fuw.edu.pl"
-                ],
+                "raw_affiliations": [{"value": "Warsaw U."}],
+                "emails": ["kowal.m@fuw.edu.pl"],
             }
         ]
     }
@@ -572,39 +593,50 @@ def test_grobid_on_arxiv_operations_keeps_authors_from_head():
         "authors": [
             {
                 "full_name": "Kowal, Michal",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "kowal.m@uw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
+                "emails": ["kowal.m@uw.edu.pl"],
             },
             {
                 "full_name": "Sułkowski, Piotr Andrzej",
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "sulkowski.p@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-            }
+                "emails": ["sulkowski.p@fuw.edu.pl"],
+            },
         ]
     }
 
     expected_merged = {
         "authors": [
             {
-                "raw_affiliations": [{
-                    "value": "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
-                }],
-                "emails": [
-                    "kowal.m@fuw.edu.pl"
+                "raw_affiliations": [
+                    {
+                        "value": (
+                            "Warsaw U., Faculty of Physics, Pastuera 7, Warsaw, Poland"
+                        )
+                    }
                 ],
-                "full_name": "Kowal, Michal"
+                "emails": ["kowal.m@fuw.edu.pl"],
+                "full_name": "Kowal, Michal",
             }
         ]
     }
 
-    merged, conflicts = merge(root, authors_arxiv, authors_grobid, configuration=GrobidOnArxivAuthorsOperations)
+    merged, conflicts = merge(
+        root,
+        authors_arxiv,
+        authors_grobid,
+        configuration=GrobidOnArxivAuthorsOperations,
+    )
     assert not conflicts
     assert merged == expected_merged
