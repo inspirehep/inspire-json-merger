@@ -38,9 +38,8 @@ setup_requires = [
 install_requires = [
     # newer munkres is Python 3 only
     'munkres==1.0.12',
-    'inspire-schemas~=61.0',
     'inspire-utils~=3.0,>=3.0.0',
-    'json-merger[contrib]~=0.0,==0.7.11',
+    'json-merger[contrib]~=0.0,==0.7.14',
     'pyrsistent~=0.0,>=0.14.0',
 ]
 
@@ -48,6 +47,7 @@ docs_require = []
 
 tests_require = [
     'decorator~=4.0,>=4.1.2',
+    'inspire-schemas==61.5.31',
     'mock~=2.0,>=2.0.0',
     'pytest-cov~=2.0,>=2.5.1',
     'pytest~=4.0,>=4.6.0;python_version <= "2.7"',
