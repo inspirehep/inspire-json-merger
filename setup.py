@@ -76,7 +76,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    version='11.0.39',
+    version='11.0.40',
     description=__doc__,
     long_description=readme,
     install_requires=install_requires,
