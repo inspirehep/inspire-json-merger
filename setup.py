@@ -31,15 +31,11 @@ URL = 'https://github.com/inspirehep/inspire-json-merger'
 with open("README.rst") as f:
     readme = f.read()
 
-setup_requires = [
-    'autosemver~=0.0,>=0.5.2',
-]
-
 install_requires = [
     # newer munkres is Python 3 only
     'munkres==1.0.12',
     'inspire-utils~=3.0,>=3.0.0',
-    'json-merger[contrib]~=0.0,==0.7.14',
+    'json-merger[contrib]~=0.0,>=0.7.18',
     'pyrsistent~=0.0,>=0.14.0',
 ]
 
@@ -72,9 +68,6 @@ packages = find_packages(exclude=['docs'])
 
 setup(
     name='inspire-json-merger',
-    autosemver={
-        'bugtracker_url': URL + '/issues',
-    },
     url=URL,
     license='GPLv3',
     author='CERN',
@@ -83,9 +76,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
+    version='11.0.39',
     description=__doc__,
     long_description=readme,
-    setup_requires=setup_requires,
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require=extras_require,
@@ -102,5 +95,5 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules',
-    ],
+    ]
 )
