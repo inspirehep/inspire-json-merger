@@ -14,5 +14,5 @@ jobs:
 
   bump_version:
     needs: [python2_tests, python3_tests]
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/bump-and-publish.yml
     secrets: inherit
