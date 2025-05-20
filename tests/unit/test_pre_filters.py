@@ -684,6 +684,34 @@ def test_update_material_when_erratum_in_dois_material():
     assert 'material' not in update['publication_info'][1]
 
 
+def test_update_material_when_erratum_no_dois_material():
+    update = {
+
+        "publication_info": [
+            {
+                "cnum": "C21-07-19.3",
+                "conference_record": {
+                    "$ref": "https://inspirehep.net/api/conferences/1919279"
+                },
+            },
+            {
+                "year": 2020,
+                "artid": "032",
+                "page_start": "032",
+                "journal_title": "JHEP",
+                "journal_volume": "11",
+            },
+        ],
+    }
+
+    root, head, update = filter_records({}, {}, update, filters=[update_material])
+
+    assert root == {}
+    assert head == {}
+
+    assert 'dois' not in update
+
+
 def test_remove_root():
     root = {
         "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
