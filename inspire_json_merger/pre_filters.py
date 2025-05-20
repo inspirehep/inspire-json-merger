@@ -227,7 +227,7 @@ filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures'
 
 
 def update_material(root, head, update):
-    if "erratum" in get_value(thaw(update), 'dois.material'):
+    if "erratum" in get_value(thaw(update), 'dois.material', []):
         return root, head, update
     for field in FIELDS_WITH_MATERIAL_KEY:
         if field in update:
