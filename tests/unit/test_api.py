@@ -164,6 +164,17 @@ def erratum_4():
     }
 
 
+@pytest.fixture()
+def erratum_5():
+    return {
+        '_collections': ['literature'],
+        'document_type': ['article'],
+        'titles': [{'title': 'Author Correction: Observation of an ultra'}],
+        'dois': [{'value': '10.1023/A:1026654312961'}],
+        'acquisition_source': {'source': 'ejl'},
+    }
+
+
 def test_get_head_source_freetext_pub_info_with_eprint(rec_publication_info):
     # record has pubinfo_freetext and arxiv_eprints, no dois
     validate_subschema(rec_publication_info)
@@ -247,7 +258,13 @@ def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(
 
 
 def test_get_configuration(
-    arxiv_record, publisher_record, erratum_1, erratum_2, erratum_3, erratum_4
+    arxiv_record,
+    publisher_record,
+    erratum_1,
+    erratum_2,
+    erratum_3,
+    erratum_4,
+    erratum_5
 ):
     assert get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
     assert (
@@ -271,6 +288,9 @@ def test_get_configuration(
     )
     assert (
         get_configuration(publisher_record, erratum_4) == ErratumOnPublisherOperations
+    )
+    assert (
+        get_configuration(publisher_record, erratum_5) == ErratumOnPublisherOperations
     )
 
     arxiv1 = arxiv_record
