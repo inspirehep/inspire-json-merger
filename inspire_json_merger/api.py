@@ -160,6 +160,7 @@ def is_erratum(update):
         "corrigendum",
         "publisher's note",
         "publisher correction",
+        "author correction"
     }
     journal_titles_list = get_value(update, "titles.title", [])
     journal_titles_string = " ".join(journal_titles_list).lower()
