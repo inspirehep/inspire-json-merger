@@ -239,3 +239,9 @@ def update_material(root, head, update):
 
 def remove_root(root, head, update):
     return pmap({}), head, update
+
+
+def remove_root_preprint_date(root, head, update):
+    "Workaround for arXiv bug in new OAI-PMH API"
+    root = _remove_if_present(root, "preprint_date")
+    return root, head, update
