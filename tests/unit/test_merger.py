@@ -1238,3 +1238,26 @@ def test_merging_copyright(fake_get_config):
     merged, conflict = merge(root, head, update)
     assert "copyright" not in merged
     assert "persistent_identifiers" not in merged
+
+
+def test_preprint_date_doesnt_update():
+    root = {
+        "acquisition_source": {"method": "hepcrawl", "source": "arxiv"},
+        "preprint_date": "2022-12-12",
+    }
+    head = {
+        "acquisition_source": {"method": "hepcrawl", "source": "arxiv"},
+        "preprint_date": "2022-12-12",
+    }
+    update = {
+        "acquisition_source": {"method": "hepcrawl", "source": "arxiv"},
+        "preprint_date": "2025-06-20",
+    }
+
+    expected_merged = head
+    expected_conflict = []
+
+    merged, conflict = merge(root, head, update, head_source='arxiv')
+    assert merged == expected_merged
+    assert_ordered_conflicts(conflict, expected_conflict)
+    validate_subschema(merged)

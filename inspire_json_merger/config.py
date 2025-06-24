@@ -34,6 +34,7 @@ from inspire_json_merger.pre_filters import (
     filter_publisher_references,
     remove_references_from_update,
     remove_root,
+    remove_root_preprint_date,
     update_authors_with_ordering_info,
     update_material,
 )
@@ -60,6 +61,7 @@ class ArxivOnArxivOperations(MergerConfigurationOperations):
         filter_figures_same_source,
         filter_curated_references,
         update_authors_with_ordering_info,
+        remove_root_preprint_date,
     ]
     conflict_filters = [
         '_collections',
@@ -128,6 +130,7 @@ class ArxivOnPublisherOperations(MergerConfigurationOperations):
         filter_publisher_references,
         update_authors_with_ordering_info,
         clean_root_for_acquisition_source,
+        remove_root_preprint_date,
     ]
     default_list_merge_op = U.KEEP_ONLY_HEAD_ENTITIES
     conflict_filters = [
