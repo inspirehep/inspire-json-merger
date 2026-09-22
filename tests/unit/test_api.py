@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -19,8 +18,6 @@
 # In applying this license, CERN does not waive the privileges and immunities
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
-
-from __future__ import absolute_import, division, print_function
 
 import json
 import operator
@@ -51,28 +48,28 @@ def load_test_data(file_path):
     path = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(path, file_path)
 
-    with open(full_path, 'r') as file:
+    with open(full_path, "r") as file:
         return json.load(file)
 
 
 def test_get_acquisition_source_non_arxiv():
-    rec = {'acquisition_source': {'source': 'foo'}}
-    assert get_acquisition_source(rec) == 'foo'
+    rec = {"acquisition_source": {"source": "foo"}}
+    assert get_acquisition_source(rec) == "foo"
     validate_subschema(rec)
 
 
 @pytest.fixture()
 def rec_dois():
     return {
-        'dois': [
+        "dois": [
             {
-                'material': 'publication',
-                'source': 'elsevier',
-                'value': '10.3847/2041-8213/aa9110',
+                "material": "publication",
+                "source": "elsevier",
+                "value": "10.3847/2041-8213/aa9110",
             }
         ],
-        'arxiv_eprints': [
-            {'categories': ['gr-qc', 'astro-ph.HE'], 'value': '1710.05832'}
+        "arxiv_eprints": [
+            {"categories": ["gr-qc", "astro-ph.HE"], "value": "1710.05832"}
         ],
     }
 
@@ -80,20 +77,20 @@ def rec_dois():
 @pytest.fixture()
 def rec_publication_info():
     return {
-        'publication_info': [
+        "publication_info": [
             {
-                'artid': '161101',
-                'journal_record': {
-                    '$ref': 'http://labs.inspirehep.net/api/journals/1214495'
+                "artid": "161101",
+                "journal_record": {
+                    "$ref": "http://labs.inspirehep.net/api/journals/1214495"
                 },
-                'journal_title': 'Phys.Rev.Lett.',
-                'journal_volume': '119',
-                'pubinfo_freetext': 'Phys. Rev. Lett. 119 161101 (2017)',
-                'year': 2017,
+                "journal_title": "Phys.Rev.Lett.",
+                "journal_volume": "119",
+                "pubinfo_freetext": "Phys. Rev. Lett. 119 161101 (2017)",
+                "year": 2017,
             }
         ],
-        'arxiv_eprints': [
-            {'categories': ['gr-qc', 'astro-ph.HE'], 'value': '1710.05832'}
+        "arxiv_eprints": [
+            {"categories": ["gr-qc", "astro-ph.HE"], "value": "1710.05832"}
         ],
     }
 
@@ -101,160 +98,160 @@ def rec_publication_info():
 @pytest.fixture()
 def arxiv_record():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': {'title': 'Superconductivity'},
-        'arxiv_eprints': [{'value': '1710.05832'}],
-        'acquisition_source': {'source': 'arXiv'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": {"title": "Superconductivity"},
+        "arxiv_eprints": [{"value": "1710.05832"}],
+        "acquisition_source": {"source": "arXiv"},
     }
 
 
 @pytest.fixture()
 def publisher_record():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': {'title': 'Superconductivity'},
-        'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": {"title": "Superconductivity"},
+        "dois": [{"value": "10.1023/A:1026654312961"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 @pytest.fixture()
 def erratum_1():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': [{'title': 'Erratum: that was a wrong title'}],
-        'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": [{"title": "Erratum: that was a wrong title"}],
+        "dois": [{"value": "10.1023/A:1026654312961"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 @pytest.fixture()
 def erratum_2():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': [{'title': 'Correction to: an article'}],
-        'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": [{"title": "Correction to: an article"}],
+        "dois": [{"value": "10.1023/A:1026654312961"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 @pytest.fixture()
 def erratum_3():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': [{'title': 'A title'}],
-        'dois': [{'value': '10.1023/A:1026654312961', 'material': 'erratum'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": [{"title": "A title"}],
+        "dois": [{"value": "10.1023/A:1026654312961", "material": "erratum"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 @pytest.fixture()
 def erratum_4():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': [{'title': 'Publisher correction A title'}],
-        'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": [{"title": "Publisher correction A title"}],
+        "dois": [{"value": "10.1023/A:1026654312961"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 @pytest.fixture()
 def erratum_5():
     return {
-        '_collections': ['literature'],
-        'document_type': ['article'],
-        'titles': [{'title': 'Author Correction: Observation of an ultra'}],
-        'dois': [{'value': '10.1023/A:1026654312961'}],
-        'acquisition_source': {'source': 'ejl'},
+        "_collections": ["literature"],
+        "document_type": ["article"],
+        "titles": [{"title": "Author Correction: Observation of an ultra"}],
+        "dois": [{"value": "10.1023/A:1026654312961"}],
+        "acquisition_source": {"source": "ejl"},
     }
 
 
 def test_get_head_source_freetext_pub_info_with_eprint(rec_publication_info):
     # record has pubinfo_freetext and arxiv_eprints, no dois
     validate_subschema(rec_publication_info)
-    assert get_head_source(rec_publication_info) == 'arxiv'
+    assert get_head_source(rec_publication_info) == "arxiv"
 
 
 def test_get_head_source_freetext_pub_info_with_no_eprint(rec_publication_info):
     # record has pubinfo_freetext but not arxiv_eprints, no dois
-    del rec_publication_info['arxiv_eprints']
+    del rec_publication_info["arxiv_eprints"]
     validate_subschema(rec_publication_info)
-    assert get_head_source(rec_publication_info) == 'publisher'
+    assert get_head_source(rec_publication_info) == "publisher"
 
 
 def test_get_head_source_no_freetext_pub_info(rec_publication_info):
     # record has no pubinfo_freetext, no dois
-    del rec_publication_info['publication_info'][0]['pubinfo_freetext']
+    del rec_publication_info["publication_info"][0]["pubinfo_freetext"]
     validate_subschema(rec_publication_info)
-    assert get_head_source(rec_publication_info) == 'publisher'
+    assert get_head_source(rec_publication_info) == "publisher"
 
 
 def test_get_head_source_no_arxiv_dois(rec_dois):
     # record has dois without arxiv source, no publication_info
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_head_source_arxiv_dois(rec_dois):
     # record has dois with arxiv source and arxiv_eprint, no publication_info
-    rec_dois.get('dois')[0]['source'] = 'arXiv'
+    rec_dois.get("dois")[0]["source"] = "arXiv"
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'arxiv'
+    assert get_head_source(rec_dois) == "arxiv"
 
 
 def test_get_head_source_arxiv_dois_no_eprint(rec_dois):
     # record has dois without arxiv source but no arxiv_eprint, no publication_info
-    del rec_dois['arxiv_eprints']
+    del rec_dois["arxiv_eprints"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_head_source_arxiv_dois_and_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arXiv'
-    rec['publication_info'] = rec_publication_info['publication_info']
+    rec.get("dois")[0]["source"] = "arXiv"
+    rec["publication_info"] = rec_publication_info["publication_info"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'arxiv'
+    assert get_head_source(rec_dois) == "arxiv"
 
 
 def test_get_head_source_no_arxiv_dois_and_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec['publication_info'] = rec_publication_info['publication_info']
+    rec["publication_info"] = rec_publication_info["publication_info"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_head_source_arxiv_dois_and_no_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arXiv'
-    rec['publication_info'] = rec_publication_info['publication_info']
-    del rec['publication_info'][0]['pubinfo_freetext']
+    rec.get("dois")[0]["source"] = "arXiv"
+    rec["publication_info"] = rec_publication_info["publication_info"]
+    del rec["publication_info"][0]["pubinfo_freetext"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_head_source_no_arxiv_dois_and_no_freetext(rec_dois, rec_publication_info):
     rec = rec_dois
-    rec['publication_info'] = rec_publication_info['publication_info']
+    rec["publication_info"] = rec_publication_info["publication_info"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_head_source_arxiv_dois_and_freetext_but_no_arxiv_eprint(
     rec_dois, rec_publication_info
 ):
     rec = rec_dois
-    rec.get('dois')[0]['source'] = 'arXiv'
-    rec['publication_info'] = rec_publication_info['publication_info']
-    del rec['arxiv_eprints']
+    rec.get("dois")[0]["source"] = "arXiv"
+    rec["publication_info"] = rec_publication_info["publication_info"]
+    del rec["arxiv_eprints"]
     validate_subschema(rec_dois)
-    assert get_head_source(rec_dois) == 'publisher'
+    assert get_head_source(rec_dois) == "publisher"
 
 
 def test_get_configuration(
@@ -264,7 +261,7 @@ def test_get_configuration(
     erratum_2,
     erratum_3,
     erratum_4,
-    erratum_5
+    erratum_5,
 ):
     assert get_configuration(arxiv_record, arxiv_record) == ArxivOnArxivOperations
     assert (
@@ -294,34 +291,34 @@ def test_get_configuration(
     )
 
     arxiv1 = arxiv_record
-    arxiv1['control_number'] = 1
+    arxiv1["control_number"] = 1
 
     arxiv2 = dict(arxiv_record)
-    arxiv2['control_number'] = 2
+    arxiv2["control_number"] = 2
 
     pub1 = publisher_record
-    pub1['control_number'] = 3
+    pub1["control_number"] = 3
 
     pub2 = dict(publisher_record)
-    pub2['control_number'] = 4
+    pub2["control_number"] = 4
 
     assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
     assert get_configuration(pub1, pub2) == ManualMergeOperations
     assert get_configuration(arxiv1, pub1) == ManualMergeOperations
     assert get_configuration(pub1, arxiv1) == ManualMergeOperations
 
-    arxiv2['control_number'] = 1  # same of the other arxiv record
+    arxiv2["control_number"] = 1  # same of the other arxiv record
     assert get_configuration(arxiv1, arxiv2) == ArxivOnArxivOperations
 
 
 def test_get_configuration_without_acquisition_source(arxiv_record, publisher_record):
     arxiv1 = dict(arxiv_record)
-    arxiv1['control_number'] = 1
-    del arxiv1['acquisition_source']
+    arxiv1["control_number"] = 1
+    del arxiv1["acquisition_source"]
 
     arxiv2 = dict(arxiv_record)
-    arxiv2['control_number'] = 2
-    del arxiv2['acquisition_source']
+    arxiv2["control_number"] = 2
+    del arxiv2["acquisition_source"]
 
     assert get_configuration(arxiv1, arxiv2) == ManualMergeOperations
 
@@ -336,21 +333,21 @@ def test_get_configuration_without_acquisition_source(arxiv_record, publisher_re
 
 def test_merger_handles_list_deletions():
     root = {
-        'book_series': [
-            {'title': 'IEEE Nucl.Sci.Symp.Conf.Rec.', 'volume': '1'},
-            {'title': 'CMS Web-Based Monitoring', 'volume': '2'},
+        "book_series": [
+            {"title": "IEEE Nucl.Sci.Symp.Conf.Rec.", "volume": "1"},
+            {"title": "CMS Web-Based Monitoring", "volume": "2"},
             {
-                'title': 'Lectures in Testing',
-                'volume': '3',
+                "title": "Lectures in Testing",
+                "volume": "3",
             },
         ]
     }
     head = {}
     update = {
-        'book_series': [
+        "book_series": [
             {
-                'title': 'Lectures in Testing',
-                'volume': '3',
+                "title": "Lectures in Testing",
+                "volume": "3",
             },
         ]
     }
@@ -358,32 +355,32 @@ def test_merger_handles_list_deletions():
     expected_merged = head
     expected_conflict = [
         {
-            'path': '/book_series/0/volume',
-            'op': 'replace',
-            'value': '3',
-            '$type': 'SET_FIELD',
+            "path": "/book_series/0/volume",
+            "op": "replace",
+            "value": "3",
+            "$type": "SET_FIELD",
         },
         {
-            'path': '/book_series/0/title',
-            'op': 'replace',
-            'value': 'Lectures in Testing',
-            '$type': 'SET_FIELD',
+            "path": "/book_series/0/title",
+            "op": "replace",
+            "value": "Lectures in Testing",
+            "$type": "SET_FIELD",
         },
         {
-            'path': '/book_series/2',
-            'op': 'remove',
-            'value': None,
-            '$type': 'REMOVE_FIELD',
+            "path": "/book_series/2",
+            "op": "remove",
+            "value": None,
+            "$type": "REMOVE_FIELD",
         },
         {
-            'path': '/book_series/1',
-            'op': 'remove',
-            'value': None,
-            '$type': 'REMOVE_FIELD',
+            "path": "/book_series/1",
+            "op": "remove",
+            "value": None,
+            "$type": "REMOVE_FIELD",
         },
     ]
 
-    merged, conflict = merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source="arxiv")
     assert merged == expected_merged
     assert sorted(conflict, key=operator.itemgetter("path")) == sorted(
         expected_conflict, key=operator.itemgetter("path")
@@ -394,8 +391,8 @@ def test_merger_handles_authors_with_correct_ordering():
     root = {}
     head = {
         "authors": [
-            {'full_name': 'Janeway, Kathryn', 'age': 44},
-            {'full_name': 'Picard, Jean-Luc', 'age': 55},
+            {"full_name": "Janeway, Kathryn", "age": 44},
+            {"full_name": "Picard, Jean-Luc", "age": 55},
             {
                 "full_name": "Archer, Jonathan",
             },
@@ -404,7 +401,7 @@ def test_merger_handles_authors_with_correct_ordering():
     update = {
         "authors": [
             {"full_name": "Kirk, James"},
-            {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
+            {"full_name": "Janeway Kathryn, Picard Jean-Luc", "age": 66},
             {
                 "full_name": "Archer, Jonathan",
             },
@@ -413,40 +410,34 @@ def test_merger_handles_authors_with_correct_ordering():
 
     expected_conflict = [
         {
-            'path': '/authors/1',
-            'op': 'replace',
-            'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
-            '$type': 'SET_FIELD',
+            "path": "/authors/1",
+            "op": "replace",
+            "value": {"full_name": "Janeway Kathryn, Picard Jean-Luc", "age": 66},
+            "$type": "SET_FIELD",
         },
         {
-            'path': '/authors/2',
-            'op': 'replace',
-            'value': {'full_name': 'Janeway Kathryn, Picard Jean-Luc', 'age': 66},
-            '$type': 'SET_FIELD',
+            "path": "/authors/2",
+            "op": "replace",
+            "value": {"full_name": "Janeway Kathryn, Picard Jean-Luc", "age": 66},
+            "$type": "SET_FIELD",
         },
     ]
     expected_merged = {
-        'authors': [
+        "authors": [
             {"full_name": "Kirk, James"},
-            {'age': 44, 'full_name': 'Janeway, Kathryn'},
-            {'age': 55, 'full_name': 'Picard, Jean-Luc'},
+            {"age": 44, "full_name": "Janeway, Kathryn"},
+            {"age": 55, "full_name": "Picard, Jean-Luc"},
             {"full_name": "Archer, Jonathan"},
         ]
     }
 
-    merged, conflict = merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source="arxiv")
     assert merged == expected_merged
-    assert conflict.sort(key=itemgetter('path')) == expected_conflict.sort(
-        key=itemgetter('path')
+    assert conflict.sort(key=itemgetter("path")) == expected_conflict.sort(
+        key=itemgetter("path")
     )
 
 
-@pytest.mark.xfail(
-    reason=(
-        "On python3 it fails as it's getting UUIDs of duplicated authors in different"
-        " order than in python 2."
-    )
-)
 def test_ordering_conflicts():
     # This test is actually for broken input.
     # Where authors are duplicated.
@@ -459,8 +450,8 @@ def test_ordering_conflicts():
     expected_merged = load_test_data("test_data/merged.json")
     merged, conflicts = merge(root, head, update)
 
-    assert sorted(merged['authors'], key=itemgetter('uuid')) == sorted(
-        expected_merged['authors'], key=itemgetter('uuid')
+    assert sorted(merged["authors"], key=itemgetter("uuid")) == sorted(
+        expected_merged["authors"], key=itemgetter("uuid")
     )
     assert_ordered_conflicts(conflicts, expected_conflicts)
 

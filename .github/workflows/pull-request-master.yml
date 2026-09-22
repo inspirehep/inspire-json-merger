@@ -11,10 +11,6 @@ jobs:
     with:
       ref: ${{ github.event.pull_request.head.sha }}
 
-  python2_tests:
-    needs: [lint]
-    uses: ./.github/workflows/test-python-2.yml
-
   python3_tests:
     needs: [lint]
     uses: ./.github/workflows/test-python-3.yml

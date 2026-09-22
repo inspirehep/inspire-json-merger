@@ -1,8 +1,6 @@
-from __future__ import absolute_import, division, print_function
-
 from operator import itemgetter
+from unittest.mock import patch
 
-from mock import patch
 from utils import assert_ordered_conflicts, validate_subschema
 
 from inspire_json_merger.api import merge
@@ -276,7 +274,7 @@ def test_real_record_merge_regression_1_authors_mismatch_on_update():
 def test_merging_acquisition_source_publisher_on_arxiv(fake_get_config):
     root = {
         "acquisition_source": {
-            "datetime": "2021-05-11T02:35:43.387350",
+            "datetime": "2021-05-11T02:35:43.387350+00:00",
             "method": "hepcrawl",
             "source": "arXiv",
             "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0",
@@ -284,7 +282,7 @@ def test_merging_acquisition_source_publisher_on_arxiv(fake_get_config):
     }
     head = {
         "acquisition_source": {
-            "datetime": "2021-05-11T02:35:43.387350",
+            "datetime": "2021-05-11T02:35:43.387350+00:00",
             "method": "hepcrawl",
             "source": "arXiv",
             "submission_number": "c8a0e3e0b20011eb8d930a580a6402c0",
@@ -292,7 +290,7 @@ def test_merging_acquisition_source_publisher_on_arxiv(fake_get_config):
     }
     update = {
         "acquisition_source": {
-            "datetime": "2021-05-12T02:35:43.387350",
+            "datetime": "2021-05-12T02:35:43.387350+00:00",
             "method": "beard",
             "source": "other source",
             "submission_number": "c8a0e3e0b20011eb8d930a580a6402c1",
@@ -752,9 +750,9 @@ def test_merging_copyright(fake_get_config):
                     },
                     {
                         "value": (
-                            'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di'
+                            "Universit\xe0 degli Studi di Milano-Bicocca, Dip. di"
                             ' Fisica "G. Occhialini", Piazza della Scienza 3, I-20126'
-                            ' Milano, Italy'
+                            " Milano, Italy"
                         )
                     },
                 ],
@@ -975,9 +973,9 @@ def test_merging_copyright(fake_get_config):
                     },
                     {
                         "value": (
-                            'Universit\xe0 degli Studi di Milano-Bicocca, Dip. di'
+                            "Universit\xe0 degli Studi di Milano-Bicocca, Dip. di"
                             ' Fisica "G. Occhialini", Piazza della Scienza 3, I-20126'
-                            ' Milano, Italy'
+                            " Milano, Italy"
                         )
                     },
                 ],
@@ -1257,7 +1255,7 @@ def test_preprint_date_doesnt_update():
     expected_merged = head
     expected_conflict = []
 
-    merged, conflict = merge(root, head, update, head_source='arxiv')
+    merged, conflict = merge(root, head, update, head_source="arxiv")
     assert merged == expected_merged
     assert_ordered_conflicts(conflict, expected_conflict)
     validate_subschema(merged)

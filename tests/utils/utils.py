@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -20,8 +19,6 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
-
 import itertools
 import json
 
@@ -30,7 +27,7 @@ from inspire_schemas.api import load_schema, validate
 
 def assert_ordered_conflicts(conflicts, expected):
     expected_conflicts = [
-        json.loads(c.to_json()) for c in expected if hasattr(c, 'to_json')
+        json.loads(c.to_json()) for c in expected if hasattr(c, "to_json")
     ]
     if expected_conflicts:
         expected_conflicts_flat = list(
@@ -39,14 +36,14 @@ def assert_ordered_conflicts(conflicts, expected):
     else:
         expected_conflicts_flat = expected
     # order the lists to check if they match
-    conflicts = sorted(conflicts, key=lambda c: c['path'])
-    expected_conflicts_flat = sorted(expected_conflicts_flat, key=lambda c: c['path'])
+    conflicts = sorted(conflicts, key=lambda c: c["path"])
+    expected_conflicts_flat = sorted(expected_conflicts_flat, key=lambda c: c["path"])
 
     assert conflicts == expected_conflicts_flat
 
 
 def validate_subschema(obj):
-    schema = load_schema('hep')
-    key = list(obj.keys())[0]  # python 3 compatibility
-    sub_schema = schema['properties'].get(key)
+    schema = load_schema("hep")
+    key = list(obj.keys())[0]
+    sub_schema = schema["properties"].get(key)
     assert validate(obj.get(key), sub_schema) is None
