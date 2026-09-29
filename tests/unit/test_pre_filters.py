@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -20,8 +19,6 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
-
 from inspire_json_merger.pre_filters import (
     clean_root_for_acquisition_source,
     filter_curated_references,
@@ -37,39 +34,39 @@ from inspire_json_merger.utils import filter_records
 def test_filter_documents_same_source():
     root = {}
     head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'file1.pdf',
-                'url': '/files/1234-1234-1234-1234/file1.pdf',
+                "source": "arXiv",
+                "key": "file1.pdf",
+                "url": "/files/1234-1234-1234-1234/file1.pdf",
             },
             {
-                'source': 'arXiv',
-                'key': 'file2.pdf',
-                'url': '/files/1234-1234-1234-1234/file2.pdf',
+                "source": "arXiv",
+                "key": "file2.pdf",
+                "url": "/files/1234-1234-1234-1234/file2.pdf",
             },
             {
-                'source': 'publisher',
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "source": "publisher",
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
     update = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'new_file.pdf',
-                'url': '/files/5678-5678-5678-5678/new_file.pdf',
+                "source": "arXiv",
+                "key": "new_file.pdf",
+                "url": "/files/5678-5678-5678-5678/new_file.pdf",
             },
         ],
     }
     expected_head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'publisher',
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "source": "publisher",
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
@@ -83,30 +80,30 @@ def test_filter_documents_same_source():
 def test_filter_documents_same_source_multiple_sources_in_update():
     root = {}
     head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'old_file.pdf',
-                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+                "source": "arXiv",
+                "key": "old_file.pdf",
+                "url": "/files/5678-5678-5678-5678/old_file.pdf",
             },
         ],
     }
     update = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'file1.pdf',
-                'url': '/files/1234-1234-1234-1234/file1.pdf',
+                "source": "arXiv",
+                "key": "file1.pdf",
+                "url": "/files/1234-1234-1234-1234/file1.pdf",
             },
             {
-                'source': 'arXiv',
-                'key': 'file2.pdf',
-                'url': '/files/1234-1234-1234-1234/file2.pdf',
+                "source": "arXiv",
+                "key": "file2.pdf",
+                "url": "/files/1234-1234-1234-1234/file2.pdf",
             },
             {
-                'source': 'publisher',
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "source": "publisher",
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
@@ -120,34 +117,34 @@ def test_filter_documents_same_source_multiple_sources_in_update():
 def test_filter_documents_remove_head_source():
     root = {}
     head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'publisher',
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "source": "publisher",
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
             {
-                'source': 'arXiv',
-                'key': 'old_file.pdf',
-                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+                "source": "arXiv",
+                "key": "old_file.pdf",
+                "url": "/files/5678-5678-5678-5678/old_file.pdf",
             },
         ],
     }
     update = {
-        'documents': [
+        "documents": [
             {
-                'source': 'publisher',
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "source": "publisher",
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
     expected_head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'old_file.pdf',
-                'url': '/files/5678-5678-5678-5678/old_file.pdf',
+                "source": "arXiv",
+                "key": "old_file.pdf",
+                "url": "/files/5678-5678-5678-5678/old_file.pdf",
             },
         ],
     }
@@ -161,37 +158,37 @@ def test_filter_documents_remove_head_source():
 def test_filter_documents_same_source_is_case_insensitive_on_source():
     root = {}
     head = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arXiv',
-                'key': 'file1.pdf',
-                'url': '/files/1234-1234-1234-1234/file1.pdf',
+                "source": "arXiv",
+                "key": "file1.pdf",
+                "url": "/files/1234-1234-1234-1234/file1.pdf",
             },
             {
-                'source': 'arXiv',
-                'key': 'file2.pdf',
-                'url': '/files/1234-1234-1234-1234/file2.pdf',
+                "source": "arXiv",
+                "key": "file2.pdf",
+                "url": "/files/1234-1234-1234-1234/file2.pdf",
             },
             {
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
     update = {
-        'documents': [
+        "documents": [
             {
-                'source': 'arxiv',
-                'key': 'new_file.pdf',
-                'url': '/files/5678-5678-5678-5678/new_file.pdf',
+                "source": "arxiv",
+                "key": "new_file.pdf",
+                "url": "/files/5678-5678-5678-5678/new_file.pdf",
             },
         ],
     }
     expected_head = {
-        'documents': [
+        "documents": [
             {
-                'key': 'file3.pdf',
-                'url': '/files/1234-1234-1234-1234/file3.pdf',
+                "key": "file3.pdf",
+                "url": "/files/1234-1234-1234-1234/file3.pdf",
             },
         ],
     }
@@ -205,29 +202,29 @@ def test_filter_documents_same_source_is_case_insensitive_on_source():
 def test_filter_curated_references_takes_update_if_not_curated():
     root = {}
     head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_head = {}
     expected_update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
@@ -242,30 +239,30 @@ def test_filter_curated_references_takes_update_if_not_curated():
 def test_filter_curated_references_keeps_head_if_legacy_curated():
     root = {}
     head = {
-        'references': [
+        "references": [
             {
-                'legacy_curated': True,
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "legacy_curated": True,
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_head = {
-        'references': [
+        "references": [
             {
-                'legacy_curated': True,
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "legacy_curated": True,
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
@@ -280,38 +277,38 @@ def test_filter_curated_references_keeps_head_if_legacy_curated():
 
 def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
     root = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
-                'curated_relation': False,
+                "curated_relation": False,
             },
         ],
     }
     head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
-                    'misc': ['foo'],
-                    'authors': ['Smith, J.'],
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                    "misc": ["foo"],
+                    "authors": ["Smith, J."],
                 },
-                'raw_refs': [
+                "raw_refs": [
                     {
-                        'source': 'arXiv',
-                        'schema': 'text',
-                        'value': 'foo 1810.12345',
+                        "source": "arXiv",
+                        "schema": "text",
+                        "value": "foo 1810.12345",
                     },
                 ],
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
@@ -319,10 +316,10 @@ def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
     expected_root = {}
     expected_head = {}
     expected_update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
@@ -336,54 +333,54 @@ def test_filter_curated_references_keeps_update_if_head_almost_equal_to_root():
 
 def test_filter_curated_references_keeps_head_if_almost_equal_to_root_with_curated():
     root = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
-                'curated_relation': True,
+                "curated_relation": True,
             },
         ],
     }
     head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
-                    'misc': ['foo'],
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                    "misc": ["foo"],
                 },
-                'raw_refs': [
+                "raw_refs": [
                     {
-                        'source': 'arXiv',
-                        'schema': 'text',
-                        'value': 'foo 1810.12345',
+                        "source": "arXiv",
+                        "schema": "text",
+                        "value": "foo 1810.12345",
                     },
                 ],
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_root = {}
     expected_head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
-                    'misc': ['foo'],
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                    "misc": ["foo"],
                 },
-                'raw_refs': [
+                "raw_refs": [
                     {
-                        'source': 'arXiv',
-                        'schema': 'text',
-                        'value': 'foo 1810.12345',
+                        "source": "arXiv",
+                        "schema": "text",
+                        "value": "foo 1810.12345",
                     },
                 ],
             },
@@ -399,40 +396,40 @@ def test_filter_curated_references_keeps_head_if_almost_equal_to_root_with_curat
 
 def test_filter_curated_references_keeps_head_if_differs_from_root():
     root = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
     }
     head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
-                    'dois': ['10.1234/5678'],
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                    "dois": ["10.1234/5678"],
                 },
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_root = {}
     expected_head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
-                    'dois': ['10.1234/5678'],
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
+                    "dois": ["10.1234/5678"],
                 },
             },
         ],
@@ -448,28 +445,28 @@ def test_filter_curated_references_keeps_head_if_differs_from_root():
 def test_filter_publisher_references_keeps_head():
     root = {}
     head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
     }
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_head = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.12345',
+                "reference": {
+                    "arxiv_eprint": "1810.12345",
                 },
             },
         ],
@@ -486,19 +483,19 @@ def test_filter_publisher_references_keeps_update_if_no_refs_in_head():
     root = {}
     head = {}
     update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
     }
     expected_update = {
-        'references': [
+        "references": [
             {
-                'reference': {
-                    'arxiv_eprint': '1810.56789',
+                "reference": {
+                    "arxiv_eprint": "1810.56789",
                 },
             },
         ],
@@ -512,33 +509,33 @@ def test_filter_publisher_references_keeps_update_if_no_refs_in_head():
 
 def test_filter_missing_figures_on_update_are_properly_handled():
     fig_1 = {
-        'caption': 'CC',
-        'key': 'w0_bflow.png',
-        'label': 'fig:bflow',
-        'material': 'preprint',
-        'source': 'arxiv',
-        'url': '/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png',
+        "caption": "CC",
+        "key": "w0_bflow.png",
+        "label": "fig:bflow",
+        "material": "preprint",
+        "source": "arxiv",
+        "url": "/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png",
     }
     fig_2 = {
-        'caption': 'CC2',
-        'key': 'w1_bflow.png',
-        'label': 'fig2:bflow',
-        'material': 'preprint',
-        'source': 'other',
-        'url': '/api/files/8e2b4d59-6870-4517-8888-35822bf12edb/w1_bflow.png',
+        "caption": "CC2",
+        "key": "w1_bflow.png",
+        "label": "fig2:bflow",
+        "material": "preprint",
+        "source": "other",
+        "url": "/api/files/8e2b4d59-6870-4517-8888-35822bf12edb/w1_bflow.png",
     }
     fig_3 = {
-        'caption': 'CC',
-        'key': '627d2caea8059d8875281ebed455a714',
-        'label': 'fig:bflow',
-        'material': 'preprint',
-        'source': 'arxiv',
-        'url': '/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png',
+        "caption": "CC",
+        "key": "627d2caea8059d8875281ebed455a714",
+        "label": "fig:bflow",
+        "material": "preprint",
+        "source": "arxiv",
+        "url": "/api/files/8e2b4d59-6870-4517-8580-35822bf12edb/w0_bflow.png",
     }
     root = {"figures": [fig_1, fig_2]}
     head = {"figures": [fig_2, fig_3]}
 
-    update = {'acquisition_source': {'source': 'arXiv'}}
+    update = {"acquisition_source": {"source": "arXiv"}}
 
     expected_root = {"figures": [fig_2]}
     expected_head = {"figures": [fig_2]}
@@ -645,18 +642,18 @@ def test_update_material():
 
     root, head, update = filter_records({}, {}, update, filters=[update_material])
 
-    assert 'material' in update['dois'][0]
-    assert 'material' in update['documents'][0]
-    assert 'material' in update['publication_info'][0]
-    assert 'material' in update['publication_info'][1]
-    assert 'material' in update['license'][0]
-    assert 'material' in update['copyright'][0]
-    assert 'material' in update['figures'][0]
+    assert "material" in update["dois"][0]
+    assert "material" in update["documents"][0]
+    assert "material" in update["publication_info"][0]
+    assert "material" in update["publication_info"][1]
+    assert "material" in update["license"][0]
+    assert "material" in update["copyright"][0]
+    assert "material" in update["figures"][0]
 
 
 def test_update_material_when_erratum_in_dois_material():
     update = {
-        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "dois": [{"value": "10.2172/1827837", "material": "erratum"}],
         "publication_info": [
             {
                 "cnum": "C21-07-19.3",
@@ -679,14 +676,13 @@ def test_update_material_when_erratum_in_dois_material():
     assert root == {}
     assert head == {}
 
-    assert 'material' in update['dois'][0]
-    assert 'material' not in update['publication_info'][0]
-    assert 'material' not in update['publication_info'][1]
+    assert "material" in update["dois"][0]
+    assert "material" not in update["publication_info"][0]
+    assert "material" not in update["publication_info"][1]
 
 
 def test_update_material_when_erratum_no_dois_material():
     update = {
-
         "publication_info": [
             {
                 "cnum": "C21-07-19.3",
@@ -709,12 +705,12 @@ def test_update_material_when_erratum_no_dois_material():
     assert root == {}
     assert head == {}
 
-    assert 'dois' not in update
+    assert "dois" not in update
 
 
 def test_remove_root():
     root = {
-        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "dois": [{"value": "10.2172/1827837", "material": "erratum"}],
         "publication_info": [
             {
                 "cnum": "C21-07-19.3",
@@ -732,7 +728,7 @@ def test_remove_root():
         ],
     }
     head = {
-        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "dois": [{"value": "10.2172/1827837", "material": "erratum"}],
         "publication_info": [
             {
                 "cnum": "C21-07-19.3",
@@ -750,7 +746,7 @@ def test_remove_root():
         ],
     }
     update = {
-        "dois": [{"value": "10.2172/1827837", 'material': 'erratum'}],
+        "dois": [{"value": "10.2172/1827837", "material": "erratum"}],
         "publication_info": [
             {
                 "cnum": "C21-07-19.3",

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -22,32 +21,29 @@
 
 """Pre-filters to transform the records before the merger operates."""
 
-from __future__ import absolute_import, division, print_function
-
 from functools import partial
 
 import pyrsistent
 from inspire_utils.record import get_value
 from pyrsistent import freeze, ny, pmap, thaw
-from six.moves import zip
 
 from inspire_json_merger.utils import ORDER_KEY
 
 FIELDS_WITH_MATERIAL_KEY = [
-    'dois',
-    'publication_info',
-    'copyright',
-    'documents',
-    'license',
-    'figures',
-    'persistent_identifiers',
+    "dois",
+    "publication_info",
+    "copyright",
+    "documents",
+    "license",
+    "figures",
+    "persistent_identifiers",
 ]
 
 
 def remove_elements_with_source(source, field):
     """Remove all elements matching ``source`` in ``field``."""
     return freeze(
-        [element for element in field if element.get('source', '').lower() != source]
+        [element for element in field if element.get("source", "").lower() != source]
     )
 
 
@@ -74,7 +70,7 @@ def keep_only_update_source_in_field(field, root, head, update):
     update_thawed = thaw(update)
     update_sources = {
         source.lower()
-        for source in get_value(update_thawed, '.'.join([field, 'source']), [])
+        for source in get_value(update_thawed, ".".join([field, "source"]), [])
     }
     if not update_sources:
         # If there is no field or source then fallback for source to
@@ -110,18 +106,18 @@ def filter_curated_references(root, head, update):
         tuple: ``(root, head, update)`` with ``references`` removed from ``root``
         and either ``head`` or ``update``.
     """
-    if 'references' not in head or 'references' not in update:
+    if "references" not in head or "references" not in update:
         return root, head, update
 
     references_curated = are_references_curated(
-        root.get('references', []), head.get('references', [])
+        root.get("references", []), head.get("references", [])
     )
-    if 'references' in root:
-        root = root.remove('references')
+    if "references" in root:
+        root = root.remove("references")
     if references_curated:
-        update = update.remove('references')
+        update = update.remove("references")
     else:
-        head = head.remove('references')
+        head = head.remove("references")
 
     return root, head, update
 
@@ -132,9 +128,9 @@ def filter_publisher_references(root, head, update):
     This is useful when merging a record from a publisher with an update form arXiv,
     as arXiv should never overwrite references from the publisher.
     """
-    if 'references' in head:
-        root = _remove_if_present(root, 'references')
-        update = _remove_if_present(update, 'references')
+    if "references" in head:
+        root = _remove_if_present(root, "references")
+        update = _remove_if_present(update, "references")
 
     return root, head, update
 
@@ -152,7 +148,7 @@ def update_authors_with_ordering_info(root, head, update):
         enriched with ordering information
 
     """
-    if 'authors' in head:
+    if "authors" in head:
         head = head.update(
             {"authors": _update_authors_list_with_ordering_data(head["authors"])}
         )
@@ -168,13 +164,14 @@ def _update_authors_list_with_ordering_data(input_list):
 
 def are_references_curated(root_refs, head_refs):
     if not root_refs:
-        return any('legacy_curated' in head_ref for head_ref in head_refs)
+        return any("legacy_curated" in head_ref for head_ref in head_refs)
 
     if len(root_refs) != len(head_refs):
         return True
 
     return not all(
-        ref_almost_equal(root, head) for root, head in zip(root_refs, head_refs)
+        ref_almost_equal(root, head)
+        for root, head in zip(root_refs, head_refs, strict=True)
     )
 
 
@@ -183,14 +180,14 @@ def ref_almost_equal(root_ref, head_ref):
 
 
 def _normalize_ref(ref):
-    ref = _remove_if_present(ref, 'record')
-    ref = _remove_if_falsy(ref, 'curated_relation')
-    ref = _remove_if_present(ref, 'raw_refs')
+    ref = _remove_if_present(ref, "record")
+    ref = _remove_if_falsy(ref, "curated_relation")
+    ref = _remove_if_present(ref, "raw_refs")
     ref = ref.transform(
-        ['reference'], lambda reference: _remove_if_present(reference, 'misc')
+        ["reference"], lambda reference: _remove_if_present(reference, "misc")
     )
     ref = ref.transform(
-        ['reference'], lambda reference: _remove_if_present(reference, 'authors')
+        ["reference"], lambda reference: _remove_if_present(reference, "authors")
     )
     return ref
 
@@ -222,12 +219,12 @@ def clean_root_for_acquisition_source(root, head, update):
     return root, head, update
 
 
-filter_documents_same_source = partial(keep_only_update_source_in_field, 'documents')
-filter_figures_same_source = partial(keep_only_update_source_in_field, 'figures')
+filter_documents_same_source = partial(keep_only_update_source_in_field, "documents")
+filter_figures_same_source = partial(keep_only_update_source_in_field, "figures")
 
 
 def update_material(root, head, update):
-    if "erratum" in get_value(thaw(update), 'dois.material', []):
+    if "erratum" in get_value(thaw(update), "dois.material", []):
         return root, head, update
     for field in FIELDS_WITH_MATERIAL_KEY:
         if field in update:

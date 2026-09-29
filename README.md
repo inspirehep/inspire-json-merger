@@ -1,4 +1,4 @@
-..
+<!--
     This file is part of INSPIRE.
     Copyright (C) 2014-2017 CERN.
 
@@ -18,20 +18,13 @@
     In applying this license, CERN does not waive the privileges and immunities
     granted to it by virtue of its status as an Intergovernmental Organization
     or submit itself to any jurisdiction.
+-->
 
+# INSPIRE-JSON-Merger
 
-=====================
- INSPIRE-JSON-Merger
-=====================
+[![Build Status](https://travis-ci.org/inspirehep/inspire-json-merger.svg?branch=master)](https://travis-ci.org/inspirehep/inspire-json-merger)
+[![Coverage Status](https://coveralls.io/repos/github/inspirehep/inspire-json-merger/badge.svg?branch=master)](https://coveralls.io/github/inspirehep/inspire-json-merger?branch=master)
 
-.. image:: https://travis-ci.org/inspirehep/inspire-json-merger.svg?branch=master
-    :target: https://travis-ci.org/inspirehep/inspire-json-merger
-
-.. image:: https://coveralls.io/repos/github/inspirehep/inspire-json-merger/badge.svg?branch=master
-    :target: https://coveralls.io/github/inspirehep/inspire-json-merger?branch=master
-
-
-About
-=====
+## About
 
 INSPIRE-specific configuration of the JSON Merger.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -20,9 +19,7 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
-
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'utils'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "utils"))

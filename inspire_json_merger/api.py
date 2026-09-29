@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -19,8 +18,6 @@
 # In applying this license, CERN does not waive the privileges and immunities
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
-
-from __future__ import absolute_import, division, print_function
 
 from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
@@ -107,13 +104,13 @@ def get_configuration(head, update, head_source=None):
     if is_erratum(update):
         return ErratumOnPublisherOperations
 
-    if head_source == 'arxiv':
-        if update_source == 'arxiv':
+    if head_source == "arxiv":
+        if update_source == "arxiv":
             return ArxivOnArxivOperations
         else:
             return PublisherOnArxivOperations
     else:
-        if update_source == 'arxiv':
+        if update_source == "arxiv":
             return ArxivOnPublisherOperations
         else:
             return PublisherOnPublisherOperations
@@ -121,36 +118,36 @@ def get_configuration(head, update, head_source=None):
 
 def get_head_source(json_obj):
     def no_freetext_in_publication_info(obj):
-        return 'publication_info' in obj and any(
-            'pubinfo_freetext' not in pubinfo for pubinfo in obj.get('publication_info')
+        return "publication_info" in obj and any(
+            "pubinfo_freetext" not in pubinfo for pubinfo in obj.get("publication_info")
         )
 
     def no_arxiv_in_dois(obj):
-        return 'dois' in obj and any(
-            source.lower() != 'arxiv'
-            for source in force_list(get_value(obj, 'dois.source'))
+        return "dois" in obj and any(
+            source.lower() != "arxiv"
+            for source in force_list(get_value(obj, "dois.source"))
         )
 
     if no_freetext_in_publication_info(json_obj) or no_arxiv_in_dois(json_obj):
-        return 'publisher'
+        return "publisher"
 
-    elif 'arxiv_eprints' in json_obj:
-        return 'arxiv'
+    elif "arxiv_eprints" in json_obj:
+        return "arxiv"
 
     else:
-        return 'publisher'
+        return "publisher"
 
 
 def get_acquisition_source(json_obj):
-    source = get_value(json_obj, 'acquisition_source.source')
+    source = get_value(json_obj, "acquisition_source.source")
     return source.lower() if source else None
 
 
 def is_manual_merge(head, update):
     return (
-        'control_number' in update
-        and 'control_number' in head
-        and update['control_number'] != head['control_number']
+        "control_number" in update
+        and "control_number" in head
+        and update["control_number"] != head["control_number"]
     )
 
 
@@ -160,7 +157,7 @@ def is_erratum(update):
         "corrigendum",
         "publisher's note",
         "publisher correction",
-        "author correction"
+        "author correction",
     }
     journal_titles_list = get_value(update, "titles.title", [])
     journal_titles_string = " ".join(journal_titles_list).lower()
@@ -168,10 +165,10 @@ def is_erratum(update):
         [keyword in journal_titles_string for keyword in erratum_keywords]
     )
     title_starts_with_correction_to = any(
-        journal_title.lower().startswith('correction to:')
+        journal_title.lower().startswith("correction to:")
         for journal_title in journal_titles_list
     )
-    erratum_in_dois_material = 'erratum' in get_value(update, "dois.material", [])
+    erratum_in_dois_material = "erratum" in get_value(update, "dois.material", [])
     if (
         title_contains_erratum_keyword
         or title_starts_with_correction_to

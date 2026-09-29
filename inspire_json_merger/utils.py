@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -22,15 +21,11 @@
 
 """Helper functions for authors."""
 
-from __future__ import absolute_import, division, print_function
-
 import re
 
-import six
 from pyrsistent import freeze, thaw
-from six.moves import zip
 
-split_on_re = re.compile(r'[\.\s-]')
+split_on_re = re.compile(r"[\.\s-]")
 
 ORDER_KEY = "__pos"
 
@@ -52,43 +47,40 @@ def scan_author_string_for_phrases(s):
     :rtype: dict
     """
 
-    if not isinstance(s, six.text_type):
-        s = s.decode('utf-8')
-
     retval = {
-        'TOKEN_TAG_LIST': ['lastnames', 'nonlastnames', 'titles', 'raw'],
-        'lastnames': [],
-        'nonlastnames': [],
-        'titles': [],
-        'raw': s,
+        "TOKEN_TAG_LIST": ["lastnames", "nonlastnames", "titles", "raw"],
+        "lastnames": [],
+        "nonlastnames": [],
+        "titles": [],
+        "raw": s,
     }
-    l = s.split(',')  # noqa: E741
+    l = s.split(",")  # noqa: E741
     if len(l) < 2:
         # No commas means a simple name
         new = s.strip()
-        new = new.split(' ')
+        new = new.split(" ")
         if len(new) == 1:
-            retval['lastnames'] = new  # rare single-name case
+            retval["lastnames"] = new  # rare single-name case
         else:
-            retval['lastnames'] = new[-1:]
-            retval['nonlastnames'] = new[:-1]
-            for tag in ['lastnames', 'nonlastnames']:
+            retval["lastnames"] = new[-1:]
+            retval["nonlastnames"] = new[:-1]
+            for tag in ["lastnames", "nonlastnames"]:
                 retval[tag] = [x.strip() for x in retval[tag]]
                 retval[tag] = [re.split(split_on_re, x) for x in retval[tag]]
                 # flatten sublists
                 retval[tag] = [item for sublist in retval[tag] for item in sublist]
-                retval[tag] = [x for x in retval[tag] if x != '']
+                retval[tag] = [x for x in retval[tag] if x != ""]
     else:
         # Handle lastname-first multiple-names case
-        retval['titles'] = l[2:]  # no titles? no problem
-        retval['nonlastnames'] = l[1]
-        retval['lastnames'] = l[0]
-        for tag in ['lastnames', 'nonlastnames']:
+        retval["titles"] = l[2:]  # no titles? no problem
+        retval["nonlastnames"] = l[1]
+        retval["lastnames"] = l[0]
+        for tag in ["lastnames", "nonlastnames"]:
             retval[tag] = retval[tag].strip()
             retval[tag] = re.split(split_on_re, retval[tag])
             # filter empty strings
-            retval[tag] = [x for x in retval[tag] if x != '']
-        retval['titles'] = [x.strip() for x in retval['titles'] if x != '']
+            retval[tag] = [x for x in retval[tag] if x != ""]
+        retval["titles"] = [x.strip() for x in retval["titles"] if x != ""]
 
     return retval
 
@@ -127,14 +119,14 @@ def filter_conflicts_by_path(conflict_list, to_delete_path):
 
 
 def is_to_delete(conflict, keys_path):
-    to_delete = keys_path.split('.')
+    to_delete = keys_path.split(".")
     conflict_path = conflict_to_list(conflict)
-    if conflict[0] == 'MANUAL_MERGE':
+    if conflict[0] == "MANUAL_MERGE":
         return False
     if len(to_delete) > len(conflict_path):
         return False
 
-    return all(x == y for (x, y) in zip(to_delete, conflict_path))
+    return all(x == y for (x, y) in zip(to_delete, conflict_path, strict=False))
 
 
 def conflict_to_list(conflict):
